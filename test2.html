@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script type="application/javascript">
+
+        function draw() {
+
+            // Выбирает разрешение камеры близкое к 1280x720.
+            var constraints = { audio: true, video: { width: 1280, height: 720 } };
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function (mediaStream) {
+                    var video = document.querySelector('#video');
+                    video.srcObject = mediaStream;
+                    video.onloadedmetadata = function (e) {
+                        video.play();
+                    };
+                })
+                .catch(function (err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+        }
+        //window.requestAnimationFrame(draw);
+
+    </script>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="draw();">
+    <canvas id="canvas" width="300" height="300">
+        Clock test
+    </canvas>
+
+    <div id="video">div_video</div>
+</body>
+
+</html>

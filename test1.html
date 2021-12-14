@@ -1,0 +1,44 @@
+<html> 
+<body> 
+<canvas width="800" height="200" id="canvas"></canvas> 
+<canvas width="800" height="200" id="canvas2"></canvas> 
+<div>
+<canvas id="canvas3"></canvas>
+  <img id="source" src="https://mdn.mozillademos.org/files/5397/rhino.jpg"
+       width="300" height="227">
+</div>
+<script> 
+var canvas = document.getElementById('canvas'); 
+var c = canvas.getContext('2d'); 
+c.fillStyle = "red"; 
+c.fillRect(50,50,100,100); 
+
+var canvas2 = document.getElementById('canvas2'); 
+var ctx = canvas2.getContext('2d'); 
+var grad = ctx.createLinearGradient(0,0,100,0);
+grad.addColorStop(0, "white");
+grad.addColorStop(0.5, "red");
+grad.addColorStop(1, "black");
+
+ctx.fillStyle = grad;
+ctx.fillRect(0,0,400,200);
+
+
+var canvas3 = document.getElementById('canvas3'); 
+var ctx3 = canvas3.getContext('2d'); 
+var img = document.getElementById('source');
+
+ctx3.drawImage(img); //normal drawing
+/*
+ctx3.drawImage(img, //draw stretched
+    0,0,66,66, //source (x,y,w,h)
+    100,0,66,66//destination (x,y,w,h)
+    );
+ctx3.drawImage(img, //draw a slice
+    -23,7,250,50, //source coords (x,y,w,h)
+    250,0,250,50//destination coords (x,y,w,h)
+    );
+*/
+</script> 
+</body> 
+</html> 

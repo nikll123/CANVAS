@@ -6,41 +6,7 @@
   <script type="application/javascript">
 
     function init() {
-      secHand = new Path2D();
-      secHand.moveTo(-2, 20);
-      secHand.lineTo(-1, -115);
-      secHand.lineTo(1, -115);
-      secHand.lineTo(2, 20);
-      secHand.closePath();
-      secHand1 = new Path2D();
-      secHand1.arc(0, 0, 7, 0, 2 * Math.PI);
-      secHand.addPath(secHand1);
-
-      minHand = new Path2D();
-      minHand.moveTo(-4, 15);
-      minHand.lineTo(-2, -100);
-      minHand.lineTo(2, -100);
-      minHand.lineTo(4, 15);
-      minHand.closePath();
-      minHand1 = new Path2D();
-      minHand1.arc(0, 0, 10, 0, 2 * Math.PI);
-      minHand2 = new Path2D();
-      minHand2.arc(0, -60, 10, 0, Math.PI);
-      minHand.addPath(minHand1);
-      minHand.addPath(minHand2);
-
-      hourHand = new Path2D();
-      hourHand.moveTo(-6, 6);
-      hourHand.lineTo(-4, -70);
-      hourHand.lineTo(4, -70);
-      hourHand.lineTo(6, 6);
-      hourHand.closePath();
-      hourHand1 = new Path2D();
-      hourHand1.arc(0, 0, 13, 0, 2 * Math.PI);
-      hourHand.addPath(hourHand1);
-
       ctx = document.getElementById('canvas').getContext('2d');
-      ctx.translate(150, 150);
 
       window.requestAnimationFrame(draw);
     }
@@ -48,65 +14,11 @@
     function draw() {
       ctx.save();
       ctx.clearRect(-150, -150, 300, 300);
-
-      showDial();
-
-      ts = new Date(Date.now());
-      mseconds = ts.getMilliseconds();
-      seconds = ts.getSeconds() + mseconds / 1000;
-      minutes = ts.getMinutes() + seconds / 60;
-      hours = ts.getHours() + minutes / 60;
-
-      showHand(12, hours, hourHand, '#FF0000');
-      showHand(60, minutes, minHand, '#FF8800');
-      showHand(60, seconds, secHand, '#FFDD00');
-
       ctx.restore();
 
       window.requestAnimationFrame(draw);
-
     }
 
-    function showDial() {
-      ctx.save();
-      ctx.font = "24px serif";
-      ctx.strokeStyle = "#0000FF";
-      ctx.lineWidth = 3;
-      lenHour = 10;
-      lenMin = 5;
-      radius = 110;
-      h = 0;
-      angle = (2 * Math.PI / 60);
-      angleShift = -Math.PI / 2;
-      console.debug(angle);
-      for (i = 1; i <= 60; i++) {
-        ctx.rotate(angle);
-        if (i % 5 == 0) {
-          h++;
-          len = lenHour;
-          hour = h.toString();
-          textMetrics = ctx.measureText(hour);
-          x1 = textMetrics.width / 2;
-          y1 = radius + 15
-          ctx.fillText(hour, -x1, -y1);
-        }
-        else
-          len = lenMin;
-        ctx.beginPath();
-        ctx.moveTo(0, - radius);
-        ctx.lineTo(0, - radius - len);
-        ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    function showHand(base, val, hand, color) {
-      ctx.save();
-      ctx.rotate(val * 2 * Math.PI / base);
-      ctx.fillStyle = color;
-      ctx.fill(hand);
-      ctx.restore();
-    }
 
   </script>
 </head>

@@ -8,7 +8,7 @@
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Open testcopy.html",
-            "file": "c:\\Users\\nikll\\Documents\\CANVAS\\scale.html"
+            "file": "C:\\Users\\nikll\\Documents\\CANVAS\\circles\\circles.html"
             // "file": "c:\\Users\\nikll\\Documents\\CANVAS\\test2.html"
         }
     ]

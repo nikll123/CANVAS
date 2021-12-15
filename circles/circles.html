@@ -1,49 +1,76 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <script type="application/javascript">
+  <script>
+    pi = Math.PI;
 
-    function init() {
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
+    function draw() {
+      var canvas = document.getElementById('myCanvas');
+      if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
 
-      // ctx.fillStyle="#000000";
-      // ctx.fillRect(0,0,300,300);
+        x1 = 70.0;
+        y1 = 75.0;
+        r1 = 80.0;
 
-      ctx.globalCompositeOperation = 'xor';
+        x2 = 150.0;
+        y2 = 125.0;
+        r2 = 50.0;
+        
+        a = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
-      ctx.fillStyle = 'blue';
-      ctx.fillRect(10, 10, 100, 100);
+        if (a > r1 && a > r2) {
+          angle_a = Math.acos((r1 ** 2 + r2 ** 2 - a ** 2) / (2 * r1 * r2));
+          angle_b = Math.acos((r1 ** 2 + a ** 2 - r2 ** 2) / (2 * r1 * a));
+          angle_c = Math.acos((r2 ** 2 + a ** 2 - r1 ** 2) / (2 * r2 * a));
+        }
 
-      ctx.fillStyle = 'red';
-      ccc = new Path2D();
-      ccc.arc(50, 30, 30, 0, 2 * Math.PI);
-      ctx.fill(ccc);
-      // ctx.fillRect(50, 50, 100, 100);
+        // ctx.beginPath();
+        // ctx.moveTo(x1, y1);
+        // ctx.lineTo(x2, y2);
+        // ctx.stroke();
+
+        angleBase = Math.atan((y2 - y1) / (x2 - x1)) - pi;
+
+        angle1_start = angleBase + angle_b - pi;
+        angle1_end = angleBase - angle_b + pi;
+
+        ctx.arc(x1, y1, r1, angle1_start, angle1_end);
+        ctx.stroke();
+
+        angle2_start = angleBase + angle_c;
+        angle2_end = angleBase - angle_c + 2 * pi;
+        
+        ctx.arc(x2, y2, r2, angle2_start, angle2_end);
+        // ctx.arc(x2, y2, r2-10, 0, pi / 2);
+        ctx.stroke();
 
 
-      // window.requestAnimationFrame(draw);
+        // ctx.moveTo(110, 75);
+        // ctx.arc(75, 75, 35, 0, pi, false);  // Mouth (clockwise)
+        // ctx.moveTo(65, 65);
+        // ctx.arc(60, 65, 5, 0, pi * 2, true);  // Left eye
+        // ctx.moveTo(95, 65);
+        // ctx.arc(90, 65, 5, 0, pi * 2, true);  // Right eye
+        // ctx.stroke();
+        //    }
+      }
     }
-
-
-    // function draw() {
-    //   ctx.save();
-    //   ctx.clearRect(-150, -150, 300, 300);
-    //   ctx.restore();
-
-    //   window.requestAnimationFrame(draw);
-    // }
 
 
   </script>
 </head>
 
-<body onLoad='init();'>
-  <canvas id="canvas" width="300" height="300">
-    Clock test
+
+<body onload="draw();">
+  <canvas id="myCanvas" width="500" height="500">
+
+
   </canvas>
 </body>
+
+
+
+
 
 </html>

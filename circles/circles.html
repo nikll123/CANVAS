@@ -7,77 +7,166 @@
 
 <body">
   <canvas id="canvas" style="border: 1px solid" width="600" height="300"></canvas>
-</body>
 
-<script>
+  <script>
+  
+  var Rectangle = function(x, y, width, height) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.isDragging = false;
 
+  this.render = function(ctx) {
+    ctx.save();
 
+    ctx.beginPath();
+    ctx.rect(this.x - this.width * 0.5, this.y - this.height * 0.5, this.width, this.height);
+    ctx.fillStyle = '#2793ef';
+    ctx.fill();
+
+    ctx.restore();
+  }
+}
+
+var Arc = function(x, y, radius, radians) {
+  this.x = x;
+  this.y = y;
+  this.radius = radius;
+  this.radians = radians;
+  this.isDragging = false;
+
+  this.render = function(ctx) {
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
+    ctx.fillStyle = '#2793ef';
+    ctx.fill();
+
+    ctx.restore();
+  }
+}
+
+var MouseTouchTracker = function(canvas, callback){
+
+  function processEvent(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var offsetTop = rect.top;
+    var offsetLeft = rect.left;
+
+    if (evt.touches) {
+      return {
+        x: evt.touches[0].clientX - offsetLeft,
+        y: evt.touches[0].clientY - offsetTop
+      }
+    } else {
+      return {
+        x: evt.clientX - offsetLeft,
+        y: evt.clientY - offsetTop
+      }
+    }
+  }
+
+  function onDown(evt) {
+    evt.preventDefault();
+    var coords = processEvent(evt);
+    callback('down', coords.x, coords.y);
+  }
+
+  function onUp(evt) {
+    evt.preventDefault();
+    callback('up');
+  }
+
+  function onMove(evt) {
+    evt.preventDefault();
+    var coords = processEvent(evt);
+    callback('move', coords.x, coords.y);
+  }
+
+  canvas.ontouchmove = onMove;
+  canvas.onmousemove = onMove;
+
+  canvas.ontouchstart = onDown;
+  canvas.onmousedown = onDown;
+  canvas.ontouchend = onUp;
+  canvas.onmouseup = onUp;
+}
+
+function isHit(shape, x, y) {
+  if (shape.constructor.name === 'Arc') {
+    var dx = shape.x - x;
+    var dy = shape.y - y;
+    if (dx * dx + dy * dy < shape.radius * shape.radius) {
+      return true
+    }
+  } else {
+    if (x > shape.x - shape.width * 0.5 && y > shape.y - shape.height * 0.5 && x < shape.x + shape.width - shape.width * 0.5 && y < shape.y + shape.height - shape.height * 0.5) {
+      return true;
+    }
+  }
+
+  return false;
+}
+  
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-var raf;
-var running = false;
+var startX = 0;
+var startY = 0;
 
-var ball = {
-  x: 100,
-  y: 100,
-  vx: 5,
-  vy: 1,
-  radius: 25,
-  color: 'blue',
-  draw: function() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
+var rectangle = new Rectangle(50, 50, 100, 100);
+rectangle.render(ctx);
+
+var circle = new Arc(200, 140, 50, Math.PI * 2);
+circle.render(ctx);
+
+var mtt = new MouseTouchTracker(canvas,
+  function(evtType, x, y) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    switch(evtType) {
+
+      case 'down':
+        startX = x;
+        startY = y;
+        if (isHit(rectangle, x, y)) {
+          rectangle.isDragging = true;
+        }
+        if (isHit(circle, x, y)) {
+          circle.isDragging = true;
+        }
+        break;
+
+      case 'up':
+        rectangle.isDragging = false;
+        circle.isDragging = false;
+        break;
+
+      case 'move':
+        var dx = x - startX;
+        var dy = y - startY;
+        startX = x;
+        startY = y;
+
+        if (rectangle.isDragging) {
+          rectangle.x += dx;
+          rectangle.y += dy;
+        }
+
+        if (circle.isDragging) {
+          circle.x += dx;
+          circle.y += dy;
+        }
+        break;
+    }
+
+    circle.render(ctx);
+    rectangle.render(ctx);
   }
-};
-
-function clear() {
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-}
-
-function draw() {
-  clear();
-  ball.draw();
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-
-  if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
-    ball.vy = -ball.vy;
-  }
-  if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
-    ball.vx = -ball.vx;
-  }
-
-  raf = window.requestAnimationFrame(draw);
-}
-
-canvas.addEventListener('mousemove', function(e) {
-  if (!running) {
-    clear();
-    ball.x = e.clientX;
-    ball.y = e.clientY;
-    ball.draw();
-  }
-});
-
-canvas.addEventListener('click', function(e) {
-  if (!running) {
-    raf = window.requestAnimationFrame(draw);
-    running = true;
-  }
-});
-
-canvas.addEventListener('mouseout', function(e) {
-  window.cancelAnimationFrame(raf);
-  running = false;
-});
-
-ball.draw();
-
-
-</script>
+);
+  
+  </script>
+  </body>
 
 </html>

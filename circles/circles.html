@@ -7,46 +7,10 @@
 
 <body">
   <canvas id="canvas" style="border: 1px solid" width="600" height="300"></canvas>
+  <script src="classes.js"></script>
 
   <script>
   
-  var Rectangle = function(x, y, width, height) {
-  this.x = x;
-  this.y = y;
-  this.width = width;
-  this.height = height;
-  this.isDragging = false;
-
-  this.render = function(ctx) {
-    ctx.save();
-
-    ctx.beginPath();
-    ctx.rect(this.x - this.width * 0.5, this.y - this.height * 0.5, this.width, this.height);
-    ctx.fillStyle = '#2793ef';
-    ctx.fill();
-
-    ctx.restore();
-  }
-}
-
-var Arc = function(x, y, radius, radians) {
-  this.x = x;
-  this.y = y;
-  this.radius = radius;
-  this.radians = radians;
-  this.isDragging = false;
-
-  this.render = function(ctx) {
-    ctx.save();
-
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
-    ctx.fillStyle = '#2793ef';
-    ctx.fill();
-
-    ctx.restore();
-  }
-}
 
 var MouseTouchTracker = function(canvas, callback){
 
@@ -165,7 +129,7 @@ var mtt = new MouseTouchTracker(canvas,
     rectangle.render(ctx);
   }
 );
-  
+
   </script>
   </body>
 

@@ -10,7 +10,7 @@ class Rectangle {
             ctx.save();
 
             ctx.beginPath();
-            ctx.rect(this.x - this.width * 0.5, this.y - this.height * 0.5, this.width, this.height);
+            ctx.rect(this.x, this.y, this.width, this.height);
             ctx.fillStyle = '#2793ef';
             ctx.fill();
 

@@ -10,125 +10,125 @@
   <script src="classes.js"></script>
 
   <script>
-  
 
-var MouseTouchTracker = function(canvas, callback){
 
-  function processEvent(evt) {
-    var rect = canvas.getBoundingClientRect();
-    var offsetTop = rect.top;
-    var offsetLeft = rect.left;
+    var MouseTouchTracker = function (canvas, callback) {
 
-    if (evt.touches) {
-      return {
-        x: evt.touches[0].clientX - offsetLeft,
-        y: evt.touches[0].clientY - offsetTop
+      function processEvent(evt) {
+        var rect = canvas.getBoundingClientRect();
+        var offsetTop = rect.top;
+        var offsetLeft = rect.left;
+
+        if (evt.touches) {
+          return {
+            x: evt.touches[0].clientX - offsetLeft,
+            y: evt.touches[0].clientY - offsetTop
+          }
+        } else {
+          return {
+            x: evt.clientX - offsetLeft,
+            y: evt.clientY - offsetTop
+          }
+        }
       }
-    } else {
-      return {
-        x: evt.clientX - offsetLeft,
-        y: evt.clientY - offsetTop
+
+      function onDown(evt) {
+        evt.preventDefault();
+        var coords = processEvent(evt);
+        callback('down', coords.x, coords.y);
       }
-    }
-  }
 
-  function onDown(evt) {
-    evt.preventDefault();
-    var coords = processEvent(evt);
-    callback('down', coords.x, coords.y);
-  }
+      function onUp(evt) {
+        evt.preventDefault();
+        callback('up');
+      }
 
-  function onUp(evt) {
-    evt.preventDefault();
-    callback('up');
-  }
+      function onMove(evt) {
+        evt.preventDefault();
+        var coords = processEvent(evt);
+        callback('move', coords.x, coords.y);
+      }
 
-  function onMove(evt) {
-    evt.preventDefault();
-    var coords = processEvent(evt);
-    callback('move', coords.x, coords.y);
-  }
+      canvas.ontouchmove = onMove;
+      canvas.onmousemove = onMove;
 
-  canvas.ontouchmove = onMove;
-  canvas.onmousemove = onMove;
-
-  canvas.ontouchstart = onDown;
-  canvas.onmousedown = onDown;
-  canvas.ontouchend = onUp;
-  canvas.onmouseup = onUp;
-}
-
-function isHit(shape, x, y) {
-  if (shape.constructor.name === 'Arc') {
-    var dx = shape.x - x;
-    var dy = shape.y - y;
-    if (dx * dx + dy * dy < shape.radius * shape.radius) {
-      return true
-    }
-  } else {
-    if (x > shape.x - shape.width * 0.5 && y > shape.y - shape.height * 0.5 && x < shape.x + shape.width - shape.width * 0.5 && y < shape.y + shape.height - shape.height * 0.5) {
-      return true;
-    }
-  }
-
-  return false;
-}
-  
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var startX = 0;
-var startY = 0;
-
-var rectangle = new Rectangle(50, 50, 100, 100);
-rectangle.render(ctx);
-
-var circle = new Arc(200, 140, 50, Math.PI * 2);
-circle.render(ctx);
-
-var mtt = new MouseTouchTracker(canvas,
-  function(evtType, x, y) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    switch(evtType) {
-
-      case 'down':
-        startX = x;
-        startY = y;
-        if (isHit(rectangle, x, y)) {
-          rectangle.isDragging = true;
-        }
-        if (isHit(circle, x, y)) {
-          circle.isDragging = true;
-        }
-        break;
-
-      case 'up':
-        rectangle.isDragging = false;
-        circle.isDragging = false;
-        break;
-
-      case 'move':
-        var dx = x - startX;
-        var dy = y - startY;
-        startX = x;
-        startY = y;
-
-        if (rectangle.isDragging) {
-          rectangle.x += dx;
-          rectangle.y += dy;
-        }
-
-        if (circle.isDragging) {
-          circle.x += dx;
-          circle.y += dy;
-        }
-        break;
+      canvas.ontouchstart = onDown;
+      canvas.onmousedown = onDown;
+      canvas.ontouchend = onUp;
+      canvas.onmouseup = onUp;
     }
 
-    circle.render(ctx);
-    rectangle.render(ctx);
-  }
-);
+    function isHit(shape, x, y) {
+      if (shape.constructor.name === 'Arc') {
+        var dx = shape.x - x;
+        var dy = shape.y - y;
+        if (dx * dx + dy * dy < shape.radius * shape.radius) {
+          return true
+        }
+      } else {
+        if (x > shape.x - shape.width * 0.5 && y > shape.y - shape.height * 0.5 && x < shape.x + shape.width - shape.width * 0.5 && y < shape.y + shape.height - shape.height * 0.5) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var startX = 0;
+    var startY = 0;
+
+    var rectangle1 = new rectangle('rect1', 50, 50, 100, 100, '#2793ef');
+    rectangle1.render(ctx);
+
+    var circle1 = new circle('circ1', 200, 140, 50, '#2793ef');
+    circle1.render(ctx);
+
+    var mtt = new MouseTouchTracker(canvas,
+      function (evtType, x, y) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        switch (evtType) {
+
+          case 'down':
+            startX = x;
+            startY = y;
+            if (isHit(rectangle1, x, y)) {
+              rectangle1.isDragging = true;
+            }
+            if (isHit(circle1, x, y)) {
+              circle1.isDragging = true;
+            }
+            break;
+
+          case 'up':
+            rectangle1.isDragging = false;
+            circle1.isDragging = false;
+            break;
+
+          case 'move':
+            var dx = x - startX;
+            var dy = y - startY;
+            startX = x;
+            startY = y;
+
+            if (rectangle1.isDragging) {
+              rectangle1.x += dx;
+              rectangle1.y += dy;
+            }
+
+            if (circle1.isDragging) {
+              circle1.x += dx;
+              circle1.y += dy;
+            }
+            break;
+        }
+
+        circle1.render(ctx);
+        rectangle1.render(ctx);
+      }
+    );
 
   </script>
   </body>

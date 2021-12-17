@@ -1,29 +1,26 @@
 class shape {
-    constructor(id, x, y, fillStyle) {
-        this.id = id;
+    constructor(x, y, fillStyle) {
         this.x = x;
         this.y = y;
         this.fillStyle = fillStyle; 
-        this.classname = 'shape';
     }
 
     toString() {
-        return this.classname + ': id=' + this.id + ', fillStyle=' + this.fillStyle + ', x=' + this.x + ', y=' + this.y;
+        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y + ', fillStyle=' + this.fillStyle;
     };
 }
 
 class shapeDraggable extends shape {
-    constructor(id, x, y, fillStyle) {
-        super(id, x, y, fillStyle);
+    constructor(x, y, fillStyle) {
+        super(x, y, fillStyle);
         this.classname = 'shapeDraggable';
         this.isDragging = false;
     }
 }
 
 class rectangle extends shapeDraggable {
-    constructor(id, x, y, width, height, fillStyle) {
-        super(id, x, y, fillStyle);
-        this.classname = 'rectangle';
+    constructor(x, y, width, height, fillStyle) {
+        super(x, y, fillStyle);
         this.width = width;
         this.height = height;
     }
@@ -43,9 +40,8 @@ class rectangle extends shapeDraggable {
 }
 
 class arc extends shapeDraggable {
-    constructor(id, x, y, radius, radians, fillStyle) {
-        super(id, x, y, fillStyle);
-        this.classname = 'arc';
+    constructor(x, y, radius, radians, fillStyle) {
+        super(x, y, fillStyle);
         this.radius = radius;
         this.radians = radians;
     }
@@ -66,9 +62,8 @@ class arc extends shapeDraggable {
 }
 
 class circle extends arc {
-    constructor(id, x, y, radius, fillStyle) {
-        super(id, x, y, radius, 2 * Math.PI, fillStyle) ;
-        this.classname = 'circle';
+    constructor(x, y, radius, fillStyle) {
+        super(x, y, radius, 2 * Math.PI, fillStyle) ;
     }
 }
 

@@ -94,12 +94,8 @@
           case 'down':
             startX = x;
             startY = y;
-            if (isHit(rectangle1, x, y)) {
-              rectangle1.isDragging = true;
-            }
-            if (isHit(circle1, x, y)) {
-              circle1.isDragging = true;
-            }
+            rectangle1.isDragging = isHit(rectangle1, x, y);
+            circle1.isDragging = isHit(circle1, x, y);
             break;
 
           case 'up':

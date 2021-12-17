@@ -1,3 +1,46 @@
+class point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    toString() {
+        return this.constructor.name + ': x=' + this.x + ', y=' + this.y;
+    };
+
+    render(ctx) {
+        ctx.save();
+        let radius = 1;
+        ctx.arc(this.x, this.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+    };
+}
+
+class line {
+    constructor(x1, y1, x2, y2, strokeStyle) {
+        this.point1 = new point(x1, y1);
+        this.point2 = new point(x2, y2);
+        this.strokeStyle = strokeStyle;
+
+    }
+
+    toString() {
+        return this.constructor.name + '; ' + this.point1.toString() + '; ' +  this.point1.toString() + '; strokeStyle=' + this.strokeStyle;
+    };
+
+    render(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(this.point1.x, this.point1.y);
+        ctx.lineTo(this.point2.x, this.point2.y);
+        ctx.strokeStyle = this.strokeStyle;
+        ctx.stroke();
+        ctx.restore();
+    };
+}
+
+
 class shape {
     constructor(x, y, fillStyle) {
         this.x = x;

@@ -59,14 +59,14 @@
     }
 
     function isHit(shape, x, y) {
-      if (shape.constructor.name === 'Arc') {
+      if (shape.constructor.name === 'circle') {
         var dx = shape.x - x;
         var dy = shape.y - y;
         if (dx * dx + dy * dy < shape.radius * shape.radius) {
           return true
         }
       } else {
-        if (x > shape.x - shape.width * 0.5 && y > shape.y - shape.height * 0.5 && x < shape.x + shape.width - shape.width * 0.5 && y < shape.y + shape.height - shape.height * 0.5) {
+        if (x > shape.x && y > shape.y && x < shape.x + shape.width && y < shape.y + shape.height) {
           return true;
         }
       }

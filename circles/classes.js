@@ -13,7 +13,6 @@ class shape {
 class shapeDraggable extends shape {
     constructor(x, y, fillStyle) {
         super(x, y, fillStyle);
-        this.classname = 'shapeDraggable';
         this.isDragging = false;
     }
 }

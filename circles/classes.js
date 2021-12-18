@@ -27,36 +27,55 @@ class point {
 }
 
 //-------------------------------------
-// line
+// line broken
 //-------------------------------------
-class line {
-    constructor(x1, y1, x2, y2) {
-        this.point1 = new point(x1, y1);
-        this.point2 = new point(x2, y2);
+class lineBroken {
+    constructor(points1) {
+        this.points = [];
+        for (var i = 0; i < points1.length; i++) {
+            var p = points1[i];
+            this.points.push(new point(p[0], p[1]));
+        }
     }
 
     toString() {
-        return this.constructor.name + '; ' + this.point1.toString() + '; ' + this.point1.toString();
-    };
+        var reval = this.constructor.name + ': '
+        for (var i = 0; i < this.points.length; i++) {
+            reval = reval + this.points[i].toString() + '; ';
+        };
+        return reval;
+    }
 
-    render(ctx, width = 0, color = defaultColor) {
+    render(ctx, width = 0, closePath = false, colorStroke = defaultColor, colorFill) {
         if (width > 0) {
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(this.point1.x, this.point1.y);
-            ctx.lineTo(this.point2.x, this.point2.y);
-            ctx.strokeStyle = color;
+            ctx.moveTo(this.points[0].x, this.points[0].y);
+            for (var i = 1; i < this.points.length; i++) {
+                ctx.lineTo(this.points[i].x, this.points[i].y);;
+            };
+            if (closePath)
+                ctx.closePath();
+            ctx.strokeStyle = colorStroke;
             ctx.lineWidth = width;
             ctx.stroke();
+            if (colorFill != undefined) {
+                ctx.fillStyle = colorFill;
+                ctx.fill();
+            }
+
             ctx.restore();
         }
     };
 }
 
+
+
+
 //-------------------------------------
 // shape
 //-------------------------------------
-class poligon {
+class triangle extends lineBroken {
     constructor(width = 0, colorFill = defaultColor, colorLine = defaultColor, points) {
         this.points;
     }
@@ -71,67 +90,67 @@ class poligon {
 
 }
 
-//-------------------------------------
+// //-------------------------------------
 // shapeDraggable
-class shapeDraggable extends poligon {
-    // constructor(x, y, fillStyle = '', lineWidth = -1) {
-    //     super(x, y, fillStyle);
-    //     this.isDragging = false;
-    // }
-}
+// class shapeDraggable extends poligon {
+//     // constructor(x, y, fillStyle = '', lineWidth = -1) {
+//     //     super(x, y, fillStyle);
+//     //     this.isDragging = false;
+//     // }
+// }
 
-//-------------------------------------
-// rectangle
-//-------------------------------------
-class rectangle extends shapeDraggable {
-    constructor(x, y, width, height, fillStyle) {
-        super(x, y, fillStyle);
-        this.width = width;
-        this.height = height;
-    }
+// //-------------------------------------
+// // rectangle
+// //-------------------------------------
+// class rectangle extends shapeDraggable {
+//     constructor(x, y, width, height, fillStyle) {
+//         super(x, y, fillStyle);
+//         this.width = width;
+//         this.height = height;
+//     }
 
-    render(ctx) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.fillStyle = this.fillStyle;
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fill();
-        ctx.restore();
-    };
+//     render(ctx) {
+//         ctx.save();
+//         ctx.beginPath();
+//         ctx.fillStyle = this.fillStyle;
+//         ctx.rect(this.x, this.y, this.width, this.height);
+//         ctx.fill();
+//         ctx.restore();
+//     };
 
-    toString() {
-        return super.toString() + ', width=' + this.width + ', height=' + this.height;
-    };
-}
+//     toString() {
+//         return super.toString() + ', width=' + this.width + ', height=' + this.height;
+//     };
+// }
 
-//-------------------------------------
-// arc
-//-------------------------------------
-class arc extends shapeDraggable {
-    constructor(x, y, radius, radians, fillStyle = '', lineWidth = -1) {
-        super(x, y, fillStyle);
-        this.radius = radius;
-        this.radians = radians;
-    }
+// //-------------------------------------
+// // arc
+// //-------------------------------------
+// class arc extends shapeDraggable {
+//     constructor(x, y, radius, radians, fillStyle = '', lineWidth = -1) {
+//         super(x, y, fillStyle);
+//         this.radius = radius;
+//         this.radians = radians;
+//     }
 
-    render(ctx) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.fillStyle = this.fillStyle;
-        ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
-        ctx.fill();
-        ctx.restore();
-    };
+//     render(ctx) {
+//         ctx.save();
+//         ctx.beginPath();
+//         ctx.fillStyle = this.fillStyle;
+//         ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
+//         ctx.fill();
+//         ctx.restore();
+//     };
 
-    toString() {
-        return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
-    };
+//     toString() {
+//         return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
+//     };
 
-}
+// }
 
-class circle extends arc {
-    constructor(x, y, radius, fillStyle) {
-        super(x, y, radius, 2 * Math.PI, fillStyle);
-    }
-}
+// class circle extends arc {
+//     constructor(x, y, radius, fillStyle) {
+//         super(x, y, radius, 2 * Math.PI, fillStyle);
+//     }
+// }
 

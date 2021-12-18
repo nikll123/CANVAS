@@ -69,23 +69,21 @@ class lineBroken {
     };
 }
 
-
-
-
 //-------------------------------------
-// shape
+// triangle
 //-------------------------------------
 class triangle extends lineBroken {
-    constructor(width = 0, colorFill = defaultColor, colorLine = defaultColor, points) {
-        this.points;
+    constructor(points) {
+        if (points.length != 3)
+        {
+            console.output(this.constructor.name + ':  error, wrong point conut');
+        }
+        super(points);
     }
 
-    toString() {
-        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y + ', fillStyle=' + this.colorFill;
-    };
-
-    render() {
-
+    render(ctx, width = 0, colorStroke = defaultColor, colorFill) 
+    {
+        super.render(ctx, width, true, colorStroke, colorFill);
     }
 
 }

@@ -1,3 +1,9 @@
+//-------------------------------------
+// point
+//-------------------------------------
+
+var defaultColor = '#888888'
+
 class point {
     constructor(x, y) {
         this.x = x;
@@ -8,63 +14,75 @@ class point {
         return this.constructor.name + ': x=' + this.x + ', y=' + this.y;
     };
 
-    render(ctx) {
-        ctx.save();
-        let radius = 1;
-        ctx.arc(this.x, this.y, radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.restore();
+    render(ctx, radius = 0, color = defaultColor) {
+        if (radius > 0) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.restore();
+        }
     };
 }
 
+//-------------------------------------
+// line
+//-------------------------------------
 class line {
-    constructor(x1, y1, x2, y2, strokeStyle = '', lineWidth = -1) {
+    constructor(x1, y1, x2, y2) {
         this.point1 = new point(x1, y1);
         this.point2 = new point(x2, y2);
-        if (strokeStyle != '')
-            this.strokeStyle = strokeStyle;
-        if (lineWidth != -1)
-            this.lineWidth = lineWidth;
     }
 
     toString() {
-        return this.constructor.name + '; ' + this.point1.toString() + '; ' + this.point1.toString() + '; strokeStyle=' + this.strokeStyle;
+        return this.constructor.name + '; ' + this.point1.toString() + '; ' + this.point1.toString();
     };
 
-    render(ctx) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(this.point1.x, this.point1.y);
-        ctx.lineTo(this.point2.x, this.point2.y);
-        if (this.strokeStyle != undefined)
-            ctx.strokeStyle = this.strokeStyle;
-        if (this.lineWidth != undefined)
-            ctx.lineWidth = this.lineWidth;
-
-        ctx.stroke();
-        ctx.restore();
+    render(ctx, width = 0, color = defaultColor) {
+        if (width > 0) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(this.point1.x, this.point1.y);
+            ctx.lineTo(this.point2.x, this.point2.y);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+            ctx.restore();
+        }
     };
 }
 
-class shape {
-    constructor(x, y, fillStyle) {
-        this.x = x;
-        this.y = y;
-        this.fillStyle = fillStyle;
+//-------------------------------------
+// shape
+//-------------------------------------
+class poligon {
+    constructor(width = 0, colorFill = defaultColor, colorLine = defaultColor, points) {
+        this.points;
     }
 
     toString() {
-        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y + ', fillStyle=' + this.fillStyle;
+        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y + ', fillStyle=' + this.colorFill;
     };
-}
 
-class shapeDraggable extends shape {
-    constructor(x, y, fillStyle) {
-        super(x, y, fillStyle);
-        this.isDragging = false;
+    render() {
+
     }
+
 }
 
+//-------------------------------------
+// shapeDraggable
+class shapeDraggable extends poligon {
+    // constructor(x, y, fillStyle = '', lineWidth = -1) {
+    //     super(x, y, fillStyle);
+    //     this.isDragging = false;
+    // }
+}
+
+//-------------------------------------
+// rectangle
+//-------------------------------------
 class rectangle extends shapeDraggable {
     constructor(x, y, width, height, fillStyle) {
         super(x, y, fillStyle);
@@ -86,8 +104,11 @@ class rectangle extends shapeDraggable {
     };
 }
 
+//-------------------------------------
+// arc
+//-------------------------------------
 class arc extends shapeDraggable {
-    constructor(x, y, radius, radians, fillStyle) {
+    constructor(x, y, radius, radians, fillStyle = '', lineWidth = -1) {
         super(x, y, fillStyle);
         this.radius = radius;
         this.radians = radians;

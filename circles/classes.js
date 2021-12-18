@@ -85,12 +85,12 @@ class lineBroken {
 }
 
 //-------------------------------------
-// triangle
+// poligon
 //-------------------------------------
-class triangle extends lineBroken {
-    constructor(points) {
-        if (points.length != 3) {
-            console.output(this.constructor.name + ':  Failed to create due to wrong number of points');
+class poligon extends lineBroken {
+    constructor(points, anglecount) {
+        if (points.length != anglecount) {
+            console.debug('Failed to create due to wrong number of points');
         }
         super(points);
     }
@@ -98,7 +98,25 @@ class triangle extends lineBroken {
     render(ctx, width = 0, colorStroke = defaultColor, colorFill) {
         super.render(ctx, width, true, colorStroke, colorFill);
     }
+}
 
+
+//-------------------------------------
+// triangle
+//-------------------------------------
+class triangle extends poligon {
+    constructor(points) {
+        super(points, 3);
+    }
+}
+
+//-------------------------------------
+// quadrangle
+//-------------------------------------
+class quadrangle extends poligon {
+    constructor(points) {
+        super(points, 4);
+    }
 }
 
 // //-------------------------------------

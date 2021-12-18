@@ -18,15 +18,17 @@ class point {
 }
 
 class line {
-    constructor(x1, y1, x2, y2, strokeStyle) {
+    constructor(x1, y1, x2, y2, strokeStyle = '', lineWidth = -1) {
         this.point1 = new point(x1, y1);
         this.point2 = new point(x2, y2);
-        this.strokeStyle = strokeStyle;
-
+        if (strokeStyle != '')
+            this.strokeStyle = strokeStyle;
+        if (lineWidth != -1)
+            this.lineWidth = lineWidth;
     }
 
     toString() {
-        return this.constructor.name + '; ' + this.point1.toString() + '; ' +  this.point1.toString() + '; strokeStyle=' + this.strokeStyle;
+        return this.constructor.name + '; ' + this.point1.toString() + '; ' + this.point1.toString() + '; strokeStyle=' + this.strokeStyle;
     };
 
     render(ctx) {
@@ -34,18 +36,21 @@ class line {
         ctx.beginPath();
         ctx.moveTo(this.point1.x, this.point1.y);
         ctx.lineTo(this.point2.x, this.point2.y);
-        ctx.strokeStyle = this.strokeStyle;
+        if (this.strokeStyle != undefined)
+            ctx.strokeStyle = this.strokeStyle;
+        if (this.lineWidth != undefined)
+            ctx.lineWidth = this.lineWidth;
+
         ctx.stroke();
         ctx.restore();
     };
 }
 
-
 class shape {
     constructor(x, y, fillStyle) {
         this.x = x;
         this.y = y;
-        this.fillStyle = fillStyle; 
+        this.fillStyle = fillStyle;
     }
 
     toString() {
@@ -98,14 +103,14 @@ class arc extends shapeDraggable {
     };
 
     toString() {
-        return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians ;
+        return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
     };
 
 }
 
 class circle extends arc {
     constructor(x, y, radius, fillStyle) {
-        super(x, y, radius, 2 * Math.PI, fillStyle) ;
+        super(x, y, radius, 2 * Math.PI, fillStyle);
     }
 }
 

@@ -2,7 +2,8 @@
 // point
 //-------------------------------------
 
-var defaultColor = '#888888'
+var defaultColor = '#888888';
+var debugRender = true;
 
 class point {
     constructor(x, y) {
@@ -10,8 +11,13 @@ class point {
         this.y = y;
     }
 
-    toString() {
-        return this.constructor.name + ': x=' + this.x + ', y=' + this.y;
+    toString(long = true) {
+        var retval;
+        if (long)
+            retval = this.constructor.name + ': ' + 'x=' + this.x + ', y=' + this.y;
+        else
+            retval = this.x + ',' + this.y;
+        return retval;
     };
 
     render(ctx, radius = 0, color = defaultColor) {
@@ -22,6 +28,10 @@ class point {
             ctx.arc(this.x, this.y, radius, 0, 2 * Math.PI);
             ctx.fill();
             ctx.restore();
+        }
+        if (debugRender) {
+            var text = this.toString(false);
+            ctx.fillText(text, this.x + 1, this.y);
         }
     };
 }
@@ -34,7 +44,8 @@ class lineBroken {
         this.points = [];
         for (var i = 0; i < points1.length; i++) {
             var p = points1[i];
-            this.points.push(new point(p[0], p[1]));
+            var pp = new point(p[0], p[1]);
+            this.points.push(pp);
         }
     }
 
@@ -51,8 +62,12 @@ class lineBroken {
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(this.points[0].x, this.points[0].y);
+            var p = this.points[0];
+            p.render(ctx);
             for (var i = 1; i < this.points.length; i++) {
-                ctx.lineTo(this.points[i].x, this.points[i].y);;
+                p = this.points[i]
+                ctx.lineTo(p.x, p.y);
+                p.render(ctx);
             };
             if (closePath)
                 ctx.closePath();
@@ -74,15 +89,13 @@ class lineBroken {
 //-------------------------------------
 class triangle extends lineBroken {
     constructor(points) {
-        if (points.length != 3)
-        {
-            console.output(this.constructor.name + ':  error, wrong point conut');
+        if (points.length != 3) {
+            console.output(this.constructor.name + ':  Failed to create due to wrong number of points');
         }
         super(points);
     }
 
-    render(ctx, width = 0, colorStroke = defaultColor, colorFill) 
-    {
+    render(ctx, width = 0, colorStroke = defaultColor, colorFill) {
         super.render(ctx, width, true, colorStroke, colorFill);
     }
 

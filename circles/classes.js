@@ -5,6 +5,31 @@
 var defaultColor = '#888888';
 var debugRender = true;
 
+class calc {
+    // https://cpp.mazurok.com/triangle/
+    static isPointInsideTriangle(x, y, pointA, pointB, pointC) {
+        var r1 = this._f2(pointA, pointB, pointC, x, y);
+        var r2 = this._f2(pointB, pointC, pointA, x, y);
+        var r3 = this._f2(pointC, pointA, pointB, x, y)
+        // printf(	f(a,b,c,d) && f(b,c,a,d) && f(c,a,b,d) ? "yes" : "no");
+        var res = r1 && r2 && r3;
+        return res;
+    }
+    // Вычисляет положение точки D(xd,yd) относительно прямой AB
+
+    static _f1(p1, p2, x, y) {
+        return (x - p1.x) * (p2.y - p1.y) - (y - p1.y) * (p2.x - p1.x);
+        // return (d.x - a.x) * (b.y - a.y) - (d.y - a.y) * (b.x - a.x);
+    }
+
+    // Лежат ли точки C и D с одной строны прямой (AB)?
+    static _f2(p1, p2, p3, x, y) {
+        return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
+        // return g(a, b, c) * g(a, b, d) >= 0;
+    }
+
+}
+
 class point {
     constructor(x, y) {
         this.x = x;
@@ -120,35 +145,8 @@ class triangle extends poligon {
     constructor(points) {
         super(points, 3);
     }
-
-    // https://cpp.mazurok.com/triangle/
     isPointInside(x, y) {
-        var r1 = this._f2(this.points[0].x, this.points[0].y,
-            this.points[1].x, this.points[1].y,
-            this.points[2].x, this.points[2].y,
-            x, y);
-        var r2 = this._f2(this.points[1].x, this.points[1].y,
-            this.points[2].x, this.points[2].y,
-            this.points[0].x, this.points[0].y,
-            x, y);
-        var r3 = this._f2(this.points[2].x, this.points[2].y,
-            this.points[0].x, this.points[0].y,
-            this.points[1].x, this.points[1].y,
-            x, y)
-        // printf(	f(a,b,c,d) && f(b,c,a,d) && f(c,a,b,d) ? "yes" : "no");
-        var res = r1 && r2 && r3;
-        return res;
-    }
-    // Вычисляет положение точки D(xd,yd) относительно прямой AB
-    _f1(x1, y1, x2, y2, x, y) {
-        return (x - x1) * (y2 - y1) - (y - y1) * (x2 - x1);
-        // return (d.x - a.x) * (b.y - a.y) - (d.y - a.y) * (b.x - a.x);
-    }
-
-    // Лежат ли точки C и D с одной строны прямой (AB)?
-    _f2(x0, y0, x1, y1, x2, y2, x, y) {
-        return this._f1(x0, y0, x1, y1, x2, y2) * this._f1(x0, y0, x1, y1, x, y) >= 0;
-        // return g(a, b, c) * g(a, b, d) >= 0;
+        return calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2])
     }
 }
 
@@ -159,6 +157,8 @@ class quadrangle extends poligon {
     constructor(points) {
         super(points, 4);
     }
+
+
 }
 
 

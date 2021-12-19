@@ -31,7 +31,7 @@ class point {
         }
         if (debugRender) {
             var text = this.toString(false);
-            ctx.fillText(text, this.x + 1, this.y);
+            ctx.fillText(text, this.x + radius + 1, this.y);
         }
     };
 }

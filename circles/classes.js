@@ -57,8 +57,8 @@ class lineBroken {
         return reval;
     }
 
-    render(ctx, width = 0, closePath = false, colorStroke = defaultColor, colorFill) {
-        if (width > 0) {
+    render(ctx, widthStroke = 0, closePath = false, colorStroke = defaultColor, colorFill) {
+        if (widthStroke > 0) {
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(this.points[0].x, this.points[0].y);
@@ -72,7 +72,7 @@ class lineBroken {
             if (closePath)
                 ctx.closePath();
             ctx.strokeStyle = colorStroke;
-            ctx.lineWidth = width;
+            ctx.lineWidth = widthStroke;
             ctx.stroke();
             if (colorFill != undefined) {
                 ctx.fillStyle = colorFill;
@@ -95,11 +95,10 @@ class poligon extends lineBroken {
             console.debug('Failed to create due to wrong number of points');
     }
 
-    render(ctx, width = 0, colorStroke = defaultColor, colorFill) {
-        super.render(ctx, width, true, colorStroke, colorFill);
+    render(ctx, widthStroke = 0, colorStroke = defaultColor, colorFill) {
+        super.render(ctx, widthStroke, true, colorStroke, colorFill);
     }
 }
-
 
 //-------------------------------------
 // triangle

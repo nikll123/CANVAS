@@ -88,9 +88,12 @@ class lineBroken {
 // poligon
 //-------------------------------------
 class poligon extends lineBroken {
-    constructor(points, anglecount) {
-        if (points.length == anglecount)
+    constructor(points, anglecount, draggable) {
+        if (points.length == anglecount) {
             super(points);
+            if (draggable != undefined)
+                this.draggable = draggable;
+        }
         else
             console.debug('Failed to create due to wrong number of points');
     }
@@ -118,67 +121,77 @@ class quadrangle extends poligon {
     }
 }
 
-// //-------------------------------------
-// shapeDraggable
-// class shapeDraggable extends poligon {
-//     // constructor(x, y, fillStyle = '', lineWidth = -1) {
-//     //     super(x, y, fillStyle);
-//     //     this.isDragging = false;
-//     // }
-// }
 
-// //-------------------------------------
-// // rectangle
-// //-------------------------------------
-// class rectangle extends shapeDraggable {
-//     constructor(x, y, width, height, fillStyle) {
-//         super(x, y, fillStyle);
-//         this.width = width;
-//         this.height = height;
-//     }
+class shape {
+    constructor(x, y, fillStyle) {
+        this.x = x;
+        this.y = y;
+        this.fillStyle = fillStyle;
+    }
 
-//     render(ctx) {
-//         ctx.save();
-//         ctx.beginPath();
-//         ctx.fillStyle = this.fillStyle;
-//         ctx.rect(this.x, this.y, this.width, this.height);
-//         ctx.fill();
-//         ctx.restore();
-//     };
+    toString() {
+        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y + ', fillStyle=' + this.fillStyle;
+    };
+}
 
-//     toString() {
-//         return super.toString() + ', width=' + this.width + ', height=' + this.height;
-//     };
-// }
+class shapeDraggable extends shape {
+    constructor(x, y, fillStyle) {
+        super(x, y, fillStyle);
+        this.isDragging = false;
+    }
+}
+//-------------------------------------
+// rectangle
+//-------------------------------------
+class rectangle extends shapeDraggable {
+    constructor(x, y, width, height, fillStyle) {
+        super(x, y, fillStyle);
+        this.width = width;
+        this.height = height;
+    }
 
-// //-------------------------------------
-// // arc
-// //-------------------------------------
-// class arc extends shapeDraggable {
-//     constructor(x, y, radius, radians, fillStyle = '', lineWidth = -1) {
-//         super(x, y, fillStyle);
-//         this.radius = radius;
-//         this.radians = radians;
-//     }
+    render(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = this.fillStyle;
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.fill();
+        ctx.restore();
+    };
 
-//     render(ctx) {
-//         ctx.save();
-//         ctx.beginPath();
-//         ctx.fillStyle = this.fillStyle;
-//         ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
-//         ctx.fill();
-//         ctx.restore();
-//     };
+    toString() {
+        return super.toString() + ', width=' + this.width + ', height=' + this.height;
+    };
+}
 
-//     toString() {
-//         return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
-//     };
+//-------------------------------------
+// arc
+//-------------------------------------
+class arc extends shapeDraggable {
+    constructor(x, y, radius, radians, fillStyle = '', lineWidth = -1) {
+        super(x, y, fillStyle);
+        this.radius = radius;
+        this.radians = radians;
+    }
 
-// }
+    render(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = this.fillStyle;
+        ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
+        ctx.fill();
+        ctx.restore();
+    };
 
-// class circle extends arc {
-//     constructor(x, y, radius, fillStyle) {
-//         super(x, y, radius, 2 * Math.PI, fillStyle);
-//     }
-// }
+    toString() {
+        return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
+    };
+
+}
+
+class circle extends arc {
+    constructor(x, y, radius, fillStyle) {
+        super(x, y, radius, 2 * Math.PI, fillStyle);
+    }
+}
 

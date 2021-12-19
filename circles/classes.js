@@ -34,6 +34,11 @@ class point {
             ctx.fillText(text, this.x + radius + 1, this.y);
         }
     };
+
+    move(dx, dy) {
+        this.x += dx;
+        this.y += dy;
+    }
 }
 
 //-------------------------------------
@@ -82,17 +87,22 @@ class lineBroken {
             ctx.restore();
         }
     };
+    
+    move(dx, dy) {
+        for (var i = 0; i < this.points.length; i++) {
+            this.points[i].move(dx, dy);
+        };
+    }
 }
 
 //-------------------------------------
 // poligon
 //-------------------------------------
 class poligon extends lineBroken {
-    constructor(points, anglecount, draggable) {
+    constructor(points, anglecount) {
         if (points.length == anglecount) {
             super(points);
-            if (draggable != undefined)
-                this.draggable = draggable;
+            this.isDragging = false;
         }
         else
             console.debug('Failed to create due to wrong number of points');

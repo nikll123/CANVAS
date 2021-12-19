@@ -89,10 +89,10 @@ class lineBroken {
 //-------------------------------------
 class poligon extends lineBroken {
     constructor(points, anglecount) {
-        if (points.length != anglecount) {
+        if (points.length == anglecount)
+            super(points);
+        else
             console.debug('Failed to create due to wrong number of points');
-        }
-        super(points);
     }
 
     render(ctx, width = 0, colorStroke = defaultColor, colorFill) {

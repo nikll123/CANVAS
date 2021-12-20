@@ -79,11 +79,16 @@ class BasicShape {
             this.points.push(pp);
         }
     }
-    
+
     move(dx, dy) {
         for (var i = 0; i < this.points.length; i++) {
             this.points[i].move(dx, dy);
         };
+    }
+
+    moveIfDragging(dx, dy) {
+        if (this.isDragging)
+            this.move(dx, dy);
     }
 
     isPointInside(x, y) {
@@ -191,43 +196,11 @@ class Quadrangle extends Poligon {
 }
 
 //-------------------------------------
-// shapes
-//-------------------------------------
-class Shape {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.isDragging = false;
-    }
-
-    toString() {
-        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y;
-    };
-
-    isPointInside(x, y) {
-        return false;
-    }
-
-    startDrag() {
-        this.isDragging = true;
-    }
-
-    stopDrag() {
-        this.isDragging = false;
-    }
-
-    startDrugIfPointIsInside(x, y) {
-        if (this.isPointInside(x, y))
-            this.startDrag();
-    }
-}
-
-//-------------------------------------
 // rectangle
 //-------------------------------------
-class Rectangle extends Shape {
+class Rectangle extends BasicShape {
     constructor(x, y, width, height) {
-        super(x, y);
+        super([[x, y]]);
         this.width = width;
         this.height = height;
     }
@@ -237,7 +210,7 @@ class Rectangle extends Shape {
         ctx.beginPath();
         ctx.fillStyle = fillColor;
         ctx.strokeWidth = lineWidth;
-        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.rect(this.points[0].x, this.points[0].y, this.width, this.height);
         ctx.fill();
         ctx.restore();
     };
@@ -247,26 +220,21 @@ class Rectangle extends Shape {
     };
 
     isPointInside(x, y) {
-        var r1 = x >= this.x && x <= this.x + this.width;
-        var r2 = y >= this.y && y <= this.y + this.height;
+        var r1 = x >= this.points[0].x && x <= this.points[0].x + this.width;
+        var r2 = y >= this.points[0].y && y <= this.points[0].y + this.height;
         return r1 && r2;
     }
-
-    move(dx, dy) {
-        this.x += dx;
-        this.y += dy;
-    }
-
 }
 
 //-------------------------------------
 // arc
 //-------------------------------------
-class Arc extends Shape {
-    constructor(x, y, radius, radians) {
-        super(x, y);
+class Arc extends BasicShape {
+    constructor(x, y, radius, radians1, radians2) {
+        super([[x, y]]);
         this.radius = radius;
-        this.radians = radians;
+        this.radians1 = radians1;
+        this.radians2 = radians2;
     }
 
     render(ctx, lineWidth, fillColor = defaultColor) {
@@ -274,29 +242,24 @@ class Arc extends Shape {
         ctx.beginPath();
         ctx.fillStyle = fillColor;
         ctx.strokeWidth = lineWidth;
-        ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
+        ctx.arc(this.points[0].x, this.points[0].y, this.radius, this.radians1, this.radians2, false);
         ctx.fill();
         ctx.restore();
     };
 
     toString() {
-        return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
+        return super.toString() + ', radius=' + this.radius + ', radians1=' + this.radians1 + ', radians2=' + this.radians2;
     };
 
     isPointInside(x, y) {
-        var d = (this.x - x) ** 2 + (this.y - y) ** 2;
+        var d = (this.points[0].x - x) ** 2 + (this.points[0].y - y) ** 2;
         return d <= this.radius ** 2;
-    }
-
-    move(dx, dy) {
-        this.x += dx;
-        this.y += dy;
     }
 }
 
 class Circle extends Arc {
     constructor(x, y, radius) {
-        super(x, y, radius, 2 * Math.PI);
+        super(x, y, radius, 0, 2 * Math.PI);
     }
 }
 

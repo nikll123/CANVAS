@@ -56,7 +56,7 @@ class point {
         }
         if (debugRender) {
             var text = this.toString(false);
-            ctx.fillText(text, this.x + radius + 1, this.y);
+            ctx.fillText(text, this.x + radius + 1, this.y - radius - 1);
         }
     };
 
@@ -164,7 +164,9 @@ class quadrangle extends poligon {
     }
 }
 
-
+//-------------------------------------
+// shapes
+//-------------------------------------
 class shape {
     constructor(x, y) {
         this.x = x;
@@ -187,7 +189,7 @@ class rectangle extends shape {
         this.height = height;
     }
 
-    render(ctx, lineWidth, fillColor=defaultColor) {
+    render(ctx, lineWidth, fillColor = defaultColor) {
         ctx.save();
         ctx.beginPath();
         ctx.fillStyle = fillColor;
@@ -223,7 +225,7 @@ class arc extends shape {
         this.radians = radians;
     }
 
-    render(ctx,lineWidth , fillColor = defaultColor) {
+    render(ctx, lineWidth, fillColor = defaultColor) {
         ctx.save();
         ctx.beginPath();
         ctx.fillStyle = fillColor;

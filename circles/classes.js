@@ -108,7 +108,6 @@ class lineBroken {
                 ctx.fillStyle = colorFill;
                 ctx.fill();
             }
-
             ctx.restore();
         }
     };
@@ -117,6 +116,23 @@ class lineBroken {
         for (var i = 0; i < this.points.length; i++) {
             this.points[i].move(dx, dy);
         };
+    }
+
+    isPointInside(x, y) {
+        return false;
+    }
+
+    startDrag() {
+        this.isDragging = true;
+    }
+
+    stopDrag() {
+        this.isDragging = false;
+    }
+
+    startDrugIfPointIsInside(x, y) {
+        if (this.isPointInside(x, y))
+            this.startDrag();
     }
 }
 
@@ -177,6 +193,23 @@ class shape {
     toString() {
         return this.constructor.name + ':  x=' + this.x + ', y=' + this.y;
     };
+
+    isPointInside(x, y) {
+        return false;
+    }
+
+    startDrag() {
+        this.isDragging = true;
+    }
+
+    stopDrag() {
+        this.isDragging = false;
+    }
+
+    startDrugIfPointIsInside(x, y) {
+        if (this.isPointInside(x, y))
+            this.startDrag();
+    }
 }
 
 //-------------------------------------
@@ -208,6 +241,7 @@ class rectangle extends shape {
         var r2 = y >= this.y && y <= this.y + this.height;
         return r1 && r2;
     }
+
     move(dx, dy) {
         this.x += dx;
         this.y += dy;
@@ -243,6 +277,7 @@ class arc extends shape {
         var d = (this.x - x) ** 2 + (this.y - y) ** 2;
         return d <= this.radius ** 2;
     }
+
     move(dx, dy) {
         this.x += dx;
         this.y += dy;

@@ -5,7 +5,7 @@
 var defaultColor = '#888888';
 var debugRender = true;
 
-class calc {
+class Calc {
     // https://cpp.mazurok.com/triangle/
     static isPointInsideTriangle(x, y, pointA, pointB, pointC) {
         var r1 = this._f2(pointA, pointB, pointC, x, y);
@@ -30,7 +30,7 @@ class calc {
 
 }
 
-class point {
+class Point {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -69,12 +69,12 @@ class point {
 //-------------------------------------
 // line broken
 //-------------------------------------
-class lineBroken {
+class LineBroken {
     constructor(points1) {
         this.points = [];
         for (var i = 0; i < points1.length; i++) {
             var p = points1[i];
-            var pp = new point(p[0], p[1]);
+            var pp = new Point(p[0], p[1]);
             this.points.push(pp);
         }
     }
@@ -139,7 +139,7 @@ class lineBroken {
 //-------------------------------------
 // poligon
 //-------------------------------------
-class poligon extends lineBroken {
+class Poligon extends LineBroken {
     constructor(points, anglecount) {
         if (points.length == anglecount) {
             super(points);
@@ -157,25 +157,25 @@ class poligon extends lineBroken {
 //-------------------------------------
 // triangle
 //-------------------------------------
-class triangle extends poligon {
+class Triangle extends Poligon {
     constructor(points) {
         super(points, 3);
     }
     isPointInside(x, y) {
-        return calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
+        return Calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
     }
 }
 
 //-------------------------------------
 // quadrangle
 //-------------------------------------
-class quadrangle extends poligon {
+class Quadrangle extends Poligon {
     constructor(points) {
         super(points, 4);
     }
     isPointInside(x, y) {
-        var r1 = calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
-        var r2 = calc.isPointInsideTriangle(x, y, this.points[0], this.points[2], this.points[3]);
+        var r1 = Calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
+        var r2 = Calc.isPointInsideTriangle(x, y, this.points[0], this.points[2], this.points[3]);
         return r1 || r2;
     }
 }
@@ -183,7 +183,7 @@ class quadrangle extends poligon {
 //-------------------------------------
 // shapes
 //-------------------------------------
-class shape {
+class Shape {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -215,7 +215,7 @@ class shape {
 //-------------------------------------
 // rectangle
 //-------------------------------------
-class rectangle extends shape {
+class Rectangle extends Shape {
     constructor(x, y, width, height) {
         super(x, y);
         this.width = width;
@@ -252,7 +252,7 @@ class rectangle extends shape {
 //-------------------------------------
 // arc
 //-------------------------------------
-class arc extends shape {
+class Arc extends Shape {
     constructor(x, y, radius, radians) {
         super(x, y);
         this.radius = radius;
@@ -284,7 +284,7 @@ class arc extends shape {
     }
 }
 
-class circle extends arc {
+class Circle extends Arc {
     constructor(x, y, radius) {
         super(x, y, radius, 2 * Math.PI);
     }

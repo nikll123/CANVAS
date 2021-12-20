@@ -66,17 +66,50 @@ class Point {
     }
 }
 
+
 //-------------------------------------
-// line broken
+// BasicShape
 //-------------------------------------
-class LineBroken {
-    constructor(points1) {
+class BasicShape {
+    constructor(pointsArg) {
         this.points = [];
-        for (var i = 0; i < points1.length; i++) {
-            var p = points1[i];
+        for (var i = 0; i < pointsArg.length; i++) {
+            var p = pointsArg[i];
             var pp = new Point(p[0], p[1]);
             this.points.push(pp);
         }
+    }
+    
+    move(dx, dy) {
+        for (var i = 0; i < this.points.length; i++) {
+            this.points[i].move(dx, dy);
+        };
+    }
+
+    isPointInside(x, y) {
+        return false;
+    }
+
+    startDrag() {
+        this.isDragging = true;
+    }
+
+    stopDrag() {
+        this.isDragging = false;
+    }
+
+    startDrugIfPointIsInside(x, y) {
+        if (this.isPointInside(x, y))
+            this.startDrag();
+    }
+}
+
+//-------------------------------------
+// line broken
+//-------------------------------------
+class LineBroken extends BasicShape {
+    constructor(pointsArg) {
+        super(pointsArg);
     }
 
     toString() {
@@ -111,38 +144,15 @@ class LineBroken {
             ctx.restore();
         }
     };
-
-    move(dx, dy) {
-        for (var i = 0; i < this.points.length; i++) {
-            this.points[i].move(dx, dy);
-        };
-    }
-
-    isPointInside(x, y) {
-        return false;
-    }
-
-    startDrag() {
-        this.isDragging = true;
-    }
-
-    stopDrag() {
-        this.isDragging = false;
-    }
-
-    startDrugIfPointIsInside(x, y) {
-        if (this.isPointInside(x, y))
-            this.startDrag();
-    }
 }
 
 //-------------------------------------
 // poligon
 //-------------------------------------
 class Poligon extends LineBroken {
-    constructor(points, anglecount) {
-        if (points.length == anglecount) {
-            super(points);
+    constructor(pointsArg, anglecount) {
+        if (pointsArg.length == anglecount) {
+            super(pointsArg);
             this.isDragging = false;
         }
         else
@@ -158,8 +168,8 @@ class Poligon extends LineBroken {
 // triangle
 //-------------------------------------
 class Triangle extends Poligon {
-    constructor(points) {
-        super(points, 3);
+    constructor(pointsArg) {
+        super(pointsArg, 3);
     }
     isPointInside(x, y) {
         return Calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
@@ -170,8 +180,8 @@ class Triangle extends Poligon {
 // quadrangle
 //-------------------------------------
 class Quadrangle extends Poligon {
-    constructor(points) {
-        super(points, 4);
+    constructor(pointsArg) {
+        super(pointsArg, 4);
     }
     isPointInside(x, y) {
         var r1 = Calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);

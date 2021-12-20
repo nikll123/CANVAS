@@ -146,7 +146,7 @@ class triangle extends poligon {
         super(points, 3);
     }
     isPointInside(x, y) {
-        return calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2])
+        return calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
     }
 }
 
@@ -157,44 +157,41 @@ class quadrangle extends poligon {
     constructor(points) {
         super(points, 4);
     }
-
-
+    isPointInside(x, y) {
+        var r1 = calc.isPointInsideTriangle(x, y, this.points[0], this.points[1], this.points[2]);
+        var r2 = calc.isPointInsideTriangle(x, y, this.points[0], this.points[2], this.points[3]);
+        return r1 || r2;
+    }
 }
 
 
 class shape {
-    constructor(x, y, fillStyle) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.fillStyle = fillStyle;
+        this.isDragging = false;
     }
 
     toString() {
-        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y + ', fillStyle=' + this.fillStyle;
+        return this.constructor.name + ':  x=' + this.x + ', y=' + this.y;
     };
-}
-
-class shapeDraggable extends shape {
-    constructor(x, y, fillStyle) {
-        super(x, y, fillStyle);
-        this.isDragging = false;
-    }
 }
 
 //-------------------------------------
 // rectangle
 //-------------------------------------
-class rectangle extends shapeDraggable {
-    constructor(x, y, width, height, fillStyle) {
-        super(x, y, fillStyle);
+class rectangle extends shape {
+    constructor(x, y, width, height) {
+        super(x, y);
         this.width = width;
         this.height = height;
     }
 
-    render(ctx) {
+    render(ctx, lineWidth, fillColor=defaultColor) {
         ctx.save();
         ctx.beginPath();
-        ctx.fillStyle = this.fillStyle;
+        ctx.fillStyle = fillColor;
+        ctx.strokeWidth = lineWidth;
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fill();
         ctx.restore();
@@ -203,22 +200,34 @@ class rectangle extends shapeDraggable {
     toString() {
         return super.toString() + ', width=' + this.width + ', height=' + this.height;
     };
+
+    isPointInside(x, y) {
+        var r1 = x >= this.x && x <= this.x + this.width;
+        var r2 = y >= this.y && y <= this.y + this.height;
+        return r1 && r2;
+    }
+    move(dx, dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
 }
 
 //-------------------------------------
 // arc
 //-------------------------------------
-class arc extends shapeDraggable {
-    constructor(x, y, radius, radians, fillStyle = '', lineWidth = -1) {
-        super(x, y, fillStyle);
+class arc extends shape {
+    constructor(x, y, radius, radians) {
+        super(x, y);
         this.radius = radius;
         this.radians = radians;
     }
 
-    render(ctx) {
+    render(ctx,lineWidth , fillColor = defaultColor) {
         ctx.save();
         ctx.beginPath();
-        ctx.fillStyle = this.fillStyle;
+        ctx.fillStyle = fillColor;
+        ctx.strokeWidth = lineWidth;
         ctx.arc(this.x, this.y, this.radius, 0, this.radians, false);
         ctx.fill();
         ctx.restore();
@@ -228,11 +237,19 @@ class arc extends shapeDraggable {
         return super.toString() + ', radius=' + this.radius + ', radians=' + this.radians;
     };
 
+    isPointInside(x, y) {
+        var d = (this.x - x) ** 2 + (this.y - y) ** 2;
+        return d <= this.radius ** 2;
+    }
+    move(dx, dy) {
+        this.x += dx;
+        this.y += dy;
+    }
 }
 
 class circle extends arc {
-    constructor(x, y, radius, fillStyle) {
-        super(x, y, radius, 2 * Math.PI, fillStyle);
+    constructor(x, y, radius) {
+        super(x, y, radius, 2 * Math.PI);
     }
 }
 

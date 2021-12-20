@@ -1,0 +1,86 @@
+<html>
+
+<head>
+</head>
+
+
+<body onLoad="draw()">
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+  <script src="classes.js"></script>
+  <script src="MouseTouchTracker.js"></script>
+
+  <script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var startX = 0;
+    var startY = 0;
+
+    var triangle1 = new Triangle([[100, 100], [150, 120], [180, 80]]);
+    var quadrangle1 = new Quadrangle([[200, 100], [250, 120], [280, 80], [220, 75]]);
+    var quadrangle2 = new Quadrangle([[50, 320], [120, 320], [120, 365], [50, 365]]);
+    var rectangle1 = new Rectangle(50, 20, 70, 45);
+    var circle1 = new Circle(220, 190, 50);
+
+    console.debug(triangle1.toString());
+    console.debug(quadrangle1.toString());
+    console.debug(quadrangle2.toString());
+    console.debug(rectangle1.toString());
+    console.debug(circle1.toString());
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
+      triangle1.render(ctx, 1);
+      rectangle1.render(ctx, 1);
+      quadrangle1.render(ctx, 1);
+      quadrangle2.render(ctx, 1);
+      circle1.render(ctx, 1);
+      window.requestAnimationFrame(draw);
+    }
+
+    var mtt = new MouseTouchTracker(canvas,
+      function (evtType, x, y) {                         // callback 
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        switch (evtType) {
+
+          case 'down':
+            startX = x;
+            startY = y;
+            triangle1.startDrugIfPointIsInside(x, y);
+            quadrangle1.startDrugIfPointIsInside(x, y);
+            quadrangle2.startDrugIfPointIsInside(x, y);
+            rectangle1.startDrugIfPointIsInside(x, y);
+            circle1.startDrugIfPointIsInside(x, y);
+            break;
+
+          case 'up':
+            triangle1.stopDrag();
+            quadrangle1.stopDrag();
+            quadrangle2.stopDrag();
+            rectangle1.stopDrag();
+            circle1.stopDrag();
+            break;
+
+          case 'move':
+            var dx = x - startX;
+            var dy = y - startY;
+            startX = x;
+            startY = y;
+
+            triangle1.moveIfDragging(dx, dy);
+            quadrangle1.moveIfDragging(dx, dy);
+            quadrangle2.moveIfDragging(dx, dy);
+            rectangle1.moveIfDragging(dx, dy);
+            circle1.moveIfDragging(dx, dy);
+            break;
+        }
+      }
+    );
+
+
+
+  </script>
+</body>
+
+</html>

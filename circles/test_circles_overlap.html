@@ -1,0 +1,32 @@
+<html>
+
+<head>
+
+</head>
+
+
+<body">
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+  <script src="classes.js"></script>
+
+  <script>
+    // context
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    let c1 = new Circle(100, 200, 50);
+    c1.render(ctx, 1);
+    let c2 = new Circle(150, 220, 75);
+    c2.render(ctx, 1);
+
+    [angle1_start, angle1_stop, angle2_start, angle2_stop] = Calc.circleOverlap(c1, c2);
+
+    let arc1 = new Arc(c1.points[0].x, c1.points[0].y, c1.radius, angle1_stop,angle1_start);
+    let arc2 = new Arc(c2.points[0].x, c2.points[0].y, c2.radius, angle2_stop, angle2_start);
+    arc1.render(ctx, 5, '#FF0000');
+    arc2.render(ctx, 5, '#FF0000');
+
+  </script>
+  </body>
+
+</html>

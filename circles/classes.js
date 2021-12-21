@@ -23,6 +23,35 @@ class Calc {
     static _f2(p1, p2, p3, x, y) {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
     }
+
+    static circleOverlap(circle1, circle2) {
+        var x1 = circle1.points[0].x;
+        var y1 = circle1.points[0].y;
+        var r1 = circle1.radius;
+
+        var x2 = circle2.points[0].x;
+        var y2 = circle2.points[0].y;
+        var r2 = circle2.radius;
+        var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        var angle1_start = 0;
+        var angle1_stop = Math.PI;
+        var angle2_start = 0;
+        var angle2_stop = Math.PI;
+
+        if (distance < r1 + r2 && distance > Math.abs(r1 - r2)) {
+            var angle_base = Math.asin((y2 - y1) / distance);
+            // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
+            var angle_r2 = Math.acos((r2 ** 2 + distance ** 2 - r1 ** 2) / (2 * r2 * distance));
+            var angle_r1 = Math.acos((r1 ** 2 + distance ** 2 - r2 ** 2) / (2 * r1 * distance));
+
+            angle1_start = angle_base - angle_r1;
+            angle1_stop = angle_base + angle_r1;
+
+            angle2_start = Math.PI + angle_base - angle_r2;
+            angle2_stop = Math.PI + angle_base + angle_r2;
+        }
+        return [angle1_start, angle1_stop, angle2_start, angle2_stop];
+    }
 }
 
 class Point {
@@ -204,7 +233,7 @@ class Rectangle extends BasicShape {
         ctx.save();
         ctx.beginPath();
         ctx.fillStyle = fillColor;
-        ctx.strokeWidth = lineWidth;
+        ctx.lineWidth = lineWidth;
         ctx.rect(this.points[0].x, this.points[0].y, this.width, this.height);
         ctx.fill();
         ctx.restore();
@@ -225,20 +254,28 @@ class Rectangle extends BasicShape {
 // arc
 //-------------------------------------
 class Arc extends BasicShape {
-    constructor(x, y, radius, radians1, radians2) {
+    constructor(x, y, radius, radians1, radians2, cw = true) {
         super([[x, y]]);
         this.radius = radius;
         this.radians1 = radians1;
         this.radians2 = radians2;
+        this.cw = cw;
     }
 
-    render(ctx, lineWidth, fillColor = defaultColor) {
+    render(ctx, lineWidth, colorStroke = defaultColor, fillColor) {
         ctx.save();
+        if (fillColor != undefined)
+            ctx.fillStyle = fillColor;
+        if (lineWidth > 0) {
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = colorStroke;
+        }
         ctx.beginPath();
-        ctx.fillStyle = fillColor;
-        ctx.strokeWidth = lineWidth;
-        ctx.arc(this.points[0].x, this.points[0].y, this.radius, this.radians1, this.radians2, false);
-        ctx.fill();
+        ctx.arc(this.points[0].x, this.points[0].y, this.radius, this.radians1, this.radians2, false, this.cw);
+        if (fillColor != undefined)
+            ctx.fill();
+        if (ctx.lineWidth > 0)
+            ctx.stroke();
         ctx.restore();
     };
 

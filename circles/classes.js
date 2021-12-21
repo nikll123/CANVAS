@@ -34,9 +34,9 @@ class Calc {
         var r2 = circle2.radius;
         var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         var angle1_start = 0;
-        var angle1_stop = Math.PI;
+        var angle1_stop = 2 * Math.PI;
         var angle2_start = 0;
-        var angle2_stop = Math.PI;
+        var angle2_stop = 2* Math.PI;
 
         if (distance < r1 + r2 && distance > Math.abs(r1 - r2)) {
             var angle_base = Math.asin((y2 - y1) / distance);

@@ -1,0 +1,85 @@
+<html>
+
+
+<head>
+    <script>
+
+
+        function draw() {
+            var canvas = document.getElementById('myCanvas');
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+
+                x1 = 75.0;
+                y1 = 75.0;
+                r1 = 50.0;
+
+                x2 = 150.0;
+                y2 = 125.0;
+                r2 = 85.0;
+
+                // ctx.beginPath();
+                // ctx.arc(x1, y1, r1, 0, Math.PI * 2, true);
+
+                // ctx.moveTo(235, 125);
+                // ctx.arc(x2, y2, r2, 0, Math.PI * 2, true);
+
+                // ctx.moveTo(x1, y1);
+                // ctx.lineTo(x2, y2);
+                // ctx.stroke();
+
+
+                a = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+
+                // if (a > r1 && a > r2) {
+                angle_a = Math.acos((r1 * r1 + r2 * r2 - a * a) / (2 * r1 * r2));
+                angle_r2 = Math.acos((r2 * r2 + a * a - r1 * r1) / (2 * r2 * a));
+                angle_r1 = Math.acos((r1 * r1 + a * a - r2 * r2) / (2 * r1 * a));
+                // angle_r1_1 = Math.asin((y2 - y1) / a);
+                // angle_r1_2 = angle_r1 - angle_r1_1;
+                // cr_1_x = x1 + r1 * Math.cos(angle_r1_2);
+                // cr_1_y = y1 - r1 * Math.sin(angle_r1_2);
+                angle_base = Math.asin((y2 - y1) / a);
+
+                angle1_1 = angle_base - angle_r1;
+                angle1_2 = angle_base + angle_r1;
+
+                angle2_1 = Math.PI + angle_base - angle_r2;
+                angle2_2 = Math.PI + angle_base + angle_r2;
+                // }
+                // ctx.moveTo(x1, y1);
+                // ctx.lineTo(cr_1_x, cr_1_y);
+
+                // ctx.moveTo(x2, y2);
+                // ctx.lineTo(cr_1_x, cr_1_y);
+
+                ctx.beginPath();
+                ctx.arc(x1, y1, r1, angle1_1, angle1_2, true);
+
+                // ctx.moveTo(x2, y2);
+                ctx.arc(x2, y2, r2, angle2_1, angle2_2, true);
+                ctx.stroke();
+
+                // ctx.moveTo(110, 75);
+                // ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+                // ctx.moveTo(65, 65);
+                // ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+                // ctx.moveTo(95, 65);
+                // ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+                // ctx.stroke();
+                //    }
+            }
+        }
+
+
+    </script>
+</head>
+
+<body onload="draw();">
+    <canvas id="myCanvas" width="500" height="500">
+
+
+    </canvas>
+</body>
+
+</html>

@@ -23,7 +23,6 @@ class Calc {
     static _f2(p1, p2, p3, x, y) {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
     }
-
 }
 
 class Point {

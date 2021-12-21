@@ -11,21 +11,17 @@ class Calc {
         var r1 = this._f2(pointA, pointB, pointC, x, y);
         var r2 = this._f2(pointB, pointC, pointA, x, y);
         var r3 = this._f2(pointC, pointA, pointB, x, y)
-        // printf(	f(a,b,c,d) && f(b,c,a,d) && f(c,a,b,d) ? "yes" : "no");
         var res = r1 && r2 && r3;
         return res;
     }
     // Вычисляет положение точки D(xd,yd) относительно прямой AB
-
     static _f1(p1, p2, x, y) {
         return (x - p1.x) * (p2.y - p1.y) - (y - p1.y) * (p2.x - p1.x);
-        // return (d.x - a.x) * (b.y - a.y) - (d.y - a.y) * (b.x - a.x);
     }
 
     // Лежат ли точки C и D с одной строны прямой (AB)?
     static _f2(p1, p2, p3, x, y) {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
-        // return g(a, b, c) * g(a, b, d) >= 0;
     }
 
 }

@@ -36,6 +36,11 @@
       arc1.render(ctx, 5, '#FF0000');
       arc2.render(ctx, 5, '#FF0000');
 
+      ctx.beginPath();
+      ctx.moveTo(circle1.points[0].x, circle1.points[0].y)
+      ctx.lineTo(circle2.points[0].x, circle2.points[0].y)
+      ctx.stroke();
+
       window.requestAnimationFrame(draw);
     }
 

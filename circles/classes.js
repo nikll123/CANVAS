@@ -4,7 +4,8 @@
 
 var defaultColor = '#888888';
 var debugRender = true;
-const DVA_PI = 2 * Math.PI;
+const PI = Math.PI;
+const DVA_PI = 2 * PI;
 
 class Calc {
     // https://cpp.mazurok.com/triangle/
@@ -51,12 +52,15 @@ class Calc {
         }
         else {
             var angle_base = Math.asin((y2 - y1) / distance);
+            if (x1 > x2)
+                 angle_base = PI - angle_base;
+
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var angle_r2 = Math.acos((r2 ** 2 + distance ** 2 - r1 ** 2) / (2 * r2 * distance));
             var angle_r1 = Math.acos((r1 ** 2 + distance ** 2 - r2 ** 2) / (2 * r1 * distance));
-
             angle1_start = angle_base - angle_r1;
             angle1_stop = angle_base + angle_r1;
+
 
             angle2_start = Math.PI + angle_base - angle_r2;
             angle2_stop = Math.PI + angle_base + angle_r2;
@@ -276,18 +280,17 @@ class Arc extends BasicShape {
 
     render(ctx, lineWidth, colorStroke = defaultColor, fillColor) {
         ctx.save();
-        if (fillColor != undefined)
-            ctx.fillStyle = fillColor;
-        if (lineWidth > 0) {
+        if (ctx.lineWidth > 0) {
             ctx.lineWidth = lineWidth;
             ctx.strokeStyle = colorStroke;
-        }
-        ctx.beginPath();
-        ctx.arc(this.points[0].x, this.points[0].y, this.radius, this.radians1, this.radians2, false, this.cw);
-        if (fillColor != undefined)
-            ctx.fill();
-        if (ctx.lineWidth > 0)
+            ctx.beginPath();
+            ctx.arc(this.points[0].x, this.points[0].y, this.radius, this.radians1, this.radians2, false, this.cw);
+            if (fillColor != undefined) {
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+            }
             ctx.stroke();
+        }
         ctx.restore();
     };
 

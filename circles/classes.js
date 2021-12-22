@@ -34,11 +34,21 @@ class Calc {
         var r2 = circle2.radius;
         var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         var angle1_start = 0;
-        var angle1_stop = 2 * Math.PI;
+        var angle1_stop = 0;
         var angle2_start = 0;
-        var angle2_stop = 2* Math.PI;
+        var angle2_stop = 0;
 
-        if (distance < r1 + r2 && distance > Math.abs(r1 - r2)) {
+        if (distance > r1 + r2) {
+            angle1_stop = 2 * Math.PI;
+            angle2_stop = 2 * Math.PI;
+        }
+        else if (distance < Math.abs(r1 - r2)) {
+            if (r1 > r2)
+                angle1_stop = 2 * Math.PI;
+            else
+                angle2_stop = 2 * Math.PI;
+        }
+        else {
             var angle_base = Math.asin((y2 - y1) / distance);
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var angle_r2 = Math.acos((r2 ** 2 + distance ** 2 - r1 ** 2) / (2 * r2 * distance));
@@ -50,6 +60,7 @@ class Calc {
             angle2_start = Math.PI + angle_base - angle_r2;
             angle2_stop = Math.PI + angle_base + angle_r2;
         }
+
         return [angle1_start, angle1_stop, angle2_start, angle2_stop];
     }
 }

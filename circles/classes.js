@@ -4,6 +4,7 @@
 
 var defaultColor = '#888888';
 var debugRender = true;
+const DVA_PI = 2 * Math.PI;
 
 class Calc {
     // https://cpp.mazurok.com/triangle/
@@ -39,14 +40,14 @@ class Calc {
         var angle2_stop = 0;
 
         if (distance > r1 + r2) {
-            angle1_stop = 2 * Math.PI;
-            angle2_stop = 2 * Math.PI;
+            angle1_stop = DVA_PI;
+            angle2_stop = DVA_PI;
         }
         else if (distance < Math.abs(r1 - r2)) {
             if (r1 > r2)
-                angle1_stop = 2 * Math.PI;
+                angle1_stop = DVA_PI;
             else
-                angle2_stop = 2 * Math.PI;
+                angle2_stop = DVA_PI;
         }
         else {
             var angle_base = Math.asin((y2 - y1) / distance);
@@ -85,7 +86,7 @@ class Point {
             ctx.save();
             ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, radius, 0, 2 * Math.PI);
+            ctx.arc(this.x, this.y, radius, 0, DVA_PI);
             ctx.fill();
             ctx.restore();
         }
@@ -302,7 +303,7 @@ class Arc extends BasicShape {
 
 class Circle extends Arc {
     constructor(x, y, radius) {
-        super(x, y, radius, 0, 2 * Math.PI);
+        super(x, y, radius, 0, DVA_PI);
     }
 }
 

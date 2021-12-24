@@ -27,12 +27,12 @@ class Calc {
     }
 
     static circleOverlap(circle1, circle2) {
-        var x1 = circle1.points[0].x;
-        var y1 = circle1.points[0].y;
+        var x1 = circle1.x;
+        var y1 = circle1.y;
         var r1 = circle1.radius;
 
-        var x2 = circle2.points[0].x;
-        var y2 = circle2.points[0].y;
+        var x2 = circle2.x;
+        var y2 = circle2.y;
         var r2 = circle2.radius;
         var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         var angle1_start = 0;
@@ -53,7 +53,7 @@ class Calc {
         else {
             var angle_base = Math.asin((y2 - y1) / distance);
             if (x1 > x2)
-                 angle_base = PI - angle_base;
+                angle_base = PI - angle_base;
 
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var angle_r2 = Math.acos((r2 ** 2 + distance ** 2 - r1 ** 2) / (2 * r2 * distance));
@@ -147,6 +147,14 @@ class BasicShape {
         if (this.isPointInside(x, y))
             this.startDrag();
     }
+
+    get x() {
+        return this.points[0].x;
+    }
+
+    get y() {
+        return this.points[0].y;
+    }
 }
 
 //-------------------------------------
@@ -169,7 +177,7 @@ class LineBroken extends BasicShape {
         if (widthStroke > 0) {
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(this.points[0].x, this.points[0].y);
+            ctx.moveTo(this.x, this.y);
             var p = this.points[0];
             p.render(ctx);
             for (var i = 1; i < this.points.length; i++) {
@@ -250,7 +258,7 @@ class Rectangle extends BasicShape {
         ctx.beginPath();
         ctx.fillStyle = fillColor;
         ctx.lineWidth = lineWidth;
-        ctx.rect(this.points[0].x, this.points[0].y, this.width, this.height);
+        ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fill();
         ctx.restore();
     };
@@ -260,8 +268,8 @@ class Rectangle extends BasicShape {
     };
 
     isPointInside(x, y) {
-        var r1 = x >= this.points[0].x && x <= this.points[0].x + this.width;
-        var r2 = y >= this.points[0].y && y <= this.points[0].y + this.height;
+        var r1 = x >= this.x && x <= this.x + this.width;
+        var r2 = y >= this.y && y <= this.y + this.height;
         return r1 && r2;
     }
 }
@@ -284,12 +292,13 @@ class Arc extends BasicShape {
             ctx.lineWidth = lineWidth;
             ctx.strokeStyle = colorStroke;
             ctx.beginPath();
-            ctx.arc(this.points[0].x, this.points[0].y, this.radius, this.radians1, this.radians2, false, this.cw);
+            ctx.arc(this.x, this.y, this.radius, this.radians1, this.radians2, false, this.cw);
             if (fillColor != undefined) {
                 ctx.fillStyle = fillColor;
                 ctx.fill();
             }
             ctx.stroke();
+            this.points[0].render(ctx, 1);
         }
         ctx.restore();
     };
@@ -299,7 +308,7 @@ class Arc extends BasicShape {
     };
 
     isPointInside(x, y) {
-        var d = (this.points[0].x - x) ** 2 + (this.points[0].y - y) ** 2;
+        var d = (this.x - x) ** 2 + (this.y - y) ** 2;
         return d <= this.radius ** 2;
     }
 }

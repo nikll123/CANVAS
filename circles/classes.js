@@ -36,20 +36,17 @@ class Calc {
         var r2 = circle2.radius;
         var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 
-        var angle1_start = 0;
-        var angle1_stop = 0;
-        var angle2_start = 0;
-        var angle2_stop = 0;
+        var angle1 = new Angle(0, DVA_PI)
+        var angle2 = new Angle(0, DVA_PI)
+
 
         if (distance > r1 + r2) {
-            angle1_stop = DVA_PI;
-            angle2_stop = DVA_PI;
         }
         else if (distance < Math.abs(r1 - r2)) {
             if (r1 > r2)
-                angle1_stop = DVA_PI;
+                angle2.end = 0;
             else
-                angle2_stop = DVA_PI;
+                angle1.end = 0;
         }
         else {
             var angle_base = Math.asin((y2 - y1) / distance);
@@ -59,15 +56,12 @@ class Calc {
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var angle_r2 = Math.acos((r2 ** 2 + distance ** 2 - r1 ** 2) / (2 * r2 * distance));
             var angle_r1 = Math.acos((r1 ** 2 + distance ** 2 - r2 ** 2) / (2 * r1 * distance));
-            angle1_start = angle_base - angle_r1;
-            angle1_stop = angle_base + angle_r1;
-
-
-            angle2_start = PI + angle_base - angle_r2;
-            angle2_stop = PI + angle_base + angle_r2;
+            angle1.begin = angle_base + angle_r1;
+            angle1.end = angle_base - angle_r1;
+            angle2.begin = PI + angle_base + angle_r2;
+            angle2.end = PI + angle_base - angle_r2;
         }
-
-        return [angle1_start, angle1_stop, angle2_start, angle2_stop];
+        return [angle1, angle2];
     }
 }
 
@@ -294,11 +288,11 @@ class Rectangle extends BasicShape {
 // arc
 //-------------------------------------
 class Arc extends BasicShape {
-    constructor(x, y, radius, radians1, radians2, cw = true) {
+    constructor(x, y, radius, angle, cw = true) {
         super([[x, y]]);
         this.radius = radius;
-        this.radians1 = radians1;
-        this.radians2 = radians2;
+        this.radians1 = angle.begin;
+        this.radians2 = angle.end;
         this.cw = cw;
     }
 
@@ -331,16 +325,16 @@ class Arc extends BasicShape {
 
 class Circle extends Arc {
     constructor(x, y, radius) {
-        super(x, y, radius, 0, DVA_PI);
+        super(x, y, radius, new Angle(0, DVA_PI));
     }
 }
 
 class CircleCombi extends Circle {
-    constructor(x, y, radius, anglesArg=[[0, DVA_PI]]) {
+    constructor(x, y, radius, angles = [[0, DVA_PI]]) {
         super(x, y, radius);
         this.arcs = [];
-        for (var i = 0; i < anglesArg.length; i++) {
-            var a = anglesArg[i];
+        for (var i = 0; i < angles.length; i++) {
+            var a = angles[i];
             var aa = new Arc(this.x, this.y, radius, a[0], a[1]);
             console.debug(aa.toString());
             this.arcs.push(aa);

@@ -26,36 +26,30 @@ class Calc {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
     }
 
-    static circleOverlap(circle1, circle2) {
-        var x1 = circle1.x;
-        var y1 = circle1.y;
-        var r1 = circle1.radius;
+    static circleOverlap(c1, c2) {
 
-        var x2 = circle2.x;
-        var y2 = circle2.y;
-        var r2 = circle2.radius;
-        var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        var distance = Math.sqrt((c2.x - c1.x) * (c2.x - c1.x) + (c2.y - c1.y) * (c2.y - c1.y));
 
         var angle1 = new Angle(0, DVA_PI)
         var angle2 = new Angle(0, DVA_PI)
 
 
-        if (distance > r1 + r2) {
+        if (distance > c1.radius + c2.radius) {
         }
-        else if (distance < Math.abs(r1 - r2)) {
-            if (r1 > r2)
+        else if (distance < Math.abs(c1.radius - c2.radius)) {
+            if (c1.radius > c2.radius)
                 angle2.end = 0;
             else
                 angle1.end = 0;
         }
         else {
-            var angle_base = Math.asin((y2 - y1) / distance);
-            if (x1 > x2)
+            var angle_base = Math.asin((c2.y - c1.y) / distance);
+            if (c1.x > c2.x)
                 angle_base = PI - angle_base;
 
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
-            var angle_r2 = Math.acos((r2 ** 2 + distance ** 2 - r1 ** 2) / (2 * r2 * distance));
-            var angle_r1 = Math.acos((r1 ** 2 + distance ** 2 - r2 ** 2) / (2 * r1 * distance));
+            var angle_r2 = Math.acos((c2.radius ** 2 + distance ** 2 - c1.radius ** 2) / (2 * c2.radius * distance));
+            var angle_r1 = Math.acos((c1.radius ** 2 + distance ** 2 - c2.radius ** 2) / (2 * c1.radius * distance));
             angle1.begin = angle_base + angle_r1;
             angle1.end = angle_base - angle_r1;
             angle2.begin = PI + angle_base + angle_r2;

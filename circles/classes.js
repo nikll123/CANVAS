@@ -47,8 +47,12 @@ class Calc {
                 angle_base = PI - angle_base;
 
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
-            var angle_r2 = Math.acos((c2.radius ** 2 + distance ** 2 - c1.radius ** 2) / (2 * c2.radius * distance));
-            var angle_r1 = Math.acos((c1.radius ** 2 + distance ** 2 - c2.radius ** 2) / (2 * c1.radius * distance));
+            var c1rQ = c1.radius ** 2;
+            var c2rQ = c2.radius ** 2;
+            var dQ = distance ** 2;
+            var k = 2 * distance;
+            var angle_r1 = Math.acos((c1rQ + dQ - c2rQ) / (c1.radius * k));
+            var angle_r2 = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
             angle11.begin = angle_base + angle_r1;
             angle11.end = angle_base - angle_r1;
             angle21.begin = PI + angle_base + angle_r2;

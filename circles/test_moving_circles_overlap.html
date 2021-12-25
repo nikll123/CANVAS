@@ -16,33 +16,33 @@
     var startX = 0;
     var startY = 0;
 
-    var circle1 = new Circle(220, 190, 50);
-    var circle2 = new Circle(280, 260, 80);
-    var cclCmb1 = new CircleCombi(425, 450, 46, [[0.5, 1.5], [1.8, 2.9], [3.5, 6]]);
-    var cclCmb2 = new CircleCombi(489, 350, 87, [[0, Math.PI * 2]]);
+    var cclCmb1 = new CircleCombi(425, 450, 46);
+    var cclCmb2 = new CircleCombi(489, 350, 87);
+    var cclCmb3 = new CircleCombi(220, 190, 50);
+    var cclCmb4 = new CircleCombi(280, 260, 80);
 
-    console.debug(circle1.toString());
-    console.debug(circle2.toString());
+    console.debug(cclCmb3.toString());
+    console.debug(cclCmb4.toString());
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
-      circle1.render(ctx, 1);
-      circle2.render(ctx, 1);
+      cclCmb3.render(ctx, 1);
+      cclCmb4.render(ctx, 1);
       cclCmb1.render(ctx, 1);
-      cclCmb2.render(ctx, 2);
+      cclCmb2.render(ctx, 1);
 
-      [angle1_start, angle1_stop, angle2_start, angle2_stop] = Calc.circleOverlap(circle1, circle2);
+      [angle1_start, angle1_stop, angle2_start, angle2_stop] = Calc.circleOverlap(cclCmb3, cclCmb4);
 
       // console.debug('a1 ' + angle1_start + ' a2 ' + angle1_stop );
 
-      let arc1 = new Arc(circle1.x, circle1.y, circle1.radius, angle1_stop, angle1_start);
-      let arc2 = new Arc(circle2.x, circle2.y, circle2.radius, angle2_stop, angle2_start);
+      let arc1 = new Arc(cclCmb3.x, cclCmb3.y, cclCmb3.radius, angle1_stop, angle1_start);
+      let arc2 = new Arc(cclCmb4.x, cclCmb4.y, cclCmb4.radius, angle2_stop, angle2_start);
       arc1.render(ctx, 5, '#FF0000');
       arc2.render(ctx, 5, '#FF0000');
 
       ctx.beginPath();
-      ctx.moveTo(circle1.x, circle1.y)
-      ctx.lineTo(circle2.x, circle2.y)
+      ctx.moveTo(cclCmb3.x, cclCmb3.y)
+      ctx.lineTo(cclCmb4.x, cclCmb4.y)
       ctx.stroke();
 
 
@@ -64,15 +64,15 @@
           case 'down':
             startX = x;
             startY = y;
-            circle1.startDrugIfPointIsInside(x, y);
-            circle2.startDrugIfPointIsInside(x, y);
+            cclCmb3.startDrugIfPointIsInside(x, y);
+            cclCmb4.startDrugIfPointIsInside(x, y);
             cclCmb1.startDrugIfPointIsInside(x, y);
             cclCmb2.startDrugIfPointIsInside(x, y);
             break;
 
           case 'up':
-            circle1.stopDrag();
-            circle2.stopDrag();
+            cclCmb3.stopDrag();
+            cclCmb4.stopDrag();
             cclCmb1.stopDrag();
             cclCmb2.stopDrag();
             break;
@@ -84,8 +84,8 @@
             startY = y;
             // showCursor(ctx,x,y);            
 
-            circle1.moveIfDragging(dx, dy);
-            circle2.moveIfDragging(dx, dy);
+            cclCmb3.moveIfDragging(dx, dy);
+            cclCmb4.moveIfDragging(dx, dy);
             cclCmb1.moveIfDragging(dx, dy);
             cclCmb2.moveIfDragging(dx, dy);
             break;

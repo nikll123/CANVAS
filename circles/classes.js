@@ -35,6 +35,7 @@ class Calc {
         var y2 = circle2.y;
         var r2 = circle2.radius;
         var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+
         var angle1_start = 0;
         var angle1_stop = 0;
         var angle2_start = 0;
@@ -62,8 +63,8 @@ class Calc {
             angle1_stop = angle_base + angle_r1;
 
 
-            angle2_start = Math.PI + angle_base - angle_r2;
-            angle2_stop = Math.PI + angle_base + angle_r2;
+            angle2_start = PI + angle_base - angle_r2;
+            angle2_stop = PI + angle_base + angle_r2;
         }
 
         return [angle1_start, angle1_stop, angle2_start, angle2_stop];
@@ -335,7 +336,7 @@ class Circle extends Arc {
 }
 
 class CircleCombi extends Circle {
-    constructor(x, y, radius, anglesArg) {
+    constructor(x, y, radius, anglesArg=[[0, DVA_PI]]) {
         super(x, y, radius);
         this.arcs = [];
         for (var i = 0; i < anglesArg.length; i++) {
@@ -348,6 +349,10 @@ class CircleCombi extends Circle {
 
     render(ctx, lineWidth, colorStroke = defaultColor, fillColor) {
         ctx.save();
+
+        if (lineWidth > 1)  // draw base circle
+            (new Circle(this.x, this.y, this.radius)).render(ctx, 1);
+
         if (ctx.lineWidth > 0) {
             for (var i = 0; i < this.arcs.length; i++) {
                 this.arcs[i].x = this.x;
@@ -357,10 +362,5 @@ class CircleCombi extends Circle {
         }
         ctx.restore();
     };
-
-    // toString() {
-    //     return super.toString() + ', radius=' + this.radius + ', radians1=' + this.radians1 + ', radians2=' + this.radians2;
-    // };
-
 }
 

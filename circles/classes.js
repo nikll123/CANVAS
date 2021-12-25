@@ -81,7 +81,7 @@ class Point {
         if (long)
             retval = this.constructor.name + ': ' + 'x=' + this.x + ', y=' + this.y;
         else
-            retval = this.x + ',' + this.y;
+            retval = this.x + ' ' + this.y;
         return retval;
     };
 
@@ -106,6 +106,12 @@ class Point {
     }
 }
 
+class Angle {
+    constructor(begin, end) {
+        this.begin = begin;
+        this.end = end;
+    }
+}
 
 //-------------------------------------
 // BasicShape
@@ -155,6 +161,15 @@ class BasicShape {
     get y() {
         return this.points[0].y;
     }
+
+    set x(x) {
+        this.points[0].x = x;
+    }
+
+    set y(y) {
+        this.points[0].y = y;
+    }
+
 }
 
 //-------------------------------------
@@ -317,5 +332,35 @@ class Circle extends Arc {
     constructor(x, y, radius) {
         super(x, y, radius, 0, DVA_PI);
     }
+}
+
+class CircleCombi extends Circle {
+    constructor(x, y, radius, anglesArg) {
+        super(x, y, radius);
+        this.arcs = [];
+        for (var i = 0; i < anglesArg.length; i++) {
+            var a = anglesArg[i];
+            var aa = new Arc(this.x, this.y, radius, a[0], a[1]);
+            console.debug(aa.toString());
+            this.arcs.push(aa);
+        }
+    }
+
+    render(ctx, lineWidth, colorStroke = defaultColor, fillColor) {
+        ctx.save();
+        if (ctx.lineWidth > 0) {
+            for (var i = 0; i < this.arcs.length; i++) {
+                this.arcs[i].x = this.x;
+                this.arcs[i].y = this.y;
+                this.arcs[i].render(ctx, lineWidth, colorStroke = defaultColor, fillColor);
+            }
+        }
+        ctx.restore();
+    };
+
+    // toString() {
+    //     return super.toString() + ', radius=' + this.radius + ', radians1=' + this.radians1 + ', radians2=' + this.radians2;
+    // };
+
 }
 

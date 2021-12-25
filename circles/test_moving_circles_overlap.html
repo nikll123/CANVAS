@@ -18,6 +18,8 @@
 
     var circle1 = new Circle(220, 190, 50);
     var circle2 = new Circle(280, 260, 80);
+    var cclCmb1 = new CircleCombi(425, 450, 46, [[0.5, 1.5], [1.8, 2.9], [3.5, 6]]);
+    var cclCmb2 = new CircleCombi(489, 350, 87, [[0, Math.PI * 2]]);
 
     console.debug(circle1.toString());
     console.debug(circle2.toString());
@@ -26,6 +28,8 @@
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
       circle1.render(ctx, 1);
       circle2.render(ctx, 1);
+      cclCmb1.render(ctx, 1);
+      cclCmb2.render(ctx, 2);
 
       [angle1_start, angle1_stop, angle2_start, angle2_stop] = Calc.circleOverlap(circle1, circle2);
 
@@ -41,8 +45,15 @@
       ctx.lineTo(circle2.x, circle2.y)
       ctx.stroke();
 
+
       window.requestAnimationFrame(draw);
     }
+
+    // function showCursor(ctx,x,y) {
+    //   var p1 = new Point(x, y);
+    //   p1.render(ctx, 1);
+    //   // window.requestAnimationFrame(showCursor);
+    // }
 
     var mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
@@ -55,11 +66,15 @@
             startY = y;
             circle1.startDrugIfPointIsInside(x, y);
             circle2.startDrugIfPointIsInside(x, y);
+            cclCmb1.startDrugIfPointIsInside(x, y);
+            cclCmb2.startDrugIfPointIsInside(x, y);
             break;
 
           case 'up':
             circle1.stopDrag();
             circle2.stopDrag();
+            cclCmb1.stopDrag();
+            cclCmb2.stopDrag();
             break;
 
           case 'move':
@@ -67,9 +82,12 @@
             var dy = y - startY;
             startX = x;
             startY = y;
+            // showCursor(ctx,x,y);            
 
             circle1.moveIfDragging(dx, dy);
             circle2.moveIfDragging(dx, dy);
+            cclCmb1.moveIfDragging(dx, dy);
+            cclCmb2.moveIfDragging(dx, dy);
             break;
         }
       }

@@ -27,14 +27,11 @@ class Calc {
     }
 
     static circleOverlap(c1, c2) {
-
         var distance = Math.sqrt((c2.x - c1.x) * (c2.x - c1.x) + (c2.y - c1.y) * (c2.y - c1.y));
-
         var angle1 = new Angle(0, DVA_PI)
         var angle2 = new Angle(0, DVA_PI)
-
-
         if (distance > c1.radius + c2.radius) {
+            // do nothing
         }
         else if (distance < Math.abs(c1.radius - c2.radius)) {
             if (c1.radius > c2.radius)

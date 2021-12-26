@@ -26,12 +26,18 @@ class Calc {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
     }
 
+    static calcDistance(x1, y1, x2, y2)
+    {
+        var distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        return distance;
+    }
+
     static circleOverlap(c1, c2) {
-        var distance = Math.sqrt((c2.x - c1.x) * (c2.x - c1.x) + (c2.y - c1.y) * (c2.y - c1.y));
-        var angle11 = new Angle(0, DVA_PI)
-        var angle12 = new Angle(0,0)
-        var angle21 = new Angle(0, DVA_PI)
-        var angle22 = new Angle(0,0)
+        var distance = this.calcDistance (c1.x, c1.y, c2.x, c2.y);
+        var angle11 = new Angle(0, DVA_PI);
+        var angle12 = new Angle(0, 0);
+        var angle21 = new Angle(0, DVA_PI);
+        var angle22 = new Angle(0, 0);
         if (distance > c1.radius + c2.radius) {
             // do nothing
         }
@@ -43,6 +49,10 @@ class Calc {
         }
         else {
             var angle_base = Math.asin((c2.y - c1.y) / distance);
+
+            var angleBase = new Angle(0, angle_base);
+            angleBase.render(ctx, 100, 400, 50);
+
             if (c1.x > c2.x)
                 angle_base = PI - angle_base;
 
@@ -53,8 +63,15 @@ class Calc {
             var k = 2 * distance;
             var angle_r1 = Math.acos((c1rQ + dQ - c2rQ) / (c1.radius * k));
             var angle_r2 = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
+
             angle11.begin = angle_base + angle_r1;
             angle11.end = angle_base - angle_r1;
+
+            // if (angle11.begin > 0 && angle11.end > 0 )
+            // {}
+
+            angle11.render(ctx, c1.x, c1.y, c1.radius);
+
             angle21.begin = PI + angle_base + angle_r2;
             angle21.end = PI + angle_base - angle_r2;
         }
@@ -102,6 +119,40 @@ class Angle {
     constructor(begin, end) {
         this.begin = begin;
         this.end = end;
+    }
+
+    render(ctx, x, y, radius = 0, color = defaultColor) {
+        if (radius > 0) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            var x1 = x + Math.cos(this.begin) * radius;
+            var y1 = y + Math.sin(this.begin) * radius;
+            var x2 = x + Math.cos(this.end) * radius;
+            var y2 = y + Math.sin(this.end) * radius;
+            ctx.moveTo(x, y);
+            ctx.lineTo(x1, y1);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            // ctx.arc(x, y, radius, this.begin, this.end);
+            ctx.restore();
+            if (debugRender) {
+                ctx.fillText('b:' + this.begin.toFixed(2), x1 + 1, y1 - 1);
+                ctx.fillText('e:' + this.end.toFixed(2), x2 + 1, y2 - 1);
+            }
+        }
+    }
+
+    toString() {
+        var retval = this.constructor.name + ': ';
+        retval = retval + this.begin + ' ' + this.end;
+        return retval;
+    };
+
+    static calcAngle(x1, y1, x2, y2)
+    {
+
     }
 }
 

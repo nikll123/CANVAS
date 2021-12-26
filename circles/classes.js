@@ -26,13 +26,25 @@ class Calc {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
     }
 
-    static calcDistance(x1, y1, x2, y2) {
+    static getDistance(x1, y1, x2, y2) {
         var distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
         return distance;
     }
 
+    static getAngle(xBeg, yBeg, xEnd, yEnd) {
+        var distance = Calc.getDistance(xBeg, yBeg, xEnd, yEnd);
+        var angle = Math.asin((yEnd - yBeg) / distance);
+        if (xEnd > xBeg) {
+            if (yEnd < yBeg)
+                angle = DVA_PI + angle;
+        }
+        else 
+            angle = PI - angle;
+        return angle;
+    }
+
     static circleOverlap(c1, c2) {
-        var distance = this.calcDistance(c1.x, c1.y, c2.x, c2.y);
+        var distance = this.getDistance(c1.x, c1.y, c2.x, c2.y);
         var angle11 = new Angle(0, DVA_PI);
         var angle12 = new Angle(0, 0);
         var angle21 = new Angle(0, DVA_PI);
@@ -47,7 +59,7 @@ class Calc {
                 angle11.end = 0;
         }
         else {
-            var angle_base = Angle.calcAngle(c1.x, c1.y, c2.x, c2.y);
+            var angle_base = Calc.getAngle(c1.x, c1.y, c2.x, c2.y);
             var angleBase = new Angle(0, angle_base);
             angleBase.render(ctx, 100, 400, 50);
 
@@ -116,6 +128,10 @@ class Angle {
         this.end = end;
     }
 
+    get value() {
+        return this.end - this.begin;
+    }
+
     render(ctx, x, y, radius = 0, color = defaultColor) {
         if (radius > 0) {
             ctx.save();
@@ -143,18 +159,6 @@ class Angle {
         retval = retval + this.begin + ' ' + this.end;
         return retval;
     };
-
-    static calcAngle(xBeg, yBeg, xEnd, yEnd) {
-        var distance = Calc.calcDistance(xBeg, yBeg, xEnd, yEnd);
-        var angle = Math.asin((yEnd - yBeg) / distance);
-        if (xEnd > xBeg) {
-            if (yEnd < yBeg)
-                angle = DVA_PI + angle;
-        }
-        else 
-            angle = PI - angle;
-        return angle;
-    }
 }
 
 //-------------------------------------

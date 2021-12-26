@@ -26,14 +26,13 @@ class Calc {
         return this._f1(p1, p2, p3.x, p3.y) * this._f1(p1, p2, x, y) >= 0;
     }
 
-    static calcDistance(x1, y1, x2, y2)
-    {
+    static calcDistance(x1, y1, x2, y2) {
         var distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
         return distance;
     }
 
     static circleOverlap(c1, c2) {
-        var distance = this.calcDistance (c1.x, c1.y, c2.x, c2.y);
+        var distance = this.calcDistance(c1.x, c1.y, c2.x, c2.y);
         var angle11 = new Angle(0, DVA_PI);
         var angle12 = new Angle(0, 0);
         var angle21 = new Angle(0, DVA_PI);
@@ -48,13 +47,9 @@ class Calc {
                 angle11.end = 0;
         }
         else {
-            var angle_base = Math.asin((c2.y - c1.y) / distance);
-
+            var angle_base = Angle.calcAngle(c1.x, c1.y, c2.x, c2.y);
             var angleBase = new Angle(0, angle_base);
             angleBase.render(ctx, 100, 400, 50);
-
-            if (c1.x > c2.x)
-                angle_base = PI - angle_base;
 
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var c1rQ = c1.radius ** 2;
@@ -135,7 +130,6 @@ class Angle {
             ctx.moveTo(x, y);
             ctx.lineTo(x2, y2);
             ctx.stroke();
-            // ctx.arc(x, y, radius, this.begin, this.end);
             ctx.restore();
             if (debugRender) {
                 ctx.fillText('b:' + this.begin.toFixed(2), x1 + 1, y1 - 1);
@@ -150,9 +144,16 @@ class Angle {
         return retval;
     };
 
-    static calcAngle(x1, y1, x2, y2)
-    {
-
+    static calcAngle(xBeg, yBeg, xEnd, yEnd) {
+        var distance = Calc.calcDistance(xBeg, yBeg, xEnd, yEnd);
+        var angle = Math.asin((yEnd - yBeg) / distance);
+        if (xEnd > xBeg) {
+            if (yEnd < yBeg)
+                angle = DVA_PI + angle;
+        }
+        else 
+            angle = PI - angle;
+        return angle;
     }
 }
 

@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <title>CANVAS</title>
+    <link  href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet"/>
+</head>
+
+<body onLoad="draw()">
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+  <script src="test\unitTest_Angle.js"></script>
+  <script src="circles\classes.js"></script>
+  <script src="circles\MouseTouchTracker.js"></script>
+
+  <script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var startX = 0;
+    var startY = 0;
+
+    var cclCmb1 = new CircleCombi(425, 450, 36);
+    var cclCmb2 = new CircleCombi(489, 350, 87);
+    var cclCmb3 = new CircleCombi(220, 190, 50);
+    var cclCmb4 = new CircleCombi(280, 260, 101);
+
+    console.debug(cclCmb3.toString());
+    console.debug(cclCmb4.toString());
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
+      cclCmb1.render(ctx, 2);
+      cclCmb2.render(ctx, 2);
+      cclCmb3.render(ctx, 2);
+      cclCmb4.render(ctx, 2);
+
+      [angle1, angle2] = Calc.circleOverlap(cclCmb3, cclCmb4);
+
+      // console.debug('a1 ' + angle1_start + ' a2 ' + angle1_stop );
+
+      // let arc1 = new Arc(cclCmb3.x, cclCmb3.y, cclCmb3.radius, angle1);
+      // let arc2 = new Arc(cclCmb4.x, cclCmb4.y, cclCmb4.radius, angle2);
+      // arc1.render(ctx, 5, '#FF0000');
+      // arc2.render(ctx, 5, '#FF0000');
+
+      ctx.beginPath();
+      ctx.moveTo(cclCmb3.x, cclCmb3.y)
+      ctx.lineTo(cclCmb4.x, cclCmb4.y)
+      ctx.stroke();
+
+
+      window.requestAnimationFrame(draw);
+    }
+
+    // function showCursor(ctx,x,y) {
+    //   var p1 = new Point(x, y);
+    //   p1.render(ctx, 1);
+    //   // window.requestAnimationFrame(showCursor);
+    // }
+
+    var mtt = new MouseTouchTracker(canvas,
+      function (evtType, x, y) {                         // callback 
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        switch (evtType) {
+
+          case 'down':
+            startX = x;
+            startY = y;
+            cclCmb3.startDrugIfPointIsInside(x, y);
+            cclCmb4.startDrugIfPointIsInside(x, y);
+            cclCmb1.startDrugIfPointIsInside(x, y);
+            cclCmb2.startDrugIfPointIsInside(x, y);
+            break;
+
+          case 'up':
+            cclCmb3.stopDrag();
+            cclCmb4.stopDrag();
+            cclCmb1.stopDrag();
+            cclCmb2.stopDrag();
+            break;
+
+          case 'move':
+            var dx = x - startX;
+            var dy = y - startY;
+            startX = x;
+            startY = y;
+            // showCursor(ctx,x,y);            
+
+            cclCmb3.moveIfDragging(dx, dy);
+            cclCmb4.moveIfDragging(dx, dy);
+            cclCmb1.moveIfDragging(dx, dy);
+            cclCmb2.moveIfDragging(dx, dy);
+            break;
+        }
+      }
+    );
+
+  </script>
+
+<!-- <div id="mocha"></div> -->
+<!-- <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script> -->
+<!-- <script src="https://cdn.rawgit.com/chaijs/chai/3.5.0/chai.js"></script> -->
+<!-- <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script> -->
+  
+
+</body>
+
+
+
+</html>

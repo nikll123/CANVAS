@@ -18,22 +18,27 @@
     var startX = 0;
     var startY = 0;
 
-    var cclCmb1 = new CircleCombi(425, 450, 36);
-    var cclCmb2 = new CircleCombi(489, 350, 87);
-    var cclCmb3 = new CircleCombi(220, 190, 50);
-    var cclCmb4 = new CircleCombi(280, 260, 101);
+    var cclCmb1 = new CircleCombo(220, 190, 50);
+    var cclCmb2 = new CircleCombo(280, 260, 101);
+    var cclCmb3 = new CircleCombo(425, 450, 36);
+    var cclCmb4 = new CircleCombo(489, 350, 87);
 
-    console.debug(cclCmb3.toString());
-    console.debug(cclCmb4.toString());
+    console.debug(cclCmb1.toString());
+    console.debug(cclCmb2.toString());
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
-      cclCmb1.render(ctx, 2);
-      cclCmb2.render(ctx, 2);
+      // cclCmb1.render(ctx, 2);
+      // cclCmb2.render(ctx, 2);
       cclCmb3.render(ctx, 2);
       cclCmb4.render(ctx, 2);
 
-      [angle1, angle2] = Calc.circleOverlap(cclCmb3, cclCmb4);
+      [angleC1_1, angleC1_2, angleC2_1, angleC2_2] = Calc.circleOverlap(cclCmb1, cclCmb2);
+      cclCmb1.setArcs([angleC1_1,angleC1_2]);
+      cclCmb2.setArcs([angleC2_1,angleC2_2]);
+
+      cclCmb1.render(ctx, 5);
+      cclCmb2.render(ctx, 5);
 
       // console.debug('a1 ' + angle1_start + ' a2 ' + angle1_stop );
 
@@ -43,8 +48,8 @@
       // arc2.render(ctx, 5, '#FF0000');
 
       ctx.beginPath();
-      ctx.moveTo(cclCmb3.x, cclCmb3.y)
-      ctx.lineTo(cclCmb4.x, cclCmb4.y)
+      ctx.moveTo(cclCmb1.x, cclCmb1.y)
+      ctx.lineTo(cclCmb2.x, cclCmb2.y)
       ctx.stroke();
 
 
@@ -66,17 +71,17 @@
           case 'down':
             startX = x;
             startY = y;
-            cclCmb3.startDrugIfPointIsInside(x, y);
-            cclCmb4.startDrugIfPointIsInside(x, y);
             cclCmb1.startDrugIfPointIsInside(x, y);
             cclCmb2.startDrugIfPointIsInside(x, y);
+            cclCmb3.startDrugIfPointIsInside(x, y);
+            cclCmb4.startDrugIfPointIsInside(x, y);
             break;
 
           case 'up':
-            cclCmb3.stopDrag();
-            cclCmb4.stopDrag();
             cclCmb1.stopDrag();
             cclCmb2.stopDrag();
+            cclCmb3.stopDrag();
+            cclCmb4.stopDrag();
             break;
 
           case 'move':
@@ -86,10 +91,10 @@
             startY = y;
             // showCursor(ctx,x,y);            
 
-            cclCmb3.moveIfDragging(dx, dy);
-            cclCmb4.moveIfDragging(dx, dy);
             cclCmb1.moveIfDragging(dx, dy);
             cclCmb2.moveIfDragging(dx, dy);
+            cclCmb3.moveIfDragging(dx, dy);
+            cclCmb4.moveIfDragging(dx, dy);
             break;
         }
       }

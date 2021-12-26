@@ -45,44 +45,66 @@ class Calc {
 
     static circleOverlap(c1, c2) {
         var distance = this.getDistance(c1.x, c1.y, c2.x, c2.y);
-        var angle11 = new Angle(0, DVA_PI);
-        var angle12 = new Angle(0, 0);
-        var angle21 = new Angle(0, DVA_PI);
-        var angle22 = new Angle(0, 0);
+        var angleC1_1 = new Angle(0, DVA_PI);
+        var angleC1_2 = new Angle(DVA_PI, DVA_PI);
+        var angleC2_1 = new Angle(0, DVA_PI);
+        var angleC2_2 = new Angle(DVA_PI, DVA_PI);
         if (distance > c1.radius + c2.radius) {
             // do nothing
         }
         else if (distance < Math.abs(c1.radius - c2.radius)) {
             if (c1.radius > c2.radius)
-                angle21.end = 0;
+                angleC2_1.end = 0;
             else
-                angle11.end = 0;
+                angleC1_1.end = 0;
         }
         else {
-            var angle_base = Calc.getAngle(c1.x, c1.y, c2.x, c2.y);
-            var angleBase = new Angle(0, angle_base);
-            angleBase.render(ctx, 100, 400, 50);
+            // var angleBase = new Angle(0, angle_base);
+            // angleBase.render(ctx, 100, 400, 50);
 
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var c1rQ = c1.radius ** 2;
             var c2rQ = c2.radius ** 2;
             var dQ = distance ** 2;
             var k = 2 * distance;
-            var angle_r1 = Math.acos((c1rQ + dQ - c2rQ) / (c1.radius * k));
-            var angle_r2 = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
 
-            angle11.begin = angle_base + angle_r1;
-            angle11.end = angle_base - angle_r1;
+            var angle_base1 = Calc.getAngle(c1.x, c1.y, c2.x, c2.y);
+            var angleC1_dev = Math.acos((c1rQ + dQ - c2rQ) / (c1.radius * k));
+            var a_begin = angle_base1 - angleC1_dev;
+            var a_end = angle_base1 + angleC1_dev;
+            if (a_begin > 0) {
+                angleC1_1.end = a_begin;
+                if (a_end <= DVA_PI)
+                    angleC1_2.begin = a_end;
+                else
+                    angleC1_1.begin = a_end - DVA_PI;
+            }
+            if (a_begin < 0) {
+                angleC1_1.begin = a_end;
+                angleC1_1.end = DVA_PI + a_begin;
+            }
+            angleC1_1.render(ctx, c1.x, c1.y, c1.radius, '#0000FF');
+            angleC1_2.render(ctx, c1.x, c1.y, c1.radius, '#FF0000');
 
-            // if (angle11.begin > 0 && angle11.end > 0 )
-            // {}
-
-            angle11.render(ctx, c1.x, c1.y, c1.radius);
-
-            angle21.begin = PI + angle_base + angle_r2;
-            angle21.end = PI + angle_base - angle_r2;
+            var angle_base2 = Calc.getAngle(c2.x, c2.y, c1.x, c1.y);
+            var angleC2_dev = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
+            var a_begin = angle_base2 - angleC2_dev;
+            var a_end = angle_base2 + angleC2_dev;
+            if (a_begin > 0) {
+                angleC2_1.end = a_begin;
+                if (a_end <= DVA_PI)
+                    angleC2_2.begin = a_end;
+                else
+                    angleC2_1.begin = a_end - DVA_PI;
+            }
+            if (a_begin < 0) {
+                angleC2_1.begin = a_end;
+                angleC2_1.end = DVA_PI + a_begin;
+            }
+            angleC2_1.render(ctx, c2.x, c2.y, c2.radius, '#0000FF');
+            angleC2_2.render(ctx, c2.x, c2.y, c2.radius, '#FF0000');
         }
-        return [angle11, angle21];
+        return [angleC1_1, angleC1_2, angleC2_1, angleC2_2];
     }
 }
 
@@ -377,7 +399,7 @@ class Arc extends BasicShape {
 
     render(ctx, lineWidth, colorStroke = defaultColor, fillColor) {
         ctx.save();
-        if (ctx.lineWidth > 0) {
+        if (lineWidth > 0) {
             ctx.lineWidth = lineWidth;
             ctx.strokeStyle = colorStroke;
             ctx.beginPath();
@@ -408,13 +430,17 @@ class Circle extends Arc {
     }
 }
 
-class CircleCombi extends Circle {
+class CircleCombo extends Circle {
     constructor(x, y, radius, angles = [[0, DVA_PI]]) {
         super(x, y, radius);
+        this.setArcs(angles);
+    }
+
+    setArcs(angles) {
         this.arcs = [];
         for (var i = 0; i < angles.length; i++) {
             var a = angles[i];
-            var aa = new Arc(this.x, this.y, radius, a[0], a[1]);
+            var aa = new Arc(this.x, this.y, this.radius, a);
             console.debug(aa.toString());
             this.arcs.push(aa);
         }
@@ -426,7 +452,7 @@ class CircleCombi extends Circle {
         if (lineWidth > 1)  // draw base circle
             (new Circle(this.x, this.y, this.radius)).render(ctx, 1);
 
-        if (ctx.lineWidth > 0) {
+        if (lineWidth > 0) {
             for (var i = 0; i < this.arcs.length; i++) {
                 this.arcs[i].x = this.x;
                 this.arcs[i].y = this.y;

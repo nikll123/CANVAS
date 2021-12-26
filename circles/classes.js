@@ -132,17 +132,22 @@ class Angle {
         return this.end - this.begin;
     }
 
-    add(a) {
-        this.end = this.end + a;
-        cast()
+    substract(a) {
+        this.end = this.end - a;
+        this.normalize();
     }
 
-    cast() {
+    add(a) {
+        this.end = this.end + a;
+        this.normalize();
+    }
+
+    normalize() {
         var a = this.end;
         if (a != 0) {
-            cnt = _countPI(a);
+            var cnt = this._countPI(a);
             if (cnt != 0)
-                a = a + cnt * DVA_PI;
+                a = a - cnt * DVA_PI;
             if (a < 0)
                 a = DVA_PI + a;
             this.end = a

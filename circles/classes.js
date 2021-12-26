@@ -38,7 +38,7 @@ class Calc {
             if (yEnd < yBeg)
                 angle = DVA_PI + angle;
         }
-        else 
+        else
             angle = PI - angle;
         return angle;
     }
@@ -130,6 +130,27 @@ class Angle {
 
     get value() {
         return this.end - this.begin;
+    }
+
+    add(a) {
+        this.end = this.end + a;
+        cast()
+    }
+
+    cast() {
+        var a = this.end;
+        if (a != 0) {
+            cnt = _countPI(a);
+            if (cnt != 0)
+                a = a + cnt * DVA_PI;
+            if (a < 0)
+                a = DVA_PI + a;
+            this.end = a
+        }
+    }
+
+    _countPI(a) {
+        return Math.sign(a) * Math.floor(Math.abs(a) / DVA_PI);
     }
 
     render(ctx, x, y, radius = 0, color = defaultColor) {

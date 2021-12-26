@@ -86,25 +86,25 @@ class Calc {
             angleC1_1.render(ctx, c1.x, c1.y, c1.radius, '#0000FF');
             angleC1_2.render(ctx, c1.x, c1.y, c1.radius, '#FF0000');
 
-            var angle_base2 = Calc.getAngle(c2.x, c2.y, c1.x, c1.y);
-            var angleC2_dev = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
-            var a_begin = angle_base2 - angleC2_dev;
-            var a_end = angle_base2 + angleC2_dev;
-            if (a_begin > 0) {
-                angleC2_1.end = a_begin;
-                if (a_end <= DVA_PI)
-                    angleC2_2.begin = a_end;
-                else
-                    angleC2_1.begin = a_end - DVA_PI;
-            }
-            if (a_begin < 0) {
-                angleC2_1.begin = a_end;
-                angleC2_1.end = DVA_PI + a_begin;
-            }
-            angleC2_1.render(ctx, c2.x, c2.y, c2.radius, '#0000FF');
-            angleC2_2.render(ctx, c2.x, c2.y, c2.radius, '#FF0000');
+            // var angle_base2 = Calc.getAngle(c2.x, c2.y, c1.x, c1.y);
+            // var angleC2_dev = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
+            // var a_begin = angle_base2 - angleC2_dev;
+            // var a_end = angle_base2 + angleC2_dev;
+            // if (a_begin > 0) {
+            //     angleC2_1.end = a_begin;
+            //     if (a_end <= DVA_PI)
+            //         angleC2_2.begin = a_end;
+            //     else
+            //         angleC2_1.begin = a_end - DVA_PI;
+            // }
+            // if (a_begin < 0) {
+            //     angleC2_1.begin = a_end;
+            //     angleC2_1.end = DVA_PI + a_begin;
+            // }
+            // angleC2_1.render(ctx, c2.x, c2.y, c2.radius, '#0000FF');
+            // angleC2_2.render(ctx, c2.x, c2.y, c2.radius, '#FF0000');
         }
-        return [angleC1_1, angleC1_2, angleC2_1, angleC2_2];
+        return [angleC1_1, angleC1_2];
     }
 }
 

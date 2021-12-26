@@ -20,25 +20,71 @@
 
     var cclCmb1 = new CircleCombo(220, 190, 50);
     var cclCmb2 = new CircleCombo(280, 260, 101);
-    var cclCmb3 = new CircleCombo(425, 450, 36);
+    var cclCmb3 = new CircleCombo(183, 128, 36);
     var cclCmb4 = new CircleCombo(489, 350, 87);
 
-    console.debug(cclCmb1.toString());
-    console.debug(cclCmb2.toString());
+    cclCmbs = [cclCmb1, cclCmb2, cclCmb3];
+
+    // console.debug(cclCmb1.toString());
+    // console.debug(cclCmb2.toString());
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
-      // cclCmb1.render(ctx, 2);
-      // cclCmb2.render(ctx, 2);
+      cclCmb1.render(ctx, 2);
+      cclCmb2.render(ctx, 2);
       cclCmb3.render(ctx, 2);
-      cclCmb4.render(ctx, 2);
+      // cclCmb4.render(ctx, 2);
 
-      [angleC1_1, angleC1_2, angleC2_1, angleC2_2] = Calc.circleOverlap(cclCmb1, cclCmb2);
-      cclCmb1.setArcs([angleC1_1,angleC1_2]);
-      cclCmb2.setArcs([angleC2_1,angleC2_2]);
+      for (var i = 0; i < cclCmbs.length; i++) {
+        var angles = [];
+        var points = [];
+        for (var j = 0; j < cclCmbs.length; j++) {
+          if (i != j) {
+            [ang_cclCmb1_1, ang_cclCmb1_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
+            angles.push([ang_cclCmb1_1, ang_cclCmb1_2]);
+            points.push(ang_cclCmb1_1.begin);
+            points.push(ang_cclCmb1_1.end);
+            points.push(ang_cclCmb1_2.begin);
+            points.push(ang_cclCmb1_2.end);
+          }
+        }
+        points = points.sort().filter(function (el, i, a) { return i === a.indexOf(el) });
+        var arcs = [];
+        for (var p = 1; p < points.length; p++) {
+          p1 = points[p - 1];
+          p2 = points[p];
+          pm = p1 + (p2 - p1) / 2;
+          ok = true;
+          for (var a = 0; a < angles.length; a++) {
+            var a1 = angles[a][0];
+            var a2 = angles[a][1];
+            // if (a1.value == 0) {
+            //   a1.begin = 0;
+            //   a1.end = DVA_PI;
+            // }
+            // if (a2.value == 0) {
+            //   a2.begin = 0;
+            //   a2.end = DVA_PI;
+            // }
+            if (!((a1.begin < pm && pm < a1.end) || (a2.begin < pm && pm < a2.end))) {
+              ok = false;
+              break;
+            }
+          }
+          if (ok) {
+            // arcs.push(new Arc(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[i].radius, new Angle(p1, p2)));
+            arcs.push(new Angle(p1, p2));
+          }
+        }
+        cclCmbs[i].setArcs(arcs);
+      }
+
+      // [ang_cclCmb1_1, ang_cclCmb1_2] = Calc.circleOverlap(cclCmb1, cclCmb2);
+      // cclCmb1.setArcs([ang_cclCmb1_1, ang_cclCmb1_2]);
 
       cclCmb1.render(ctx, 5);
       cclCmb2.render(ctx, 5);
+      cclCmb3.render(ctx, 5);
 
       // console.debug('a1 ' + angle1_start + ' a2 ' + angle1_stop );
 

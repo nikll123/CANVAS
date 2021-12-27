@@ -25,12 +25,13 @@
         ctx.save();
         // ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.arc(300, 400, 50, 0, PI);
-        ctx.arc(250, 350, 50, PI / 2, 3 * PI / 2);
-        ctx.arc(300, 300, 50, PI, DVA_PI);
-        ctx.arc(350, 350, 50, 3 * PI / 2, 5 * PI / 2);
-        ctx.stroke();
-        ctx.fill();
+        ctx.arc(100, 200, 50, 0, PI);
+        ctx.arc(50, 150, 50, PI / 2, 3 * PI / 2);
+        ctx.arc(100, 100, 50, PI, DVA_PI);
+        ctx.arc(150, 150, 50, 3 * PI / 2, 5 * PI / 2);
+        // ctx.stroke();
+        ctx.clip();
+        ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
         ctx.restore();
 
 

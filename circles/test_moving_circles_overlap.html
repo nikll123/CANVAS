@@ -1,39 +1,45 @@
 <html>
 
 <head>
+  <script src="classes.js"></script>
+  <script src="MouseTouchTracker.js"></script>
+  <script src="test\ut_Angles.js"></script>
 </head>
 
 
 <body onLoad="draw()">
-  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
-  <script src="classes.js"></script>
-  <script src="MouseTouchTracker.js"></script>
-  <script src="test\ut_Angles.js"></script>
+
+  <div>
+    <input type="checkbox" id="debugMode" name="DebugName" checked>
+    <label for="scales">Debug</label>
+  </div>
 
   <script>
+    var debugMode = document.querySelector('input[id="debugMode"]');
+    debugMode.addEventListener('change', () => {
+      debugRender = debugMode.checked;
+    })
+  </script>
 
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
+  <script>
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     var startX = 0;
     var startY = 0;
 
-    var cclCmb1 = new CircleCombo(220, 190, 50);
-    var cclCmb2 = new CircleCombo(280, 260, 101);
-    var cclCmb3 = new CircleCombo(183, 128, 36);
-    var cclCmb4 = new CircleCombo(489, 350, 87);
-
-    cclCmbs = [cclCmb1, cclCmb2, cclCmb3];
-
-    // console.debug(cclCmb1.toString());
-    // console.debug(cclCmb2.toString());
+    var cclCmbs = [];
+    for (var i = 0; i < 4; i++) {
+      var x = Math.floor(Math.random() * canvas.clientWidth);
+      var y = Math.floor(Math.random() * canvas.clientHeight);
+      var r = Math.floor(20 + Math.random() * 80);
+      cclCmb1 = new CircleCombo(x, y, r);
+      cclCmbs.push(cclCmb1);
+    }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
-      cclCmb1.render(ctx, 2);
-      cclCmb2.render(ctx, 2);
-      cclCmb3.render(ctx, 2);
-      // cclCmb4.render(ctx, 2);
 
       for (var i = 0; i < cclCmbs.length; i++) {
         var angles = [];
@@ -58,55 +64,23 @@
           for (var a = 0; a < angles.length; a++) {
             var a1 = angles[a][0];
             var a2 = angles[a][1];
-            // if (a1.value == 0) {
-            //   a1.begin = 0;
-            //   a1.end = DVA_PI;
-            // }
-            // if (a2.value == 0) {
-            //   a2.begin = 0;
-            //   a2.end = DVA_PI;
-            // }
             if (!((a1.begin < pm && pm < a1.end) || (a2.begin < pm && pm < a2.end))) {
               ok = false;
               break;
             }
           }
           if (ok) {
-            // arcs.push(new Arc(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[i].radius, new Angle(p1, p2)));
             arcs.push(new Angle(p1, p2));
           }
         }
         cclCmbs[i].setArcs(arcs);
       }
 
-      // [ang_cclCmb1_1, ang_cclCmb1_2] = Calc.circleOverlap(cclCmb1, cclCmb2);
-      // cclCmb1.setArcs([ang_cclCmb1_1, ang_cclCmb1_2]);
-
-      cclCmb1.render(ctx, 5);
-      cclCmb2.render(ctx, 5);
-      cclCmb3.render(ctx, 5);
-
-      // console.debug('a1 ' + angle1_start + ' a2 ' + angle1_stop );
-
-      // let arc1 = new Arc(cclCmb3.x, cclCmb3.y, cclCmb3.radius, angle1);
-      // let arc2 = new Arc(cclCmb4.x, cclCmb4.y, cclCmb4.radius, angle2);
-      // arc1.render(ctx, 5, '#FF0000');
-      // arc2.render(ctx, 5, '#FF0000');
-
-      ctx.beginPath();
-      ctx.moveTo(cclCmb1.x, cclCmb1.y)
-      ctx.lineTo(cclCmb2.x, cclCmb2.y)
-      ctx.stroke();
-
+      for (var i = 0; i < cclCmbs.length; i++)
+        cclCmbs[i].render(ctx, 5, '#FF0000');
 
       window.requestAnimationFrame(draw);
     }
-
-    // function showCursor(ctx,x,y) {
-    //   var p1 = new Point(x, y);
-    //   p1.render(ctx, 1);
-    //   // window.requestAnimationFrame(showCursor);
-    // }
 
     var mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
@@ -117,17 +91,13 @@
           case 'down':
             startX = x;
             startY = y;
-            cclCmb1.startDrugIfPointIsInside(x, y);
-            cclCmb2.startDrugIfPointIsInside(x, y);
-            cclCmb3.startDrugIfPointIsInside(x, y);
-            cclCmb4.startDrugIfPointIsInside(x, y);
+            for (var i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].startDrugIfPointIsInside(x, y);
             break;
 
           case 'up':
-            cclCmb1.stopDrag();
-            cclCmb2.stopDrag();
-            cclCmb3.stopDrag();
-            cclCmb4.stopDrag();
+            for (var i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].stopDrag();
             break;
 
           case 'move':
@@ -135,12 +105,9 @@
             var dy = y - startY;
             startX = x;
             startY = y;
-            // showCursor(ctx,x,y);            
 
-            cclCmb1.moveIfDragging(dx, dy);
-            cclCmb2.moveIfDragging(dx, dy);
-            cclCmb3.moveIfDragging(dx, dy);
-            cclCmb4.moveIfDragging(dx, dy);
+            for (var i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].moveIfDragging(dx, dy);
             break;
         }
       }

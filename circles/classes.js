@@ -59,9 +59,6 @@ class Calc {
                 angleC1_1.end = 0;
         }
         else {
-            // var angleBase = new Angle(0, angle_base);
-            // angleBase.render(ctx, 100, 400, 50);
-
             // angle_d = Math.acos((r1 ** 2 + r2 ** 2 - distance ** 2) / (2 * r1 * r2));
             var c1rQ = c1.radius ** 2;
             var c2rQ = c2.radius ** 2;
@@ -83,26 +80,10 @@ class Calc {
                 angleC1_1.begin = a_end;
                 angleC1_1.end = DVA_PI + a_begin;
             }
-            angleC1_1.render(ctx, c1.x, c1.y, c1.radius, '#0000FF');
-            angleC1_2.render(ctx, c1.x, c1.y, c1.radius, '#FF0000');
-
-            // var angle_base2 = Calc.getAngle(c2.x, c2.y, c1.x, c1.y);
-            // var angleC2_dev = Math.acos((c2rQ + dQ - c1rQ) / (c2.radius * k));
-            // var a_begin = angle_base2 - angleC2_dev;
-            // var a_end = angle_base2 + angleC2_dev;
-            // if (a_begin > 0) {
-            //     angleC2_1.end = a_begin;
-            //     if (a_end <= DVA_PI)
-            //         angleC2_2.begin = a_end;
-            //     else
-            //         angleC2_1.begin = a_end - DVA_PI;
-            // }
-            // if (a_begin < 0) {
-            //     angleC2_1.begin = a_end;
-            //     angleC2_1.end = DVA_PI + a_begin;
-            // }
-            // angleC2_1.render(ctx, c2.x, c2.y, c2.radius, '#0000FF');
-            // angleC2_2.render(ctx, c2.x, c2.y, c2.radius, '#FF0000');
+            if (debugRender) {
+                angleC1_1.render(ctx, c1.x, c1.y, c1.radius, '#0000FF');
+                angleC1_2.render(ctx, c1.x, c1.y, c1.radius, '#FF0000');
+            }
         }
         return [angleC1_1, angleC1_2];
     }
@@ -409,7 +390,8 @@ class Arc extends BasicShape {
                 ctx.fill();
             }
             ctx.stroke();
-            this.points[0].render(ctx, 1);
+            if (debugRender)
+                this.points[0].render(ctx, 1);
         }
         ctx.restore();
     };
@@ -441,7 +423,7 @@ class CircleCombo extends Circle {
         for (var i = 0; i < angles.length; i++) {
             var a = angles[i];
             var aa = new Arc(this.x, this.y, this.radius, a);
-            console.debug(aa.toString());
+            // console.debug(aa.toString());
             this.arcs.push(aa);
         }
     }
@@ -449,14 +431,14 @@ class CircleCombo extends Circle {
     render(ctx, lineWidth, colorStroke = defaultColor, fillColor) {
         ctx.save();
 
-        if (lineWidth > 1)  // draw base circle
+        if (debugRender)  // draw base circle
             (new Circle(this.x, this.y, this.radius)).render(ctx, 1);
 
         if (lineWidth > 0) {
             for (var i = 0; i < this.arcs.length; i++) {
                 this.arcs[i].x = this.x;
                 this.arcs[i].y = this.y;
-                this.arcs[i].render(ctx, lineWidth, colorStroke = defaultColor, fillColor);
+                this.arcs[i].render(ctx, lineWidth, colorStroke, fillColor);
             }
         }
         ctx.restore();

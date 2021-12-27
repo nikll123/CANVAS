@@ -12,8 +12,11 @@
 <body onLoad="draw()">
 
   <div>
-    <input type="checkbox" id="debugMode" name="DebugName" checked>
-    <label for="scales">Debug</label>
+    Debug
+    <input type="checkbox" id="debugMode" checked>
+    <!-- <label for="debugMode">Debug</label> -->
+    Number of circles
+    <input type="number" id="countCircle" min="2" max="120" step="10" value="4">
   </div>
 
   <script>
@@ -21,7 +24,14 @@
     debugMode.addEventListener('change', () => {
       debugRender = debugMode.checked;
     })
+    var countCircles = 4;
+    var numCircles = document.querySelector('input[id="countCircle"]');
+    numCircles.addEventListener('change', () => {
+      countCircles = parseInt(numCircles.value);
+      init();
+    })
   </script>
+
 
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
@@ -30,15 +40,20 @@
     var ctx = canvas.getContext('2d');
     var startX = 0;
     var startY = 0;
+    var cclCmbs;
 
-    var cclCmbs = [];
-    for (var i = 0; i < 4; i++) {
-      var x = Math.floor(Math.random() * canvas.clientWidth);
-      var y = Math.floor(Math.random() * canvas.clientHeight);
-      var r = Math.floor(20 + Math.random() * 80);
-      cclCmb1 = new CircleCombo(x, y, r);
-      cclCmbs.push(cclCmb1);
+    function init() {
+      cclCmbs = [];
+      for (var i = 0; i < countCircles; i++) {
+        var x = Math.floor(Math.random() * canvas.clientWidth);
+        var y = Math.floor(Math.random() * canvas.clientHeight);
+        var r = Math.floor(20 + Math.random() * 80);
+        cclCmb1 = new CircleCombo(x, y, r);
+        cclCmbs.push(cclCmb1);
+      }
     }
+
+    init();
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)

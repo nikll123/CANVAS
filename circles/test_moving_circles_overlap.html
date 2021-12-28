@@ -32,7 +32,6 @@
     })
   </script>
 
-
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
@@ -57,6 +56,20 @@
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(150, 50);
+      ctx.lineTo(550, 50);
+      ctx.lineTo(550, 400);
+      ctx.lineTo(400, 550);
+      ctx.lineTo(50, 550);
+      ctx.lineTo(50, 150);
+      ctx.arc(150, 150, 100, PI, 3 * PI / 2);
+      ctx.fillStyle = "#FFDDDD";
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
 
       for (var i = 0; i < cclCmbs.length; i++) {
         var angles = [];

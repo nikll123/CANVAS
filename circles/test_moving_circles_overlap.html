@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <script src="..\lib\canvas.js"></script>
   <script src="..\lib\calc.js"></script>
   <script src="..\lib\const.js"></script>
   <script src="..\lib\primitives.js"></script>
@@ -55,9 +56,17 @@
     init();
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
+      clearAll(ctx);
+      grid(ctx);
 
       ctx.save();
+
+      // ctx.beginPath();
+      // ctx.rect(5, 5, 590, 590);
+      // ctx.fillStyle = "#DDDDFF";
+      // ctx.fill();
+      // ctx.stroke();
+
       ctx.beginPath();
       ctx.moveTo(150, 50);
       ctx.lineTo(550, 50);
@@ -66,6 +75,7 @@
       ctx.lineTo(50, 550);
       ctx.lineTo(50, 150);
       ctx.arc(150, 150, 100, PI, 3 * PI / 2);
+      ctx.closePath();
       ctx.fillStyle = "#FFDDDD";
       ctx.fill();
       ctx.stroke();
@@ -107,7 +117,8 @@
       }
 
       for (var i = 0; i < cclCmbs.length; i++)
-        cclCmbs[i].render(ctx, 5, '#FF0000');
+        // cclCmbs[i].render(ctx, 5, '#FF0000');
+        cclCmbs[i].clip(ctx);
 
       window.requestAnimationFrame(draw);
     }

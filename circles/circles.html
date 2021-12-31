@@ -1,15 +1,20 @@
 <html>
 
 <head>
+  <script src="..\lib\canvas.js"></script>
+  <script src="..\lib\calc.js"></script>
+  <script src="..\lib\const.js"></script>
+  <script src="..\lib\primitives.js"></script>
+  <script src="..\lib\shapes.js"></script>
+  <script src="..\lib\MouseTouchTracker.js"></script>
+  <script src="..\lib\test\ut_Angles.js"></script>
+  <script src="..\lib\test\ut_Calc.js"></script>
 
 </head>
 
 
 <body">
   <canvas id="canvas" style="border: 1px solid" width="600" height="300"></canvas>
-  <script src="classes.js"></script>
-  <script src="MouseTouchTracker.js"></script>
-
   <script>
 
     function isHit(shape, x, y) {
@@ -33,11 +38,15 @@
     var startX = 0;
     var startY = 0;
 
-    var rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
-    rectangle1.render(ctx);
+    // var rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
+    // rectangle1.render(ctx);
 
     var circle1 = new Circle(200, 140, 50, '#F00000');
     circle1.render(ctx);
+
+    cc = new CircleCombo(155, 155, 95);
+      cc.render(ctx, 1);
+
 
     var mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {

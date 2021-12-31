@@ -7,7 +7,10 @@
   <script src="..\lib\primitives.js"></script>
   <script src="..\lib\shapes.js"></script>
   <script src="..\lib\MouseTouchTracker.js"></script>
+
   <script src="..\lib\test\ut_Angles.js"></script>
+  <script src="..\lib\test\ut_Calc.js"></script>
+  <script src="..\lib\test\ut_Shapes.js"></script>
 </head>
 
 <body onLoad="draw()">
@@ -17,16 +20,17 @@
     <input type="checkbox" id="debugMode" checked>
     <!-- <label for="debugMode">Debug</label> -->
     Number of circles
-    <input type="number" id="countCircle" min="2" max="120" step="10" value="4">
+    <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
   </div>
 
   <script>
     var debugMode = document.querySelector('input[id="debugMode"]');
     debugMode.addEventListener('change', () => {
-      debugRender = debugMode.checked;
+      DEBUG_RENDER = debugMode.checked;
     })
-    var countCircles = 4;
+    var countCircles = 2;
     var numCircles = document.querySelector('input[id="countCircle"]');
+    numCircles.value = countCircles;
     numCircles.addEventListener('change', () => {
       countCircles = parseInt(numCircles.value);
       init();
@@ -44,13 +48,19 @@
 
     function init() {
       cclCmbs = [];
-      for (var i = 0; i < countCircles; i++) {
-        var x = Math.floor(Math.random() * canvas.clientWidth);
-        var y = Math.floor(Math.random() * canvas.clientHeight);
-        var r = Math.floor(20 + Math.random() * 80);
-        cclCmb1 = new CircleCombo(x, y, r);
-        cclCmbs.push(cclCmb1);
-      }
+      // for (var i = 0; i < countCircles; i++) {
+      //   var x = Math.floor(Math.random() * canvas.clientWidth);
+      //   var y = Math.floor(Math.random() * canvas.clientHeight);
+      //   var r = Math.floor(20 + Math.random() * 80);
+      // cclCmb1 = new CircleCombo(x, y, r);
+      // cclCmbs.push(cclCmb1);
+      // }
+      cc = new CircleCombo(155, 155, 95);
+      cc.render(ctx, 1);
+      cclCmbs.push(cc);
+      cc = new CircleCombo(215, 215, 115);
+      cc.render(ctx, 1, '#FFAAFF');
+      cclCmbs.push(cc);
     }
 
     init();
@@ -80,12 +90,7 @@
       ctx.moveTo(400, 500);
       ctx.arc(350, 500, 50, 0, DVA_PI, false);
 
-      ctx.fillStyle = "#FFDDDD";
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.restore();
-
+      var arcs = [];
       for (var i = 0; i < cclCmbs.length; i++) {
         var angles = [];
         var points = [];
@@ -100,7 +105,6 @@
           }
         }
         points = Calc.sortAndUnique(points);
-        var arcs = [];
         for (var p = 1; p < points.length; p++) {
           p1 = points[p - 1];
           p2 = points[p];
@@ -115,15 +119,54 @@
             }
           }
           if (ok) {
-            arcs.push(new Angle(p1, p2));
+            arcs.push(new Arc(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[i].radius, new Angle(p1, p2)));
           }
         }
-        cclCmbs[i].setArcs(arcs);
+        // cclCmbs[i].setAngles(arcs);
       }
 
-      for (var i = 0; i < cclCmbs.length; i++)
-        // cclCmbs[i].render(ctx, 5, '#FF0000');
-        cclCmbs[i].clip(ctx);
+      ctx.stroke();
+
+
+      var a = 0;
+      var ex = 0;
+      var ey = 0;
+      arcs[a].moveToStart(ctx);
+      [sx, sy] = arcs[a].startXY;
+      ctx.beginPath();
+      while (0 < arcs.length) {
+        arcs[a].quasiDraw(ctx);
+        [ex, ey] = arcs[a].endXY;
+        arcs.splice(a, 1);
+
+        if (Calc.arraysEqual([sx, sy], [ex, ey])) {
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        for (var i = 0; i < arcs.length; i++) {
+          console.debug(arcs[i].startXY);
+          console.debug([ex, ey]);
+          if (Calc.arraysEqual(arcs[i].startXY, [ex, ey])) {
+            a = i;
+          }
+        }
+      }
+
+      // for (var i = 0; i < arcs.length; i++) {
+
+      //   // if (!arcs[i].isCircle)
+      //   //   ctx.lineTo(this.startX, this.startY);
+
+      // }
+
+      // cclCmbs[i].clip(ctx);
+
+      ctx.fillStyle = "#FFDDDD";
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.restore();
 
       window.requestAnimationFrame(draw);
     }

@@ -1,0 +1,44 @@
+<html>
+<title>cut off example</title>
+<header>
+    <script src="..\lib\const.js"></script>
+    <script src="..\lib\primitives.js"></script>
+    <script src="..\lib\shapes.js"></script>
+    <script src="..\lib\calc.js"></script>
+
+    <script src="..\lib\test\ut_Angles.js"></script>
+    <script src="..\lib\test\ut_Calc.js"></script>
+    <script src="..\lib\test\ut_Shapes.js"></script>
+</header>
+
+<body>
+    <canvas id="canvas1" style="border:1px solid" width="600" height="600">
+        canvas_canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvas1");
+        var ctx = canvas.getContext("2d");
+
+        var arc1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
+        arc1.render(ctx, 1, "#000000", "#F0F0F0");
+
+        var arc2 = new Arc(250, 280, 120, new Angle(0, DVA_PI));
+        arc2.moveToStart(ctx);
+        arc2.render(ctx, 1, "#000000", "#F0F0F0");
+
+        var c1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
+        var c2 = new Arc(250, 280, 120, new Angle(0, PI));
+
+        [angle11, angle12] = Calc.circleOverlap(c1, c2);
+        [angle21, angle22] = Calc.circleOverlap(c2, c1);
+
+        a1 = new Arc(c1.x, c1.y, c1.radius, angle11);
+        a2 = new Arc(c2.x, c2.y, c2.radius, angle22);
+        a3 = new Arc(c2.x, c2.y, c2.radius, angle21);
+        ol1 = new Outline([a1, a2, a3]);
+        ol1.render(ctx, 5, "#FF0000", "#AAAAAA");
+
+    </script>
+</body>
+
+</html>

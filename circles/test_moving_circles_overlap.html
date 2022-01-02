@@ -135,8 +135,8 @@
         }
       }
 
-      ctx.fillStyle = "#FFDDDD";
-      ctx.fill();
+      // ctx.fillStyle = "#FFDDDD";
+      // ctx.fill();
       // ctx.stroke();
 
       var a = 0;
@@ -169,17 +169,19 @@
 
       // ctx.beginPath();
       for (var i = 0; i < outlines.length; i++) {
-        outlines[i].moveToStart(ctx);
+        ol1 = outlines[i];
+        ol1.moveToStart(ctx);
         // globalCCW = true;
-        outlines[i].build(ctx);
+        ol1.build(ctx, CCW);
         // outlines[i].render(ctx, 15, '#FF0000');
       }
 
       // ctx.lineWidth = 1;
       // ctx.strokeStyle = '#FF0000';
+      ctx.fillStyle = "#FFDDDD";
+      ctx.fill();
       ctx.stroke();
-
-
+      
       //  (new Outline(outlines)).render(ctx, 15, '#FF0000')
 
       ctx.restore();

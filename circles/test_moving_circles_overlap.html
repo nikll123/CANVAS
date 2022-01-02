@@ -28,7 +28,7 @@
     debugMode.addEventListener('change', () => {
       DEBUG_RENDER = debugMode.checked;
     })
-    var countCircles = 2;
+    var countCircles = 4;
     var numCircles = document.querySelector('input[id="countCircle"]');
     numCircles.value = countCircles;
     numCircles.addEventListener('change', () => {
@@ -48,30 +48,30 @@
 
     function init() {
       cclCmbs = [];
-      // for (var i = 0; i < countCircles; i++) {
-      //   var x = Math.floor(Math.random() * canvas.clientWidth);
-      //   var y = Math.floor(Math.random() * canvas.clientHeight);
-      //   var r = Math.floor(20 + Math.random() * 80);
-      // cclCmb1 = new CircleCombo(x, y, r);
-      // cclCmbs.push(cclCmb1);
-      // }
-      cc = new CircleCombo(155, 155, 55);
-      cc.render(ctx, 1);
-      cclCmbs.push(cc);
-      cc = new CircleCombo(215, 215, 85);
-      cc.render(ctx, 1, '#FFAAFF');
-      cclCmbs.push(cc);
-      cc = new CircleCombo(255, 280, 95);
-      cc.render(ctx, 1);
-      cclCmbs.push(cc);
+      for (var i = 0; i < countCircles; i++) {
+        var x = Math.floor(Math.random() * canvas.clientWidth);
+        var y = Math.floor(Math.random() * canvas.clientHeight);
+        var r = Math.floor(20 + Math.random() * 80);
+      cclCmb1 = new CircleCombo(x, y, r);
+      cclCmbs.push(cclCmb1);
+      }
+      // cc = new CircleCombo(155, 155, 55);
+      // cc.render(ctx, 1);
+      // cclCmbs.push(cc);
+      // cc = new CircleCombo(215, 215, 85);
+      // cc.render(ctx, 1, '#FFAAFF');
+      // cclCmbs.push(cc);
+      // cc = new CircleCombo(255, 280, 95);
+      // cc.render(ctx, 1);
+      // cclCmbs.push(cc);
 
-      cc = new CircleCombo(355, 450, 75);
-      cc.render(ctx, 1);
-      cclCmbs.push(cc);
+      // cc = new CircleCombo(355, 450, 75);
+      // cc.render(ctx, 1);
+      // cclCmbs.push(cc);
 
-      cc = new CircleCombo(155, 320, 65);
-      cc.render(ctx, 1);
-      cclCmbs.push(cc);
+      // cc = new CircleCombo(155, 320, 65);
+      // cc.render(ctx, 1);
+      // cclCmbs.push(cc);
     }
 
     init();

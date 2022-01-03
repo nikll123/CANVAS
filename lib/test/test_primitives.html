@@ -44,8 +44,8 @@
     var ctx = canvas.getContext('2d');
 
     function draw() {
-      clearAll(ctx);
-      grid(ctx);
+      Canvas.clearAll(ctx);
+      Canvas.grid(ctx);
 
       var txt = new Text(10, 50, "Points");
       txt.render(ctx);

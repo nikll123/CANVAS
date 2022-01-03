@@ -1,0 +1,75 @@
+<html>
+
+<head>
+  <script src="..\lib\canvas.js"></script>
+  <script src="..\lib\calc.js"></script>
+  <script src="..\lib\const.js"></script>
+  <script src="..\lib\primitives.js"></script>
+  <script src="..\lib\shapes.js"></script>
+  <script src="..\lib\MouseTouchTracker.js"></script>
+
+  <script src="..\lib\test\ut_Angles.js"></script>
+  <script src="..\lib\test\ut_Calc.js"></script>
+  <script src="..\lib\test\ut_Shapes.js"></script>
+</head>
+
+<body onLoad="draw()">
+
+  <div>
+    Debug
+    <input type="checkbox" id="debugMode" globalDebugMode>
+    <!-- <label for="debugMode">Debug</label> -->
+    Number of circles
+    <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
+  </div>
+
+  <script>
+    var debugMode = document.querySelector('input[id="debugMode"]');
+    debugMode.addEventListener('change', () => {
+      globalDebugMode = debugMode.checked;
+    })
+    var countCircles = 1;
+    var numCircles = document.querySelector('input[id="countCircle"]');
+    numCircles.value = countCircles;
+    numCircles.addEventListener('change', () => {
+      countCircles = parseInt(numCircles.value);
+      init();
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var cclCmbs;
+
+    function init() {
+      cclCmbs = [];
+      for (var i = 0; i < countCircles; i++) {
+        var x = Math.floor(Math.random() * canvas.clientWidth);
+        var y = Math.floor(Math.random() * canvas.clientHeight);
+        var r = Math.floor(20 + Math.random() * 80);
+        cclCmb1 = new CircleCombo(x, y, r, [new Angle(1, 2), new Angle(3, 5), new Angle(5.6, 6.1)]);
+        cclCmbs.push(cclCmb1);
+      }
+
+      for (var i = 0; i < cclCmbs.length; i++) {
+        cclCmbs[i].render(ctx, 1);
+      }
+    }
+
+    init();
+
+    function draw() {
+      // clearAll(ctx);
+      // grid(ctx);
+      // ctx.beginPath();
+
+      // window.requestAnimationFrame(draw);
+    }
+
+  </script>
+</body>
+
+</html>

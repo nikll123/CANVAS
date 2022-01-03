@@ -66,6 +66,20 @@
       txt.render(ctx, DRAFT_COLOR);
       var p1 = new Point(10, 105);
       p1.draft(ctx);
+
+      // Angle
+      var a1 = new Angle(1, 5);
+      var x = 200;
+      var y = 100;
+      var r = 50;
+
+      if (globalDebugMode)
+        a1.draft(ctx, x, y, r);
+      else
+        a1.render(ctx, x, y, r);
+
+
+        
       window.requestAnimationFrame(draw);
     }
   </script>

@@ -57,6 +57,18 @@
         cclCmb1 = new CircleCombo(x, y, r);
         cclCmbs.push(cclCmb1);
       }
+    
+      if (globalDebugMode) {
+        ctx.save();
+        // pMouse = new Point(curX, cury);
+        // pMouse.render(ctx, 2, '#999999');
+        for (var i = 0; i < cclCmbs.length; i++) {
+          cclCmbs[i].render(ctx, 1);
+        }
+        // ctx.beginPath();ctx.moveTo(0, 0);ctx.lineTo(600, 600);ctx.lineWidth = 10;ctx.strokeStyle = '#FF0000';ctx.stroke();        
+        ctx.restore();
+      }
+
     }
 
     init();
@@ -136,8 +148,14 @@
       //  (new Outline(outlines)).render(ctx, 15, '#FF0000')
 
       if (globalDebugMode) {
+        ctx.save();
         pMouse = new Point(curX, cury);
         pMouse.render(ctx, 2, '#999999');
+        for (var i = 0; i < cclCmbs.length; i++) {
+          cclCmbs[i].render(ctx, 1);
+        }
+        // ctx.beginPath();ctx.moveTo(0, 0);ctx.lineTo(600, 600);ctx.lineWidth = 10;ctx.strokeStyle = '#FF0000';ctx.stroke();        
+        ctx.restore();
       }
 
       window.requestAnimationFrame(draw);

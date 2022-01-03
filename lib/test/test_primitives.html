@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <script src="..\canvas.js"></script>
+  <script src="..\calc.js"></script>
+  <script src="..\const.js"></script>
+  <script src="..\primitives.js"></script>
+  <script src="..\shapes.js"></script>
+  <!-- <script src="..\MouseTouchTracker.js"></script> -->
+
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+</head>
+
+<body>
+
+  <div>
+    Debug
+    <input type="checkbox" id="debugMode" globalDebugMode>
+    <!-- <label for="debugMode">Debug</label> -->
+    Number of circles
+    <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
+  </div>
+
+  <script>
+    var debugMode = document.querySelector('input[id="debugMode"]');
+    debugMode.addEventListener('change', () => {
+      globalDebugMode = debugMode.checked;
+    })
+    var countCircles = 1;
+    var numCircles = document.querySelector('input[id="countCircle"]');
+    numCircles.value = countCircles;
+    numCircles.addEventListener('change', () => {
+      countCircles = parseInt(numCircles.value);
+      init();
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var txt = new Text(10, 50, "Points");
+    txt.render(ctx);
+    var txt = new Text(60, 75, "Render");
+    txt.render(ctx);
+    var p1 = new Point(10, 75); 
+    p1.render(ctx, 3);
+    var txt = new Text(60, 105, "draft");
+    txt.render(ctx, DRAFT_COLOR);
+    var p1 = new Point(10, 105);
+    p1.draft(ctx);
+
+  </script>
+</body>
+
+</html>

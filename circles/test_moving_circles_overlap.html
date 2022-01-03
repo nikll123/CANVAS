@@ -62,7 +62,6 @@
     function draw() {
       clearAll(ctx);
       grid(ctx);
-      ctx.save();
 
       ctx.beginPath();
       ctx.moveTo(150, 50);
@@ -154,8 +153,6 @@
 
       //  (new Outline(outlines)).render(ctx, 15, '#FF0000')
 
-      ctx.restore();
-
       window.requestAnimationFrame(draw);
     }
 
@@ -168,10 +165,7 @@
 
     var mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         switch (evtType) {
-
           case 'down':
             startX = x;
             startY = y;
@@ -192,7 +186,6 @@
 
             for (var i = 0; i < cclCmbs.length; i++) {
               cclCmbs[i].moveIfDragging(dx, dy);
-              cclCmbs[i].render(ctx, 10);
             }
             break;
         }

@@ -1,0 +1,72 @@
+<html>
+
+<head>
+  <script src="..\canvas.js"></script>
+  <script src="..\calc.js"></script>
+  <script src="..\const.js"></script>
+  <script src="..\primitives.js"></script>
+  <script src="..\shapes.js"></script>
+  <!-- <script src="..\MouseTouchTracker.js"></script> -->
+
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+</head>
+
+<body onload="draw()">
+
+  <div>
+    Debug
+    <input type="checkbox" id="debugMode" globalDebugMode>
+    <!-- <label for="debugMode">Debug</label> -->
+    Number of circles
+    <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
+  </div>
+
+  <script>
+    var debugMode = document.querySelector('input[id="debugMode"]');
+    debugMode.addEventListener('change', () => {
+      globalDebugMode = debugMode.checked;
+    })
+    var countCircles = 1;
+    var numCircles = document.querySelector('input[id="countCircle"]');
+    numCircles.value = countCircles;
+    numCircles.addEventListener('change', () => {
+      countCircles = parseInt(numCircles.value);
+      init();
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    function draw() {
+      Canvas.clearAll(ctx);
+      Canvas.grid(ctx);
+
+      var arc1 = new Arc(300, 200, 100, new Angle(2, 5));
+      if (globalDebugMode) {
+        arc1.draft(ctx);
+      }
+      else {
+        arc1.render(ctx,1);
+      }
+
+
+      var cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)]);
+      if (globalDebugMode) {
+        cmbCcl.draft(ctx);
+      }
+      else {
+        cmbCcl.render(ctx,1);
+      }
+
+      window.requestAnimationFrame(draw);
+    }
+  </script>
+</body>
+
+</html>

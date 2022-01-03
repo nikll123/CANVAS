@@ -52,26 +52,9 @@
         var x = Math.floor(Math.random() * canvas.clientWidth);
         var y = Math.floor(Math.random() * canvas.clientHeight);
         var r = Math.floor(20 + Math.random() * 80);
-      cclCmb1 = new CircleCombo(x, y, r);
-      cclCmbs.push(cclCmb1);
+        cclCmb1 = new CircleCombo(x, y, r);
+        cclCmbs.push(cclCmb1);
       }
-      // cc = new CircleCombo(155, 155, 55);
-      // cc.render(ctx, 1);
-      // cclCmbs.push(cc);
-      // cc = new CircleCombo(215, 215, 85);
-      // cc.render(ctx, 1, '#FFAAFF');
-      // cclCmbs.push(cc);
-      // cc = new CircleCombo(255, 280, 95);
-      // cc.render(ctx, 1);
-      // cclCmbs.push(cc);
-
-      // cc = new CircleCombo(355, 450, 75);
-      // cc.render(ctx, 1);
-      // cclCmbs.push(cc);
-
-      // cc = new CircleCombo(155, 320, 65);
-      // cc.render(ctx, 1);
-      // cclCmbs.push(cc);
     }
 
     init();
@@ -135,17 +118,9 @@
         }
       }
 
-      // ctx.fillStyle = "#FFDDDD";
-      // ctx.fill();
-      // ctx.stroke();
-
-      var a = 0;
-      var ex = 0;
-      var ey = 0;
       var endXY;
       var startXY;
       var outlines = [];
-      var oli = 0;
       while (0 < arcs.length) {
         ol1 = new Outline();
         arc1 = arcs[0];
@@ -167,21 +142,16 @@
         outlines.push(ol1);
       }
 
-      // ctx.beginPath();
       for (var i = 0; i < outlines.length; i++) {
         ol1 = outlines[i];
         ol1.moveToStart(ctx);
-        // globalCCW = true;
         ol1.build(ctx, CCW);
-        // outlines[i].render(ctx, 15, '#FF0000');
       }
 
-      // ctx.lineWidth = 1;
-      // ctx.strokeStyle = '#FF0000';
       ctx.fillStyle = "#FFDDDD";
       ctx.fill();
       ctx.stroke();
-      
+
       //  (new Outline(outlines)).render(ctx, 15, '#FF0000')
 
       ctx.restore();
@@ -220,8 +190,10 @@
             startX = x;
             startY = y;
 
-            for (var i = 0; i < cclCmbs.length; i++)
+            for (var i = 0; i < cclCmbs.length; i++) {
               cclCmbs[i].moveIfDragging(dx, dy);
+              cclCmbs[i].render(ctx, 10);
+            }
             break;
         }
       }

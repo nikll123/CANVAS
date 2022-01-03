@@ -57,18 +57,6 @@
         cclCmb1 = new CircleCombo(x, y, r);
         cclCmbs.push(cclCmb1);
       }
-    
-      if (globalDebugMode) {
-        ctx.save();
-        // pMouse = new Point(curX, cury);
-        // pMouse.render(ctx, 2, '#999999');
-        for (var i = 0; i < cclCmbs.length; i++) {
-          cclCmbs[i].render(ctx, 1);
-        }
-        // ctx.beginPath();ctx.moveTo(0, 0);ctx.lineTo(600, 600);ctx.lineWidth = 10;ctx.strokeStyle = '#FF0000';ctx.stroke();        
-        ctx.restore();
-      }
-
     }
 
     init();
@@ -81,12 +69,16 @@
       buildBgShape();
 
       var arcs = [];
+      var hiddenCircles = [];
       for (var i = 0; i < cclCmbs.length; i++) {
         var angles = [];
         var points = [];
         for (var j = 0; j < cclCmbs.length; j++) {
           if (i != j) {
             [ang_cclCmb1_1, ang_cclCmb1_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
+            if (ang_cclCmb1_1.end ==0 ){
+              hiddenCircles.push(cclCmbs[i])              
+            }
             angles.push([ang_cclCmb1_1, ang_cclCmb1_2]);
             points.push(ang_cclCmb1_1.begin);
             points.push(ang_cclCmb1_1.end);
@@ -98,7 +90,7 @@
         for (var p = 1; p < points.length; p++) {
           p1 = points[p - 1];
           p2 = points[p];
-          pm = p1 + (p2 - p1) / 2;
+          pm = p1 + (p2 - p1) / 2; // point mediana
           ok = true;
           for (var a = 0; a < angles.length; a++) {
             var a1 = angles[a][0];
@@ -149,11 +141,18 @@
 
       if (globalDebugMode) {
         ctx.save();
-        pMouse = new Point(curX, cury);
-        pMouse.render(ctx, 2, '#999999');
-        for (var i = 0; i < cclCmbs.length; i++) {
-          cclCmbs[i].render(ctx, 1);
+        pMouse = new Point(curX, curY);
+        pMouse.draft(ctx, 2);
+
+        for (var i = 0; i < outlines.length; i++) {
+          ol1 = outlines[i];
+          ol1.draft(ctx);
         }
+
+        for (var i = 0; i < hiddenCircles.length; i++) {
+          hiddenCircles[i].draft(ctx);
+        }
+
         // ctx.beginPath();ctx.moveTo(0, 0);ctx.lineTo(600, 600);ctx.lineWidth = 10;ctx.strokeStyle = '#FF0000';ctx.stroke();        
         ctx.restore();
       }
@@ -192,7 +191,7 @@
     var mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
         curX = x;
-        cury = y;
+        curY = y;
         switch (evtType) {
           case 'down':
             startX = x;

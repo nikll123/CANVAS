@@ -47,7 +47,6 @@
     var curX = 0;
     var curY = 0;
     var cclCmbs;
-
     function init() {
       cclCmbs = [];
       for (var i = 0; i < countCircles; i++) {
@@ -69,59 +68,67 @@
       buildBgShape();
 
       var arcs = [];
-      var hiddenCircles = [];
+      cclCmbs = dropEqualCircles(cclCmbs);
+      cclCmbs = markIncapsulatedCircles(cclCmbs);
       for (var i = 0; i < cclCmbs.length; i++) {
+        if (cclCmbs[i].state == STATE_HIDDEN)
+          continue;
         var angles = [];
-        var points = [];
+        var angle_points = [];
         for (var j = 0; j < cclCmbs.length; j++) {
           if (i != j) {
-            [ang_cclCmb1_1, ang_cclCmb1_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
-            if (ang_cclCmb1_1.end ==0 ){
-              hiddenCircles.push(cclCmbs[i])              
-            }
-            angles.push([ang_cclCmb1_1, ang_cclCmb1_2]);
-            points.push(ang_cclCmb1_1.begin);
-            points.push(ang_cclCmb1_1.end);
-            points.push(ang_cclCmb1_2.begin);
-            points.push(ang_cclCmb1_2.end);
+            [ang_1, ang_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
+            angles.push([ang_1, ang_2]);
+            angle_points.push(ang_1.begin);
+            angle_points.push(ang_1.end);
+            angle_points.push(ang_2.begin);
+            angle_points.push(ang_2.end);
           }
         }
-        points = Calc.sortAndUnique(points);
-        for (var p = 1; p < points.length; p++) {
-          p1 = points[p - 1];
-          p2 = points[p];
+        angle_points = Calc.sortAndUnique(angle_points);
+        var visible = false;
+        for (var p = 1; p < angle_points.length; p++) {
+          p1 = angle_points[p - 1];
+          p2 = angle_points[p];
           pm = p1 + (p2 - p1) / 2; // point mediana
-          ok = true;
+          hit = true;
           for (var a = 0; a < angles.length; a++) {
             var a1 = angles[a][0];
             var a2 = angles[a][1];
-            if (!((a1.begin < pm && pm < a1.end) || (a2.begin < pm && pm < a2.end))) {
-              ok = false;
+            hit = (a1.begin < pm && pm < a1.end) || (a2.begin < pm && pm < a2.end);
+            if (!hit)
               break;
-            }
           }
-          if (ok) {
+          if (hit) {
             arcs.push(new Arc(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[i].radius, new Angle(p1, p2)));
+            visible = true;
           }
         }
+        // if (globalDebugMode && !visible)
+        //   hiddenCircles.push(cclCmbs[i]);
       }
 
       var endXY;
       var startXY;
       var outlines = [];
+      var arcs1 = arcs; // DEBUG purposes
       while (0 < arcs.length) {
-        ol1 = new Outline();
+        var ol1 = new Outline();
         arc1 = arcs[0];
         endXY = _PushArc(arcs, 0, ol1)
         if (!arc1.isCircle) {
           startXY = arc1.startXY;
           while (!(Calc.arraysEqual(startXY, endXY))) {
+            var found = false;
             for (var i = 0; i < arcs.length; i++) {
               if (Calc.arraysEqual(arcs[i].startXY, endXY)) {
                 endXY = _PushArc(arcs, i, ol1);
+                found = true;
                 break;
               }
             }
+            if (!found)
+              console.assert(found, "error: not found")
           }
         }
         outlines.push(ol1);
@@ -144,13 +151,13 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
 
-        for (var i = 0; i < outlines.length; i++) {
-          ol1 = outlines[i];
-          ol1.draft(ctx);
-        }
+        // for (var i = 0; i < outlines.length; i++) {
+        //   ol1 = outlines[i];
+        //   ol1.draft(ctx);
+        // }
 
-        for (var i = 0; i < hiddenCircles.length; i++) {
-          hiddenCircles[i].draft(ctx);
+        for (var i = 0; i < cclCmbs.length; i++) {
+          cclCmbs[i].draft(ctx);
         }
 
         // ctx.beginPath();ctx.moveTo(0, 0);ctx.lineTo(600, 600);ctx.lineWidth = 10;ctx.strokeStyle = '#FF0000';ctx.stroke();        
@@ -186,6 +193,33 @@
 
       // ctx.moveTo(400, 500);
       // ctx.arc(350, 500, 50, 0, DVA_PI, false);
+    }
+
+    function dropEqualCircles(cclCmbs) {
+      for (var i = 0; i < cclCmbs.length; i++) {
+        for (var j = cclCmbs.length - 1; j > i; j--) {
+          if (cclCmbs[i].equal(cclCmbs[j]))
+            cclCmbs.splice(j, 1);
+        }
+      }
+      return cclCmbs;
+    }
+
+    function markIncapsulatedCircles(cclCmbs) {
+      var incapsulated = [];
+      var toDelete = [];
+      for (var i = 0; i < cclCmbs.length; i++) {
+        cclCmbs[i].status = STATE_NORMAL;
+        for (var j = 0; j < cclCmbs.length; j++) {
+          if (i != j) {
+            var distance = Calc.getDistance(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[j].x, cclCmbs[j].y);
+            if (distance <= cclCmbs[i].radius - cclCmbs[j].radius) {
+              cclCmbs[j].status = STATE_HIDDEN;
+            }
+          }
+        }
+      }
+      return cclCmbs;
     }
 
     var mtt = new MouseTouchTracker(canvas,

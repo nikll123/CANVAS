@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <script src="..\lib\obj.js"></script>
   <script src="..\lib\canvas.js"></script>
   <script src="..\lib\calc.js"></script>
   <script src="..\lib\const.js"></script>
@@ -8,6 +9,7 @@
   <script src="..\lib\shapes.js"></script>
   <script src="..\lib\MouseTouchTracker.js"></script>
 
+  <script src="..\lib\test\ut_Obj.js"></script>
   <script src="..\lib\test\ut_Angles.js"></script>
   <script src="..\lib\test\ut_Calc.js"></script>
   <script src="..\lib\test\ut_Shapes.js"></script>
@@ -71,7 +73,7 @@
       cclCmbs = dropEqualCircles(cclCmbs);
       cclCmbs = markIncapsulatedCircles(cclCmbs);
       for (var i = 0; i < cclCmbs.length; i++) {
-        if (cclCmbs[i].state == STATE_HIDDEN)
+        if (cclCmbs[i].state == STATE.HIDDEN)
           continue;
         var angles = [];
         var angle_points = [];
@@ -104,8 +106,6 @@
             visible = true;
           }
         }
-        // if (globalDebugMode && !visible)
-        //   hiddenCircles.push(cclCmbs[i]);
       }
 
       var endXY;
@@ -214,12 +214,12 @@
       var incapsulated = [];
       var toDelete = [];
       for (var i = 0; i < cclCmbs.length; i++) {
-        cclCmbs[i].status = STATE_NORMAL;
+        cclCmbs[i].status = STATE.NORMAL;
         for (var j = 0; j < cclCmbs.length; j++) {
           if (i != j) {
             var distance = Calc.getDistance(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[j].x, cclCmbs[j].y);
             if (distance <= cclCmbs[i].radius - cclCmbs[j].radius) {
-              cclCmbs[j].status = STATE_HIDDEN;
+              cclCmbs[j].status = STATE.HIDDEN;
             }
           }
         }

@@ -140,9 +140,14 @@
         ol1.build(ctx, CCW);
       }
 
-      ctx.fillStyle = "#FFDDDD";
+      ctx.fillStyle = "#FF9999";
       ctx.fill();
-      ctx.stroke();
+      ctx.globalAlpha = 0.5;
+      ctx.shadowColor = '#AAAAAA'
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 8;
+      // ctx.stroke();
 
       //  (new Outline(outlines)).render(ctx, 15, '#FF0000')
 

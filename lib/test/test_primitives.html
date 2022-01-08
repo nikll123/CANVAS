@@ -47,30 +47,31 @@
     function draw() {
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
-      
+
       // Text 
       var txt = new Text(10, 50, "Points", "txt1");
       txt.render(ctx);
-      var p1 = new Point(10, 75);
-      var t1 = '';
+      var p1 = new Point(10, 75, 'p1');
       if (globalDebugMode) {
         p1.draft(ctx);
-        t1 = 'draft';
       }
       else {
         p1.render(ctx, 3);
-        t1 = 'render';
       }
-      var txt = new Text(60, 75, t1);
-      txt.render(ctx);
+      var txt = new Text(100, 75, 'text example', 'txt1');
+      if (globalDebugMode)
+        txt.draft(ctx);
+      else
+        txt.render(ctx);
 
-      var txt = new Text(60, 105, "draft");
+      var txt = new Text(100, 105, "draft");
       txt.render(ctx, DRAFT_COLOR);
-      var p1 = new Point(10, 105);
-      p1.draft(ctx);
+
+      var p2 = new Point(10, 105, 'p2');
+      p2.draft(ctx);
 
       // Angle
-      var a1 = new Angle(1, 5);
+      var a1 = new Angle(1, 5, 'ang0');
       var x = 200;
       var y = 100;
       var r = 50;

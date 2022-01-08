@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <script src="..\obj.js"></script>
   <script src="..\canvas.js"></script>
   <script src="..\calc.js"></script>
   <script src="..\const.js"></script>
@@ -16,24 +17,23 @@
 <body onload="draw()">
 
   <div>
-    Debug
-    <input type="checkbox" id="debugMode" globalDebugMode>
-    <!-- <label for="debugMode">Debug</label> -->
-    Number of circles
-    <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
+    <input type="checkbox" id="chkDebugMode" name="Draft">
+    <label for="Draft">Draft</label>
+    <input type="checkbox" id="chkShowDetails" name="Details">
+    <label for="Details">Details</label>
   </div>
 
   <script>
-    var debugMode = document.querySelector('input[id="debugMode"]');
-    debugMode.addEventListener('change', () => {
-      globalDebugMode = debugMode.checked;
+    debugMode = false;
+    var objDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    objDebugMode.addEventListener('change', () => {
+      debugMode = objDebugMode.checked;
     })
-    var countCircles = 1;
-    var numCircles = document.querySelector('input[id="countCircle"]');
-    numCircles.value = countCircles;
-    numCircles.addEventListener('change', () => {
-      countCircles = parseInt(numCircles.value);
-      init();
+
+    showDetails = false;
+    var objShowDetails = document.querySelector('input[id="chkShowDetails"]');
+    objShowDetails.addEventListener('change', () => {
+      showDetails = objShowDetails.checked;
     })
   </script>
 
@@ -47,22 +47,26 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      var arc1 = new Arc(300, 200, 100, new Angle(2, 5));
-      if (globalDebugMode) {
+      var crc1 = new Circle(200, 400, 45, 'arc1');
+      var arc1 = new Arc(500, 200, 100, new Angle(2, 5), CW, 'arc1');
+      var cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)], 'cc1');
+      if (debugMode) {
         arc1.draft(ctx);
-      }
-      else {
-        arc1.render(ctx,1);
-      }
-
-
-      var cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)]);
-      if (globalDebugMode) {
         cmbCcl.draft(ctx);
+        crc1.draft(ctx)
       }
       else {
-        cmbCcl.render(ctx,1);
+        arc1.render(ctx, 1);
+        cmbCcl.render(ctx, 1);
+        crc1.render(ctx, 1);
       }
+
+      if (showDetails) {
+        arc1.showDetails(ctx);
+        cmbCcl.showDetails(ctx);
+        crc1.showDetails(ctx);
+      }
+
 
       window.requestAnimationFrame(draw);
     }

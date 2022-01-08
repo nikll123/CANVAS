@@ -19,17 +19,23 @@
 <body onLoad="draw()">
 
   <div>
-    Debug
-    <input type="checkbox" id="debugMode" globalDebugMode>
-    <!-- <label for="debugMode">Debug</label> -->
-    Number of circles
+    <input type="checkbox" id="debugMode">
+    <label for="debugMode">Debug</label>
+    <input type="checkbox" id="chkShowDetails">
+    <label for="chkShowDetails">Details</label>
     <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
+    <label for="countCircle">Number of circles</label>
   </div>
 
   <script>
     var debugMode = document.querySelector('input[id="debugMode"]');
     debugMode.addEventListener('change', () => {
       globalDebugMode = debugMode.checked;
+    })
+    var showDetails = false;
+    var chkDetails = document.querySelector('input[id="chkShowDetails"]');
+    chkDetails.addEventListener('change', () => {
+      showDetails = chkDetails.checked;
     })
     var countCircles = 4;
     var numCircles = document.querySelector('input[id="countCircle"]');
@@ -56,7 +62,8 @@
         var x = Math.floor(Math.random() * canvas.clientWidth);
         var y = Math.floor(Math.random() * canvas.clientHeight);
         var r = Math.floor(20 + Math.random() * 80);
-        cclCmb1 = new CircleCombo(x, y, r);
+        cclCmb1 = new CircleCombo(x, y, r, [new Angle(0, DVA_PI)], 'crc' + i);
+        console.log(cclCmb1.toString());
         cclCmbs.push(cclCmb1);
       }
     }
@@ -114,7 +121,7 @@
       var outlines = [];
       var arcs1 = arcs; // DEBUG purposes
       while (0 < arcs.length) {
-        var ol1 = new Outline();
+        var ol1 = new Outline([]);
         arc1 = arcs[0];
         endXY = _PushArc(arcs, 0, ol1)
         if (!arc1.isCircle) {
@@ -128,8 +135,13 @@
                 break;
               }
             }
-            if (!found)
+            if (!found) {
+              console.log('arc1 - ' + arc1[i].toString());
+              for (var i = 1; i < arcs.length; i++) {
+                console.log(arcs[i].toString);
+              }
               console.assert(found, "error: not found")
+            }
           }
         }
         outlines.push(ol1);
@@ -157,16 +169,17 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
 
-        // for (var i = 0; i < outlines.length; i++) {
-        //   ol1 = outlines[i];
-        //   ol1.draft(ctx);
-        // }
-
         for (var i = 0; i < cclCmbs.length; i++) {
           cclCmbs[i].draft(ctx);
         }
+        ctx.restore();
+      }
 
-        // ctx.beginPath();ctx.moveTo(0, 0);ctx.lineTo(600, 600);ctx.lineWidth = 10;ctx.strokeStyle = '#FF0000';ctx.stroke();        
+      if (showDetails) {
+        ctx.save();
+        for (var i = 0; i < cclCmbs.length; i++) {
+          cclCmbs[i].showDetails(ctx);
+        }
         ctx.restore();
       }
 
@@ -188,17 +201,6 @@
       ctx.lineTo(50, 550);
       ctx.lineTo(50, 150);
       ctx.arc(150, 150, 100, PI, 3 * PI / 2);
-
-      // ctx.moveTo(250, 250);
-      // ctx.lineTo(350, 250);
-      // ctx.lineTo(300, 150);
-      // ctx.lineTo(250, 250);
-
-      // ctx.moveTo(250, 500);
-      // ctx.arc(200, 500, 50, 0, DVA_PI, true);
-
-      // ctx.moveTo(400, 500);
-      // ctx.arc(350, 500, 50, 0, DVA_PI, false);
     }
 
     function dropEqualCircles(cclCmbs) {

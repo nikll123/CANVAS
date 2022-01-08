@@ -11,16 +11,16 @@
 
   <script>
 
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var startX = 0;
-    var startY = 0;
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let startX = 0;
+    let startY = 0;
 
-    var triangle1 = new Triangle([[100, 100], [150, 120], [180, 80]]);
-    var quadrangle1 = new Quadrangle([[200, 100], [250, 120], [280, 80], [220, 75]]);
-    var quadrangle2 = new Quadrangle([[50, 320], [120, 320], [120, 365], [50, 365]]);
-    var rectangle1 = new Rectangle(50, 20, 70, 45);
-    var circle1 = new Circle(220, 190, 50);
+    let triangle1 = new Triangle([[100, 100], [150, 120], [180, 80]]);
+    let quadrangle1 = new Quadrangle([[200, 100], [250, 120], [280, 80], [220, 75]]);
+    let quadrangle2 = new Quadrangle([[50, 320], [120, 320], [120, 365], [50, 365]]);
+    let rectangle1 = new Rectangle(50, 20, 70, 45);
+    let circle1 = new Circle(220, 190, 50);
 
     console.debug(triangle1.toString());
     console.debug(quadrangle1.toString());
@@ -38,7 +38,7 @@
       window.requestAnimationFrame(draw);
     }
 
-    var mtt = new MouseTouchTracker(canvas,
+    let mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -63,8 +63,8 @@
             break;
 
           case 'move':
-            var dx = x - startX;
-            var dy = y - startY;
+            let dx = x - startX;
+            let dy = y - startY;
             startX = x;
             startY = y;
 

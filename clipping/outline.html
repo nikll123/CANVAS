@@ -16,18 +16,18 @@
         canvas_canvas
     </canvas>
     <script>
-        var canvas = document.getElementById("canvas1");
-        var ctx = canvas.getContext("2d");
+        let canvas = document.getElementById("canvas1");
+        let ctx = canvas.getContext("2d");
 
-        var arc1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
+        let arc1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
         arc1.render(ctx, 1, "#000000", "#F0F0F0");
 
-        var arc2 = new Arc(250, 280, 120, new Angle(0, DVA_PI));
+        let arc2 = new Arc(250, 280, 120, new Angle(0, DVA_PI));
         arc2.moveToStart(ctx);
         arc2.render(ctx, 1, "#000000", "#F0F0F0");
 
-        var c1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
-        var c2 = new Arc(250, 280, 120, new Angle(0, PI));
+        let c1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
+        let c2 = new Arc(250, 280, 120, new Angle(0, PI));
 
         [angle11, angle12] = Calc.circleOverlap(c1, c2);
         [angle21, angle22] = Calc.circleOverlap(c2, c1);

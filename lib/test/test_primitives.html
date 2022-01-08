@@ -25,12 +25,12 @@
   </div>
 
   <script>
-    var debugMode = document.querySelector('input[id="debugMode"]');
+    let debugMode = document.querySelector('input[id="debugMode"]');
     debugMode.addEventListener('change', () => {
       globalDebugMode = debugMode.checked;
     })
-    var countCircles = 1;
-    var numCircles = document.querySelector('input[id="countCircle"]');
+    let countCircles = 1;
+    let numCircles = document.querySelector('input[id="countCircle"]');
     numCircles.value = countCircles;
     numCircles.addEventListener('change', () => {
       countCircles = parseInt(numCircles.value);
@@ -41,40 +41,40 @@
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
 
     function draw() {
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
       // Text 
-      var txt = new Text(10, 50, "Points", "txt1");
+      let txt = new Text(10, 50, "Points", "txt1");
       txt.render(ctx);
-      var p1 = new Point(10, 75, 'p1');
+      let p1 = new Point(10, 75, 'p1');
       if (globalDebugMode) {
         p1.draft(ctx);
       }
       else {
         p1.render(ctx, 3);
       }
-      var txt = new Text(100, 75, 'text example', 'txt1');
+      let txt = new Text(100, 75, 'text example', 'txt1');
       if (globalDebugMode)
         txt.draft(ctx);
       else
         txt.render(ctx);
 
-      var txt = new Text(100, 105, "draft");
+      let txt = new Text(100, 105, "draft");
       txt.render(ctx, DRAFT_COLOR);
 
-      var p2 = new Point(10, 105, 'p2');
+      let p2 = new Point(10, 105, 'p2');
       p2.draft(ctx);
 
       // Angle
-      var a1 = new Angle(1, 5, 'ang0');
-      var x = 200;
-      var y = 100;
-      var r = 50;
+      let a1 = new Angle(1, 5, 'ang0');
+      let x = 200;
+      let y = 100;
+      let r = 50;
 
       if (globalDebugMode)
         a1.draft(ctx, x, y, r);
@@ -83,10 +83,10 @@
 
 
       // decimal coordinates
-      var y = 150;
-      var x = 10;
+      let y = 150;
+      let x = 10;
       for (i = 0; i < 100; i++) {
-        var p1 = new Point(x + i, y + i / 100);
+        let p1 = new Point(x + i, y + i / 100);
         p1.render(ctx, 0.1);
       }
       window.requestAnimationFrame(draw);

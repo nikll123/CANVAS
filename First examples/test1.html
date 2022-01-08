@@ -8,14 +8,14 @@
        width="300" height="227">
 </div>
 <script> 
-var canvas = document.getElementById('canvas'); 
-var c = canvas.getContext('2d'); 
+let canvas = document.getElementById('canvas'); 
+let c = canvas.getContext('2d'); 
 c.fillStyle = "red"; 
 c.fillRect(50,50,100,100); 
 
-var canvas2 = document.getElementById('canvas2'); 
-var ctx = canvas2.getContext('2d'); 
-var grad = ctx.createLinearGradient(0,0,100,0);
+let canvas2 = document.getElementById('canvas2'); 
+let ctx = canvas2.getContext('2d'); 
+let grad = ctx.createLinearGradient(0,0,100,0);
 grad.addColorStop(0, "white");
 grad.addColorStop(0.5, "red");
 grad.addColorStop(1, "black");
@@ -24,9 +24,9 @@ ctx.fillStyle = grad;
 ctx.fillRect(0,0,400,200);
 
 
-var canvas3 = document.getElementById('canvas3'); 
-var ctx3 = canvas3.getContext('2d'); 
-var img = document.getElementById('source');
+let canvas3 = document.getElementById('canvas3'); 
+let ctx3 = canvas3.getContext('2d'); 
+let img = document.getElementById('source');
 
 ctx3.drawImage(img); //normal drawing
 /*

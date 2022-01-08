@@ -28,17 +28,17 @@
   </div>
 
   <script>
-    var debugMode = document.querySelector('input[id="debugMode"]');
+    let debugMode = document.querySelector('input[id="debugMode"]');
     debugMode.addEventListener('change', () => {
       globalDebugMode = debugMode.checked;
     })
-    var showDetails = false;
-    var chkDetails = document.querySelector('input[id="chkShowDetails"]');
+    let showDetails = false;
+    let chkDetails = document.querySelector('input[id="chkShowDetails"]');
     chkDetails.addEventListener('change', () => {
       showDetails = chkDetails.checked;
     })
-    var countCircles = 4;
-    var numCircles = document.querySelector('input[id="countCircle"]');
+    let countCircles = 4;
+    let numCircles = document.querySelector('input[id="countCircle"]');
     numCircles.value = countCircles;
     numCircles.addEventListener('change', () => {
       countCircles = parseInt(numCircles.value);
@@ -49,19 +49,19 @@
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var startX = 0;
-    var startY = 0;
-    var curX = 0;
-    var curY = 0;
-    var cclCmbs;
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let startX = 0;
+    let startY = 0;
+    let curX = 0;
+    let curY = 0;
+    let cclCmbs;
     function init() {
       cclCmbs = [];
-      for (var i = 0; i < countCircles; i++) {
-        var x = Math.floor(Math.random() * canvas.clientWidth);
-        var y = Math.floor(Math.random() * canvas.clientHeight);
-        var r = Math.floor(20 + Math.random() * 80);
+      for (let i = 0; i < countCircles; i++) {
+        let x = Math.floor(Math.random() * canvas.clientWidth);
+        let y = Math.floor(Math.random() * canvas.clientHeight);
+        let r = Math.floor(20 + Math.random() * 80);
         cclCmb1 = new CircleCombo(x, y, r, [new Angle(0, DVA_PI)], 'cc' + i);
         console.log(cclCmb1.toString());
         cclCmbs.push(cclCmb1);
@@ -77,16 +77,16 @@
       ctx.beginPath();
       buildBgShape();
 
-      var arcs = [];
+      let arcs = [];
       cclCmbs = dropEqualCircles(cclCmbs);
       cclCmbs = markInvisibleCircles(cclCmbs);
-      for (var i = 0; i < cclCmbs.length; i++) {
+      for (let i = 0; i < cclCmbs.length; i++) {
         if (cclCmbs[i].status == STATUS.INVISIBLE)
           continue;
-        var angles = [];
-        var angle_points = [];
+        let angles = [];
+        let angle_points = [];
         if (cclCmbs.length > 1) {
-          for (var j = 0; j < cclCmbs.length; j++) {
+          for (let j = 0; j < cclCmbs.length; j++) {
             if (i != j) {
               [ang_1, ang_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
               angles.push([ang_1, ang_2]);
@@ -106,15 +106,15 @@
         }
 
         angle_points = Calc.sortAndUnique(angle_points);
-        var visible = false;
-        for (var p = 1; p < angle_points.length; p++) {
+        let visible = false;
+        for (let p = 1; p < angle_points.length; p++) {
           p1 = angle_points[p - 1];
           p2 = angle_points[p];
           pm = p1 + (p2 - p1) / 2; // point mediana
           hit = true;
-          for (var a = 0; a < angles.length; a++) {
-            var a1 = angles[a][0];
-            var a2 = angles[a][1];
+          for (let a = 0; a < angles.length; a++) {
+            let a1 = angles[a][0];
+            let a2 = angles[a][1];
             hit = (a1.begin < pm && pm < a1.end) || (a2.begin < pm && pm < a2.end);
             if (!hit)
               break;
@@ -128,19 +128,19 @@
           cclCmbs[i].status = STATUS.INVISIBLE;
       }
 
-      var endXY;
-      var startXY;
-      var outlines = [];
-      var arcs1 = arcs; // DEBUG purposes
+      let endXY;
+      let startXY;
+      let outlines = [];
+      let arcs1 = arcs; // DEBUG purposes
       while (0 < arcs.length) {
-        var ol1 = new Outline([]);
+        let ol1 = new Outline([]);
         arc1 = arcs[0];
         endXY = _PushArc(arcs, 0, ol1)
         if (!arc1.isCircle) {
           startXY = arc1.startXY;
           while (!(Calc.arraysEqual(startXY, endXY))) {
-            var found = false;
-            for (var i = 0; i < arcs.length; i++) {
+            let found = false;
+            for (let i = 0; i < arcs.length; i++) {
               if (Calc.arraysEqual(arcs[i].startXY, endXY)) {
                 endXY = _PushArc(arcs, i, ol1);
                 found = true;
@@ -149,7 +149,7 @@
             }
             if (!found) {
               console.log('arc1 - ' + arc1[i].toString());
-              for (var i = 1; i < arcs.length; i++) {
+              for (let i = 1; i < arcs.length; i++) {
                 console.log(arcs[i].toString);
               }
               console.assert(found, "error: not found")
@@ -159,7 +159,7 @@
         outlines.push(ol1);
       }
 
-      for (var i = 0; i < outlines.length; i++) {
+      for (let i = 0; i < outlines.length; i++) {
         ol1 = outlines[i];
         ol1.moveToStart(ctx);
         ol1.build(ctx, CCW);
@@ -181,11 +181,11 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
 
-        for (var i = 0; i < cclCmbs.length; i++)
+        for (let i = 0; i < cclCmbs.length; i++)
           if (cclCmbs[i].status == STATUS.INVISIBLE)
             cclCmbs[i].draft(ctx);
 
-        for (var i = 0; i < outlines.length; i++) {
+        for (let i = 0; i < outlines.length; i++) {
           outlines[i].draft(ctx);
         }
         ctx.restore();
@@ -193,8 +193,8 @@
 
       if (showDetails) {
         ctx.save();
-        for (var i = 0; i < cclCmbs.length; i++) {
-          for (var j = 0; j < cclCmbs[i].arcs.length; j++) {
+        for (let i = 0; i < cclCmbs.length; i++) {
+          for (let j = 0; j < cclCmbs[i].arcs.length; j++) {
             cclCmbs[i].arcs[j].showDetails(ctx);
           }
         }
@@ -222,8 +222,8 @@
     }
 
     function dropEqualCircles(cclCmbs) {
-      for (var i = 0; i < cclCmbs.length; i++) {
-        for (var j = cclCmbs.length - 1; j > i; j--) {
+      for (let i = 0; i < cclCmbs.length; i++) {
+        for (let j = cclCmbs.length - 1; j > i; j--) {
           if (cclCmbs[i].equal(cclCmbs[j]))
             cclCmbs.splice(j, 1);
         }
@@ -232,15 +232,15 @@
     }
 
     function markInvisibleCircles(cclCmbs) {
-      var incapsulated = [];
-      var toDelete = [];
-      for (var i = 0; i < cclCmbs.length; i++)
+      let incapsulated = [];
+      let toDelete = [];
+      for (let i = 0; i < cclCmbs.length; i++)
         cclCmbs[i].status = STATUS.NORMAL;
 
-      for (var i = 0; i < cclCmbs.length; i++) {
-        for (var j = 0; j < cclCmbs.length; j++) {
+      for (let i = 0; i < cclCmbs.length; i++) {
+        for (let j = 0; j < cclCmbs.length; j++) {
           if (i != j) {
-            var distance = Calc.getDistance(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[j].x, cclCmbs[j].y);
+            let distance = Calc.getDistance(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[j].x, cclCmbs[j].y);
             if (distance <= cclCmbs[i].radius - cclCmbs[j].radius) {
               cclCmbs[j].status = STATUS.INVISIBLE;
             }
@@ -250,7 +250,7 @@
       return cclCmbs;
     }
 
-    var mtt = new MouseTouchTracker(canvas,
+    let mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
         curX = x;
         curY = y;
@@ -258,22 +258,22 @@
           case 'down':
             startX = x;
             startY = y;
-            for (var i = 0; i < cclCmbs.length; i++)
+            for (let i = 0; i < cclCmbs.length; i++)
               cclCmbs[i].startDrugIfPointIsInside(x, y);
             break;
 
           case 'up':
-            for (var i = 0; i < cclCmbs.length; i++)
+            for (let i = 0; i < cclCmbs.length; i++)
               cclCmbs[i].stopDrag();
             break;
 
           case 'move':
-            var dx = x - startX;
-            var dy = y - startY;
+            let dx = x - startX;
+            let dy = y - startY;
             startX = x;
             startY = y;
 
-            for (var i = 0; i < cclCmbs.length; i++) {
+            for (let i = 0; i < cclCmbs.length; i++) {
               cclCmbs[i].moveIfDragging(dx, dy);
             }
             break;

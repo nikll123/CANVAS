@@ -11,13 +11,13 @@
         canvas_canvas
     </canvas>
     <script>
-        var canvas = document.getElementById("canvas1");
-        var ctx = canvas.getContext("2d");
+        let canvas = document.getElementById("canvas1");
+        let ctx = canvas.getContext("2d");
 
-        var rect1 = new Rectangle(10, 10, 300, 300);
+        let rect1 = new Rectangle(10, 10, 300, 300);
         rect1.render(ctx, 1);
 
-        var arc1 = new Arc(200, 200, 100, new Angle(1, 5), false);
+        let arc1 = new Arc(200, 200, 100, new Angle(1, 5), false);
         arc1.render(ctx, 1, "#000000", "#FF0000");
 
 

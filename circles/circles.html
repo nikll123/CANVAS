@@ -19,8 +19,8 @@
 
     function isHit(shape, x, y) {
       if (shape.constructor.name === 'circle') {
-        var dx = shape.x - x;
-        var dy = shape.y - y;
+        let dx = shape.x - x;
+        let dy = shape.y - y;
         if (dx * dx + dy * dy < shape.radius * shape.radius) {
           return true
         }
@@ -33,22 +33,22 @@
       return false;
     }
 
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var startX = 0;
-    var startY = 0;
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let startX = 0;
+    let startY = 0;
 
-    // var rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
+    // let rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
     // rectangle1.render(ctx);
 
-    var circle1 = new Circle(200, 140, 50, '#F00000');
+    let circle1 = new Circle(200, 140, 50, '#F00000');
     circle1.render(ctx);
 
     cc = new CircleCombo(155, 155, 95);
       cc.render(ctx, 1);
 
 
-    var mtt = new MouseTouchTracker(canvas,
+    let mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -67,8 +67,8 @@
             break;
 
           case 'move':
-            var dx = x - startX;
-            var dy = y - startY;
+            let dx = x - startX;
+            let dy = y - startY;
             startX = x;
             startY = y;
 

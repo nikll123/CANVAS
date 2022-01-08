@@ -52,7 +52,7 @@ function draw() {
   count_items = 30;
   line_width = 20;
   radius = 180
-  var degree_per_items = Array(count_items).fill(2);
+  let degree_per_items = Array(count_items).fill(2);
   regularscale(ctx, center, radius, angle_start, angle_end, strokeStyle1, strokeStyle2, line_width, count_items, true);
 
   strokeStyle1 = '#008080';
@@ -78,7 +78,7 @@ function draw() {
 
 
 function regularscale(ctx, center, radius, angle_start, angle_end, strokeStyle1, strokeStyle2, line_width, count_items, showText) {
-  var degree_per_items = Array(count_items).fill(1);
+  let degree_per_items = Array(count_items).fill(1);
   scale(ctx, center, radius, angle_start, angle_end, strokeStyle1, strokeStyle2, line_width, degree_per_items, showText)
 }
 
@@ -91,7 +91,7 @@ function scale(ctx, center, radius, angle_start, angle_end, strokeStyle1, stroke
   ctx.fillStyle = '#FFFFFF';
   ctx.font = "16px serif";
   ctx.textBaseline = "middle";
-  var angle_item = (angle_end - angle_start) / count_items;
+  let angle_item = (angle_end - angle_start) / count_items;
   angle1 = angle_start;
   ctx.strokeStyle = strokeStyle1;
   for (i = 0; i < dpi.length; i++) {

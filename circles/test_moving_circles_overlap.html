@@ -66,6 +66,12 @@
         console.log(cclCmb1.toString());
         cclCmbs.push(cclCmb1);
       }
+      // cclCmb1 = new CircleCombo(300, 200, 53, [new Angle(0, DVA_PI)], 'cc0')
+      // console.log(cclCmb1.toString());
+      // cclCmbs.push(cclCmb1);
+      // cclCmb1 = new CircleCombo(385, 225, 59, [new Angle(0, DVA_PI)], 'cc1');
+      // console.log(cclCmb1.toString());
+      // cclCmbs.push(cclCmb1);
     }
 
     init();
@@ -80,6 +86,7 @@
       let arcs = [];
       cclCmbs = dropEqualCircles(cclCmbs);
       cclCmbs = markInvisibleCircles(cclCmbs);
+      let ix = 0;
       for (let i = 0; i < cclCmbs.length; i++) {
         if (cclCmbs[i].status == STATUS.INVISIBLE)
           continue;
@@ -120,7 +127,8 @@
               break;
           }
           if (hit) {
-            arcs.push(new Arc(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[i].radius, new Angle(p1, p2)));
+            arcs.push(new Arc(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[i].radius, new Angle(p2, p1), CCW, 'arc' + ix)); // CCW and p2->p1 
+            ix++;
             visible = true;
           }
         }
@@ -147,8 +155,12 @@
                 break;
               }
             }
+            // error!!!
             if (!found) {
-              console.log('arc1 - ' + arc1[i].toString());
+              console.log('--- error ---');
+              for (let i = 0; i < cclCmbs.length; i++)
+                console.log(cclCmbs[i].toString());
+              console.log('arc1 - ' + arc1[0].toString());
               for (let i = 1; i < arcs.length; i++) {
                 console.log(arcs[i].toString);
               }
@@ -160,9 +172,10 @@
       }
 
       for (let i = 0; i < outlines.length; i++) {
-        ol1 = outlines[i];
+        let ol1 = outlines[i];
         ol1.moveToStart(ctx);
-        ol1.build(ctx, CCW);
+        // ol1.lines.reverse();
+        ol1.build(ctx);
       }
 
       ctx.fillStyle = "#FF9999";
@@ -172,9 +185,6 @@
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
       ctx.shadowBlur = 8;
-      // ctx.stroke();
-
-      //  (new Outline(outlines)).render(ctx, 15, '#FF0000')
 
       if (globalDebugMode) {
         ctx.save();
@@ -192,13 +202,11 @@
       }
 
       if (showDetails) {
-        ctx.save();
-        for (let i = 0; i < cclCmbs.length; i++) {
-          for (let j = 0; j < cclCmbs[i].arcs.length; j++) {
-            cclCmbs[i].arcs[j].showDetails(ctx);
+        for (let i = 0; i < outlines.length; i++) {
+          for (let j = 0; j < outlines[i].lines.length; j++) {
+            outlines[i].lines[j].showDetails(ctx);
           }
         }
-        ctx.restore();
       }
 
       window.requestAnimationFrame(draw);

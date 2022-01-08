@@ -62,7 +62,7 @@
         var x = Math.floor(Math.random() * canvas.clientWidth);
         var y = Math.floor(Math.random() * canvas.clientHeight);
         var r = Math.floor(20 + Math.random() * 80);
-        cclCmb1 = new CircleCombo(x, y, r, [new Angle(0, DVA_PI)], 'crc' + i);
+        cclCmb1 = new CircleCombo(x, y, r, [new Angle(0, DVA_PI)], 'cc' + i);
         console.log(cclCmb1.toString());
         cclCmbs.push(cclCmb1);
       }
@@ -85,16 +85,26 @@
           continue;
         var angles = [];
         var angle_points = [];
-        for (var j = 0; j < cclCmbs.length; j++) {
-          if (i != j) {
-            [ang_1, ang_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
-            angles.push([ang_1, ang_2]);
-            angle_points.push(ang_1.begin);
-            angle_points.push(ang_1.end);
-            angle_points.push(ang_2.begin);
-            angle_points.push(ang_2.end);
+        if (cclCmbs.length > 1) {
+          for (var j = 0; j < cclCmbs.length; j++) {
+            if (i != j) {
+              [ang_1, ang_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
+              angles.push([ang_1, ang_2]);
+              angle_points.push(ang_1.begin);
+              angle_points.push(ang_1.end);
+              angle_points.push(ang_2.begin);
+              angle_points.push(ang_2.end);
+            }
           }
         }
+        else {
+          angles.push([new Angle(0, DVA_PI),new Angle(DVA_PI, DVA_PI)]);
+          angle_points.push(0);
+          angle_points.push(DVA_PI);
+          angle_points.push(DVA_PI);
+          angle_points.push(DVA_PI);
+        }
+
         angle_points = Calc.sortAndUnique(angle_points);
         var visible = false;
         for (var p = 1; p < angle_points.length; p++) {

@@ -79,9 +79,9 @@
 
       var arcs = [];
       cclCmbs = dropEqualCircles(cclCmbs);
-      cclCmbs = markIncapsulatedCircles(cclCmbs);
+      cclCmbs = markInvisibleCircles(cclCmbs);
       for (var i = 0; i < cclCmbs.length; i++) {
-        if (cclCmbs[i].state == STATE.HIDDEN)
+        if (cclCmbs[i].status == STATUS.INVISIBLE)
           continue;
         var angles = [];
         var angle_points = [];
@@ -98,7 +98,7 @@
           }
         }
         else {
-          angles.push([new Angle(0, DVA_PI),new Angle(DVA_PI, DVA_PI)]);
+          angles.push([new Angle(0, DVA_PI), new Angle(DVA_PI, DVA_PI)]);
           angle_points.push(0);
           angle_points.push(DVA_PI);
           angle_points.push(DVA_PI);
@@ -124,6 +124,8 @@
             visible = true;
           }
         }
+        if (!visible)
+          cclCmbs[i].status = STATUS.INVISIBLE;
       }
 
       var endXY;
@@ -179,8 +181,12 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
 
-        for (var i = 0; i < cclCmbs.length; i++) {
-          cclCmbs[i].draft(ctx);
+        for (var i = 0; i < cclCmbs.length; i++)
+          if (cclCmbs[i].status == STATUS.INVISIBLE)
+            cclCmbs[i].draft(ctx);
+
+        for (var i = 0; i < outlines.length; i++) {
+          outlines[i].draft(ctx);
         }
         ctx.restore();
       }
@@ -188,7 +194,9 @@
       if (showDetails) {
         ctx.save();
         for (var i = 0; i < cclCmbs.length; i++) {
-          cclCmbs[i].showDetails(ctx);
+          for (var j = 0; j < cclCmbs[i].arcs.length; j++) {
+            cclCmbs[i].arcs[j].showDetails(ctx);
+          }
         }
         ctx.restore();
       }
@@ -223,16 +231,18 @@
       return cclCmbs;
     }
 
-    function markIncapsulatedCircles(cclCmbs) {
+    function markInvisibleCircles(cclCmbs) {
       var incapsulated = [];
       var toDelete = [];
+      for (var i = 0; i < cclCmbs.length; i++)
+        cclCmbs[i].status = STATUS.NORMAL;
+
       for (var i = 0; i < cclCmbs.length; i++) {
-        cclCmbs[i].status = STATE.NORMAL;
         for (var j = 0; j < cclCmbs.length; j++) {
           if (i != j) {
             var distance = Calc.getDistance(cclCmbs[i].x, cclCmbs[i].y, cclCmbs[j].x, cclCmbs[j].y);
             if (distance <= cclCmbs[i].radius - cclCmbs[j].radius) {
-              cclCmbs[j].status = STATE.HIDDEN;
+              cclCmbs[j].status = STATUS.INVISIBLE;
             }
           }
         }

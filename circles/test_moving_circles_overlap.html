@@ -29,7 +29,6 @@
   </div>
 
   <script>
-    globalDebugMode = true;
     let debugMode = document.querySelector('input[id="debugMode"]');
     debugMode.addEventListener('change', () => {
       globalDebugMode = debugMode.checked;
@@ -60,6 +59,8 @@
     let cclCmbs;
     let arcs = [];
     let arcsjson = 'init';
+    let ix = 0;
+
     function init() {
       cclCmbs = [];
       for (let i = 0; i < countCircles; i++) {
@@ -96,10 +97,14 @@
               let ccOut = cclCmbs[j];
               [ang_1, ang_2] = Calc.circleOverlap(ccCur, ccOut);
               angles.push([ang_1, ang_2]);
-              angle_points.push(ang_1.begin);
-              angle_points.push(ang_1.end);
+              if (ang_1.value != 0) {
+                angle_points.push(ang_1.begin);
+                angle_points.push(ang_1.end);
+              }
+              if (ang_2.value != 0) {
               angle_points.push(ang_2.begin);
               angle_points.push(ang_2.end);
+              }
             }
           }
         }
@@ -111,7 +116,7 @@
           angle_points.push(DVA_PI);
         }
 
-        angle_points = Calc.sortAndUnique(angle_points);
+        angle_points = Calc.sortUniqueNum(angle_points);
         let visible = false;
         for (let p = 1; p < angle_points.length; p++) {
           p1 = angle_points[p - 1];
@@ -190,9 +195,9 @@
           // if (cclCmbs[i].status == STATUS.INVISIBLE)
           cclCmbs[i].draft(ctx);
 
-        // for (let i = 0; i < outlines.length; i++) {
-        //   outlines[i].draft(ctx);
-        // }
+        for (let i = 0; i < outlines.length; i++) {
+          outlines[i].draft(ctx);
+        }
         ctx.restore();
       }
 

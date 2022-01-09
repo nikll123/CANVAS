@@ -29,6 +29,7 @@
   </div>
 
   <script>
+    globalDebugMode = true;
     let debugMode = document.querySelector('input[id="debugMode"]');
     debugMode.addEventListener('change', () => {
       globalDebugMode = debugMode.checked;
@@ -57,6 +58,8 @@
     let curX = 0;
     let curY = 0;
     let cclCmbs;
+    let arcs = [];
+    let arcsjson = 'init';
     function init() {
       cclCmbs = [];
       for (let i = 0; i < countCircles; i++) {
@@ -67,12 +70,6 @@
         console.log(cclCmb1.toString());
         cclCmbs.push(cclCmb1);
       }
-      // cclCmb1 = new CircleCombo(300, 200, 53, [new Angle(0, DVA_PI)], 'cc0')
-      // console.log(cclCmb1.toString());
-      // cclCmbs.push(cclCmb1);
-      // cclCmb1 = new CircleCombo(385, 225, 59, [new Angle(0, DVA_PI)], 'cc1');
-      // console.log(cclCmb1.toString());
-      // cclCmbs.push(cclCmb1);
     }
 
     init();
@@ -84,19 +81,20 @@
       ctx.beginPath();
       buildBgShape();
 
-      let arcs = [];
       cclCmbs = dropEqualCircles(cclCmbs);
       cclCmbs = markInvisibleCircles(cclCmbs);
       let ix = 0;
       for (let i = 0; i < cclCmbs.length; i++) {
-        if (cclCmbs[i].status == STATUS.INVISIBLE)
+        let ccCur = cclCmbs[i];
+        if (ccCur.status == STATUS.INVISIBLE)
           continue;
         let angles = [];
         let angle_points = [];
         if (cclCmbs.length > 1) {
           for (let j = 0; j < cclCmbs.length; j++) {
             if (i != j) {
-              [ang_1, ang_2] = Calc.circleOverlap(cclCmbs[i], cclCmbs[j]);
+              let ccOut = cclCmbs[j];
+              [ang_1, ang_2] = Calc.circleOverlap(ccCur, ccOut);
               angles.push([ang_1, ang_2]);
               angle_points.push(ang_1.begin);
               angle_points.push(ang_1.end);
@@ -140,7 +138,8 @@
       let endXY;
       let startXY;
       let outlines = [];
-      let arcs1 = arcs; // DEBUG purposes
+      arcsjson = JSON.stringify(arcs); // DEBUG purposes
+
       while (0 < arcs.length) {
         let ol1 = new Outline([]);
         arc1 = arcs[0];
@@ -159,12 +158,7 @@
             // error!!!
             if (!found) {
               console.log('--- error ---');
-              for (let i = 0; i < cclCmbs.length; i++)
-                console.log(cclCmbs[i].toString());
-              console.log('arc1 - ' + arc1[0].toString());
-              for (let i = 1; i < arcs.length; i++) {
-                console.log(arcs[i].toString);
-              }
+              printDebugReport();
               console.assert(found, "error: not found")
             }
           }
@@ -193,12 +187,12 @@
         pMouse.draft(ctx, 2);
 
         for (let i = 0; i < cclCmbs.length; i++)
-          if (cclCmbs[i].status == STATUS.INVISIBLE)
-            cclCmbs[i].draft(ctx);
+          // if (cclCmbs[i].status == STATUS.INVISIBLE)
+          cclCmbs[i].draft(ctx);
 
-        for (let i = 0; i < outlines.length; i++) {
-          outlines[i].draft(ctx);
-        }
+        // for (let i = 0; i < outlines.length; i++) {
+        //   outlines[i].draft(ctx);
+        // }
         ctx.restore();
       }
 
@@ -213,6 +207,17 @@
       window.requestAnimationFrame(draw);
     }
 
+    function printDebugReport() {
+      for (let i = 0; i < cclCmbs.length; i++)
+        console.log(cclCmbs[i].toString());
+      // console.log('arc1 - ' + arcs[0].toString());
+      for (let i = 0; i < arcs.length; i++) {
+        console.log(arcs[i].toString());
+      }
+      for (let i = 0; i < ol1.lines.length; i++) {
+        console.log(ol1.lines[i].toString());
+      }
+    }
     function _PushArc(arcs, a, ol1) {
       a1 = arcs[a];
       ol1.push(a1);

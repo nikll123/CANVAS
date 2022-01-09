@@ -1,40 +1,41 @@
 <html>
 
 <head>
-  <script src="..\obj.js"></script>
-  <script src="..\canvas.js"></script>
-  <script src="..\calc.js"></script>
-  <script src="..\const.js"></script>
-  <script src="..\primitives.js"></script>
-  <script src="..\shapes.js"></script>
-  <!-- <script src="..\MouseTouchTracker.js"></script> -->
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
 
+  <script src="..\test\ut_Obj.js"></script>
   <script src="..\test\ut_Angles.js"></script>
   <script src="..\test\ut_Calc.js"></script>
   <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
 </head>
 
-<body onload="draw()">
+<body onLoad="draw()">
 
   <div>
-    Debug
-    <input type="checkbox" id="debugMode" globalDebugMode>
-    <!-- <label for="debugMode">Debug</label> -->
-    Number of circles
-    <input type="number" id="countCircle" min="2" max="120" step="10" value="0">
+    <input type="checkbox" id="chkDebugMode">
+    <label for="debugMode">Debug</label>
+    <input type="checkbox" id="chkShowDetails">
+    <label for="chkShowDetails">Details</label>
   </div>
 
   <script>
-    let debugMode = document.querySelector('input[id="debugMode"]');
-    debugMode.addEventListener('change', () => {
-      globalDebugMode = debugMode.checked;
+    let debugMode = false;
+    let chkDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    chkDebugMode.addEventListener('change', () => {
+      debugMode = chkDebugMode.checked;
     })
-    let countCircles = 1;
-    let numCircles = document.querySelector('input[id="countCircle"]');
-    numCircles.value = countCircles;
-    numCircles.addEventListener('change', () => {
-      countCircles = parseInt(numCircles.value);
-      init();
+    let showDetails = false;
+    let chkDetails = document.querySelector('input[id="chkShowDetails"]');
+    chkDetails.addEventListener('change', () => {
+      showDetails = chkDetails.checked;
     })
   </script>
 
@@ -52,19 +53,19 @@
       let txt = new Text(10, 50, "Points", "txt1");
       txt.render(ctx);
       let p1 = new Point(10, 75, 'p1');
-      if (globalDebugMode) {
+      if (debugMode) {
         p1.draft(ctx);
       }
       else {
         p1.render(ctx, 3);
       }
-      let txt = new Text(100, 75, 'text example', 'txt1');
-      if (globalDebugMode)
+      txt = new Text(100, 75, 'text example', 'txt1');
+      if (debugMode)
         txt.draft(ctx);
       else
         txt.render(ctx);
 
-      let txt = new Text(100, 105, "draft");
+      txt = new Text(100, 105, "draft");
       txt.render(ctx, DRAFT_COLOR);
 
       let p2 = new Point(10, 105, 'p2');
@@ -76,19 +77,24 @@
       let y = 100;
       let r = 50;
 
-      if (globalDebugMode)
-        a1.draft(ctx, x, y, r);
+      let arc1 = new Arc(x, y, r, a1, CW);
+      if (debugMode)
+        arc1.draft(ctx);
       else
-        a1.render(ctx, x, y, r);
+        arc1.render(ctx);
 
+      if (showDetails) {
+        arc1.showDetails(ctx);
+      }
 
       // decimal coordinates
-      let y = 150;
-      let x = 10;
+      y = 150;
+      x = 10;
       for (i = 0; i < 100; i++) {
         let p1 = new Point(x + i, y + i / 100);
         p1.render(ctx, 0.1);
       }
+
       window.requestAnimationFrame(draw);
     }
   </script>

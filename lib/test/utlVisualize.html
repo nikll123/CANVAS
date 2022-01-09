@@ -9,13 +9,14 @@
 
     <script src="utlVisualize.js"></script>
     <script>
+        let ccls = [];
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
 
         for (let i = 0; i < data.length; i++) {
             let arc = data[i];
             ctx.beginPath();
-            ctx.arc(arc.points[0].x, arc.points[0].y, arc.radius, 0, Math.PI*2, true);
+            ctx.arc(arc.points[0].x, arc.points[0].y, arc.radius, 0, Math.PI * 2, true);
             ctx.lineWidth = 1;
             ctx.strokeStyle = '#CCCCCC';
             ctx.stroke();
@@ -28,6 +29,13 @@
             ctx.strokeStyle = '#000000';
             ctx.stroke();
         }
+        let txt = '';
+        for (let i = 0; i < data.length; i++) {
+            let arc = data[i];
+            txt = txt + arc.points[0].x + ',' + arc.points[0].y + ',' + arc.radius + '\n';
+        }
+
+        ccls.length;
     </script>
 </body>
 

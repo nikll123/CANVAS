@@ -20,7 +20,7 @@
 <body onLoad="draw()">
 
   <div>
-    <input type="checkbox" id="debugMode">
+    <input type="checkbox" id="chkDebugMode">
     <label for="debugMode">Debug</label>
     <input type="checkbox" id="chkShowDetails">
     <label for="chkShowDetails">Details</label>
@@ -29,9 +29,10 @@
   </div>
 
   <script>
-    let debugMode = document.querySelector('input[id="debugMode"]');
-    debugMode.addEventListener('change', () => {
-      globalDebugMode = debugMode.checked;
+    let debugMode = false;
+    let chkDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    chkDebugMode.addEventListener('change', () => {
+      debugMode = chkDebugMode.checked;
     })
     let showDetails = false;
     let chkDetails = document.querySelector('input[id="chkShowDetails"]');
@@ -186,7 +187,7 @@
       ctx.shadowOffsetY = 10;
       ctx.shadowBlur = 8;
 
-      if (globalDebugMode) {
+      if (debugMode) {
         ctx.save();
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);

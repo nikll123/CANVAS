@@ -48,44 +48,38 @@
     function draw() {
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
+      let objs = [];
 
       // Text 
-      let txt = new Text(10, 50, "Points", "txt1");
-      txt.render(ctx);
-      let p1 = new Point(10, 75, 'p1');
-      if (debugMode) {
-        p1.draft(ctx);
-      }
-      else {
-        p1.render(ctx, 3);
-      }
-      txt = new Text(100, 75, 'text example', 'txt1');
-      if (debugMode)
-        txt.draft(ctx);
-      else
-        txt.render(ctx);
+      objs.push(new Text(10, 50, "Points", "txt1"));
+      objs.push(new Point(10, 75, 'p1'));
+      objs.push(new Text(100, 75, 'text example', 'txt1'));
 
       txt = new Text(100, 105, "draft");
-      txt.render(ctx, DRAFT_COLOR);
+      txt.render(ctx, 'Red');
 
-      let p2 = new Point(10, 105, 'p2');
-      p2.draft(ctx);
+      objs.push(new Point(10, 105, 'p2'));
 
       // Angle
       let a1 = new Angle(1, 5, 'ang0');
       let x = 200;
       let y = 100;
       let r = 50;
-
       let arc1 = new Arc(x, y, r, a1, CW);
-      if (debugMode)
-        arc1.draft(ctx);
-      else
-        arc1.render(ctx);
+      objs.push(new Arc(x, y, r, a1, CW));
+      objs.push(new Line(100, 200, 200, 300));
 
-      if (showDetails) {
-        arc1.showDetails(ctx);
+      for (let i = 0; i < objs.length; i++) {
+        let o = objs[i];
+        if (debugMode)
+          o.draft(ctx);
+        else
+          o.render(ctx);
+        if (showDetails) {
+          o.showDetails(ctx);
+        }
       }
+
 
       // decimal coordinates
       y = 150;

@@ -142,8 +142,7 @@
       let endXY;
       let startXY;
       let outlines = [];
-      arcsjson = JSON.stringify(arcs); // DEBUG purposes
-
+      arcsjson = JSON.stringify(arcs); // store arc data for DEBUG purposes
       while (0 < arcs.length) {
         let ol1 = new Outline([]);
         arc1 = arcs[0];
@@ -194,7 +193,6 @@
         pMouse.draft(ctx, 2);
 
         for (let i = 0; i < cclCmbs.length; i++)
-          // if (cclCmbs[i].status == STATUS.INVISIBLE)
           cclCmbs[i].draft(ctx);
 
         for (let i = 0; i < outlines.length; i++) {

@@ -81,9 +81,6 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      ctx.beginPath();
-      buildBgShape();
-
       cclCmbs = dropEqualCircles(cclCmbs);
       cclCmbs = markInvisibleCircles(cclCmbs);
       let ix = 0;
@@ -104,8 +101,8 @@
                 angle_points.push(ang_1.end);
               }
               if (ang_2.value != 0) {
-              angle_points.push(ang_2.begin);
-              angle_points.push(ang_2.end);
+                angle_points.push(ang_2.begin);
+                angle_points.push(ang_2.end);
               }
             }
           }
@@ -173,15 +170,18 @@
         outlines.push(ol1);
       }
 
+      // build and render
+      buildBgShape(ctx);
+
       for (let i = 0; i < outlines.length; i++) {
         let ol1 = outlines[i];
         ol1.moveToStart(ctx);
-        // ol1.lines.reverse();
         ol1.build(ctx);
       }
 
       ctx.fillStyle = "#FF9999";
       ctx.fill();
+      ctx.stroke();
       ctx.globalAlpha = 0.5;
       ctx.shadowColor = '#AAAAAA'
       ctx.shadowOffsetX = 10;
@@ -209,6 +209,7 @@
             outlines[i].lines[j].showDetails(ctx);
           }
         }
+        ol.showDetails(ctx);
       }
 
       window.requestAnimationFrame(draw);
@@ -232,14 +233,16 @@
       return a1.endXY;
     }
 
-    function buildBgShape() {
-      ctx.moveTo(150, 50);
-      ctx.lineTo(550, 50);
-      ctx.lineTo(550, 400);
-      ctx.lineTo(400, 550);
-      ctx.lineTo(50, 550);
-      ctx.lineTo(50, 150);
-      ctx.arc(150, 150, 100, PI, 3 * PI / 2);
+    function buildBgShape(ctx) {
+      ol = new Outline([], 'olShape');
+      ol.push(new Line(150, 50, 550, 50));
+      ol.push(new Line(550, 50, 550, 400));
+      ol.push(new Line(550, 400, 400, 550));
+      ol.push(new Line(550, 400, 50, 550));
+      ol.push(new Line(50, 550, 50, 150));
+      ol.push(new Arc(150, 150, 100, new Angle(PI, 3 * PI / 2)));
+      ol.moveToStart(ctx);
+      ol.build(ctx);
     }
 
     function dropEqualCircles(cclCmbs) {

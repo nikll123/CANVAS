@@ -1,17 +1,21 @@
 <html>
 
 <head>
-  <script src="..\obj.js"></script>
-  <script src="..\canvas.js"></script>
-  <script src="..\calc.js"></script>
-  <script src="..\const.js"></script>
-  <script src="..\primitives.js"></script>
-  <script src="..\shapes.js"></script>
-  <!-- <script src="..\MouseTouchTracker.js"></script> -->
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\Outline.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
 
+  <script src="..\test\ut_Obj.js"></script>
   <script src="..\test\ut_Angles.js"></script>
   <script src="..\test\ut_Calc.js"></script>
   <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
 </head>
 
 <body onload="draw()">
@@ -50,20 +54,24 @@
       let crc1 = new Circle(200, 400, 45, 'arc1');
       let arc1 = new Arc(500, 200, 100, new Angle(2, 5), CW, 'arc1');
       let cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)], 'cc1');
+      let cmbCcl2 = new CircleCombo(250, 450, 50, [new Angle(1, 2.5), new Angle(3, 4.5), new Angle(5, 6.2)], 'cc1');
       if (debugMode) {
         arc1.draft(ctx);
         cmbCcl.draft(ctx);
+        cmbCcl2.draft(ctx);
         crc1.draft(ctx)
       }
       else {
-        arc1.render(ctx, 1);
-        cmbCcl.render(ctx, 1);
+        arc1.render(ctx, 1 );
+        cmbCcl.render(ctx, 1, DRAFT_COLOR, '#FFAABB', connectParts = true);
+        cmbCcl2.render(ctx, 3, DRAFT_COLOR, '#BBAAFF');
         crc1.render(ctx, 1);
       }
 
       if (showDetails) {
         arc1.showDetails(ctx);
         cmbCcl.showDetails(ctx);
+        cmbCcl2.showDetails(ctx);
         crc1.showDetails(ctx);
       }
 

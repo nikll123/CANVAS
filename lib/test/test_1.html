@@ -50,41 +50,28 @@
     function draw() {
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
-
-      let crc1 = new Circle(200, 400, 45, 'arc1');
-      let arc1 = new Arc(500, 200, 100, new Angle(2, 5), CW, 'arc1');
-      let cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)], 'cc1');
-      let cmbCcl2 = new CircleCombo(250, 450, 50, [new Angle(1, 2.5), new Angle(3, 4.5), new Angle(5, 6.2)], 'cc1');
-      if (debugMode) {
-        arc1.draft(ctx);
-        cmbCcl.draft(ctx);
-        cmbCcl2.draft(ctx);
-        crc1.draft(ctx)
-      }
-      else {
-        arc1.render(ctx, 1);
-        cmbCcl.render(ctx, 1, DRAFT_COLOR, '#FFAABB');
-        cmbCcl2.render(ctx, 3, DRAFT_COLOR, '#BBAAFF');
-        crc1.render(ctx, 1);
-      }
-
-      if (showDetails) {
-        arc1.showDetails(ctx);
-        cmbCcl.showDetails(ctx);
-        cmbCcl2.showDetails(ctx);
-        crc1.showDetails(ctx);
-      }
-
+      ctx.beginPath();
 
       let c = new CircleCombo(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
       c.render(ctx, 1);
+      
+      ctx.beginPath();
       let l2 = new Line(150, 50, 150, 300, 'l2');
       l2.moveToStart(ctx);
       l2.draft(ctx, 3);
 
+
+      ctx.beginPath();
       [angle1, angle2] = Calc.crossCircleLine(c, l2);
+      c.moveToStart(ctx);
       c.setAngles( [angle1, angle2]);
       c.render(ctx, 6);
+
+      ctx.beginPath();
+      ctx.arc(400,400,100,0,DVA_PI);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
 
       window.requestAnimationFrame(draw);
     }

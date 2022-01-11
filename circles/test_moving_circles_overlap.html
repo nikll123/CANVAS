@@ -175,7 +175,7 @@
       for (let i = 0; i < outlines.length; i++) {
         let ol1 = outlines[i];
         ol1.moveToStart(ctx);
-        ol1.build(ctx, connectParts = true);
+        ol1.build(ctx);
       }
 
       ctx.fillStyle = "#FF9999";
@@ -242,7 +242,7 @@
       ol.push(new Line(50, 500, 50, 200));
       ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
       ol.moveToStart(ctx);
-      ol.build(ctx, connectParts = true);
+      ol.build(ctx);
     }
 
     function dropEqualCircles(cclCmbs) {

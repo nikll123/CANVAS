@@ -79,7 +79,6 @@
       let c = new CircleCombo(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
       c.render(ctx, 1);
       let l2 = new Line(150, 50, 150, 300, 'l2');
-      l2.moveToStart(ctx);
       l2.draft(ctx, 3);
 
       [angle1, angle2] = Calc.crossCircleLine(c, l2);

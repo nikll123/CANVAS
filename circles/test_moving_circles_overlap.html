@@ -233,13 +233,13 @@
 
     function buildBgShape(ctx) {
       ol = new Outline([], 'olShape');
-      ol.push(new Line(200, 50, 500, 50));
+      ol.push(new Vector(200, 50, 500, 50));
       ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)));
-      ol.push(new Line(550, 100, 550, 400));
-      ol.push(new Line(550, 400, 400, 550));
-      ol.push(new Line(400, 550, 150, 550));
+      ol.push(new Vector(550, 100, 550, 400));
+      ol.push(new Vector(550, 400, 400, 550));
+      ol.push(new Vector(400, 550, 150, 550));
       ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)));
-      ol.push(new Line(50, 500, 50, 200));
+      ol.push(new Vector(50, 500, 50, 200));
       ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
       ol.moveToStart(ctx);
       ol.build(ctx);

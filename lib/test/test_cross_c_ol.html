@@ -51,42 +51,45 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      let crc1 = new Circle(200, 400, 45, 'arc1');
-      let arc1 = new Arc(500, 200, 100, new Angle(2, 5), CW, 'arc1');
-      let cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)], 'cc1');
-      let cmbCcl2 = new CircleCombo(250, 450, 50, [new Angle(1, 2.5), new Angle(3, 4.5), new Angle(5, 6.2)], 'cc1');
-      if (debugMode) {
-        arc1.draft(ctx);
-        cmbCcl.draft(ctx);
-        cmbCcl2.draft(ctx);
-        crc1.draft(ctx)
-      }
-      else {
-        arc1.render(ctx, 1);
-        cmbCcl.render(ctx, 1, DRAFT_COLOR, '#FFAABB');
-        cmbCcl2.render(ctx, 3, DRAFT_COLOR, '#BBAAFF');
-        crc1.render(ctx, 1);
-      }
-
-      if (showDetails) {
-        arc1.showDetails(ctx);
-        cmbCcl.showDetails(ctx);
-        cmbCcl2.showDetails(ctx);
-        crc1.showDetails(ctx);
-      }
-
-
-      let c = new CircleCombo(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
-      c.render(ctx, 1);
-      let l2 = new Vector(150, 50, 150, 300, 'l2');
-      l2.draft(ctx, 3);
-
-      [angle1, angle2] = Calc.crossCircleLine(c, l2);
-      c.setAngles( [angle1, angle2]);
-      c.render(ctx, 0, '', '#AAFFCC');
-
+      let c = new CircleCombo(100, 400, 100, [new Angle(0, DVA_PI)], 'c1');
+      let c2 = new CircleCombo(400, 100, 80, [new Angle(0, DVA_PI)], 'c2');
+      let c3 = new CircleCombo(420, 420, 100, [new Angle(0, DVA_PI)], 'c3');
+      c.render(ctx);
+      c2.render(ctx);
+      c3.render(ctx);
+      c.showDetails(ctx);
+      let ol = createBgShape(ctx);
+      ol.showDetails(ctx);
+      c.setAngles(Calc.crossCircleOutLine(c, ol));
+      c.render(ctx,3);
+      c2.setAngles(Calc.crossCircleOutLine(c2, ol));
+      c2.render(ctx,3);
+      c3.setAngles(Calc.crossCircleOutLine(c3, ol));
+      c3.render(ctx,3);
       window.requestAnimationFrame(draw);
     }
+
+    function createBgShape(ctx) {
+      ol = new Outline([], 'olShape');
+      ol.push(new Vector(200, 50, 500, 50));
+      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)));
+      ol.push(new Vector(550, 100, 550, 400));
+      ol.push(new Vector(550, 400, 400, 550));
+      ol.push(new Vector(400, 550, 150, 550));
+      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)));
+      ol.push(new Vector(50, 500, 50, 200));
+      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.shadowColor = '#AAAAAA'
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 8;
+      ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
+      ctx.restore();
+      return ol;
+    }
+
   </script>
 </body>
 

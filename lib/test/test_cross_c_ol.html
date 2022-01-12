@@ -52,11 +52,13 @@
       Canvas.grid(ctx);
 
       let c = new CircleCombo(100, 400, 100, [new Angle(0, DVA_PI)], 'c1');
-      let c2 = new CircleCombo(400, 100, 80, [new Angle(0, DVA_PI)], 'c2');
-      let c3 = new CircleCombo(420, 420, 100, [new Angle(0, DVA_PI)], 'c3');
+      let c2 = new CircleCombo(480, 100, 80, [new Angle(0, DVA_PI)], 'c2');
+      let c3 = new CircleCombo(420, 500, 30, [new Angle(0, DVA_PI)], 'c3');
+      let c4 = new CircleCombo(500, 400, 70, [new Angle(0, DVA_PI)], 'c4');
       c.render(ctx);
       c2.render(ctx);
       c3.render(ctx);
+      c4.render(ctx);
       c.showDetails(ctx);
       let ol = createBgShape(ctx);
       ol.showDetails(ctx);
@@ -66,6 +68,8 @@
       c2.render(ctx,3);
       c3.setAngles(Calc.crossCircleOutLine(c3, ol));
       c3.render(ctx,3);
+      c4.setAngles(Calc.crossCircleOutLine(c4, ol));
+      c4.render(ctx,3);
       window.requestAnimationFrame(draw);
     }
 

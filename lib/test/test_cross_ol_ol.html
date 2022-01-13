@@ -7,6 +7,7 @@
   <script src="..\Const.js"></script>
   <script src="..\Primitives.js"></script>
   <script src="..\ArcShapes.js"></script>
+  <script src="..\Vector.js"></script>
   <script src="..\Outline.js"></script>
   <script src="..\PoligonShapes.js"></script>
   <script src="..\MouseTouchTracker.js"></script>
@@ -15,6 +16,7 @@
   <script src="..\test\ut_Angles.js"></script>
   <script src="..\test\ut_Calc.js"></script>
   <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_Vector.js"></script>
   <script src="..\test\ut_primitives.js"></script>
 </head>
 
@@ -64,7 +66,7 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-let ol1 = new Outline([])
+      let ol1 = new Outline([])
 
       let ol = createBgShape(ctx);
       cclCmbs[0].setAngles(Calc.crossCircleOutLine(cclCmbs[0], ol));
@@ -98,13 +100,13 @@ let ol1 = new Outline([])
 
     function createBgShape(ctx) {
       ol = new Outline([], 'olShape');
-      ol.push(new Vector(200, 50, 500, 50));
+      ol.push(new VectorComposite(200, 50, 500, 50));
       ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)));
-      ol.push(new Vector(550, 100, 550, 400));
-      ol.push(new Vector(550, 400, 400, 550));
-      ol.push(new Vector(400, 550, 150, 550));
+      ol.push(new VectorComposite(550, 100, 550, 400));
+      ol.push(new VectorComposite(550, 400, 400, 550));
+      ol.push(new VectorComposite(400, 550, 150, 550));
       ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)));
-      ol.push(new Vector(50, 500, 50, 200));
+      ol.push(new VectorComposite(50, 500, 50, 200));
       ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
       ctx.save();
       ctx.globalAlpha = 0.5;
@@ -112,7 +114,7 @@ let ol1 = new Outline([])
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
       ctx.shadowBlur = 8;
-      ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
+      ol.render(ctx, 0, DEFAULT_COLOR, "#FF9999");
       ctx.restore();
       return ol;
     }

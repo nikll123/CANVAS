@@ -53,8 +53,8 @@
 
       let crc1 = new Circle(200, 400, 45, 'arc1');
       let arc1 = new Arc(500, 200, 100, new Angle(2, 5), CW, 'arc1');
-      let cmbCcl = new CircleCombo(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)], 'cc1');
-      let cmbCcl2 = new CircleCombo(250, 450, 50, [new Angle(1, 2.5), new Angle(3, 4.5), new Angle(5, 6.2)], 'cc1');
+      let cmbCcl = new CircleComposite(150, 250, 100, [new Angle(1, 2), new Angle(3, 4), new Angle(5, 6)], 'cc1');
+      let cmbCcl2 = new CircleComposite(250, 450, 50, [new Angle(1, 2.5), new Angle(3, 4.5), new Angle(5, 6.2)], 'cc1');
       if (debugMode) {
         arc1.draft(ctx);
         cmbCcl.draft(ctx);
@@ -76,7 +76,7 @@
       }
 
 
-      let c = new CircleCombo(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
+      let c = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
       c.render(ctx, 1);
       let l2 = new Vector(150, 50, 150, 300, 'l2');
       l2.draft(ctx, 3);

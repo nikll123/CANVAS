@@ -1,0 +1,155 @@
+<html>
+
+<head>
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\Outline.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
+
+  <script src="..\test\ut_Obj.js"></script>
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
+</head>
+
+<body onload="draw()">
+
+  <div>
+    <input type="checkbox" id="chkDebugMode" name="Draft">
+    <label for="Draft">Draft</label>
+    <input type="checkbox" id="chkShowDetails" name="Details">
+    <label for="Details">Details</label>
+  </div>
+
+  <script>
+    debugMode = false;
+    let objDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    objDebugMode.addEventListener('change', () => {
+      debugMode = objDebugMode.checked;
+    })
+
+    showDetails = false;
+    let objShowDetails = document.querySelector('input[id="chkShowDetails"]');
+    objShowDetails.addEventListener('change', () => {
+      showDetails = objShowDetails.checked;
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let startX = 0;
+    let startY = 0;
+    let curX = 0;
+    let curY = 0;
+    let cclCmbs;
+
+    function init() {
+      cclCmbs = [];
+      let cclCmb1 = new CircleCombo(200, 200, 100, [new Angle(0, DVA_PI)], 'c5');
+      cclCmbs.push(cclCmb1);
+    }
+
+    init();
+
+    function draw() {
+      Canvas.clearAll(ctx);
+      Canvas.grid(ctx);
+
+let ol1 = new Outline([])
+
+      let ol = createBgShape(ctx);
+      cclCmbs[0].setAngles(Calc.crossCircleOutLine(cclCmbs[0], ol));
+      cclCmbs[0].render(ctx, 1);
+
+      if (debugMode) {
+        ctx.save();
+        pMouse = new Point(curX, curY);
+        pMouse.draft(ctx, 2);
+
+        for (let i = 0; i < cclCmbs.length; i++)
+          cclCmbs[i].draft(ctx);
+
+        // for (let i = 0; i < outlines.length; i++) {
+        //   outlines[i].draft(ctx);
+        // }
+        ctx.restore();
+      }
+
+      if (showDetails) {
+        // for (let i = 0; i < outlines.length; i++) {
+        //   for (let j = 0; j < outlines[i].lines.length; j++) {
+        //     outlines[i].lines[j].showDetails(ctx);
+        //   }
+        // }
+        ol.showDetails(ctx);
+      }
+
+      window.requestAnimationFrame(draw);
+    }
+
+    function createBgShape(ctx) {
+      ol = new Outline([], 'olShape');
+      ol.push(new Vector(200, 50, 500, 50));
+      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)));
+      ol.push(new Vector(550, 100, 550, 400));
+      ol.push(new Vector(550, 400, 400, 550));
+      ol.push(new Vector(400, 550, 150, 550));
+      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)));
+      ol.push(new Vector(50, 500, 50, 200));
+      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.shadowColor = '#AAAAAA'
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 8;
+      ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
+      ctx.restore();
+      return ol;
+    }
+
+    let mtt = new MouseTouchTracker(canvas,
+      function (evtType, x, y) {                         // callback 
+        curX = x;
+        curY = y;
+        switch (evtType) {
+          case 'down':
+            startX = x;
+            startY = y;
+            for (let i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].startDrugIfPointIsInside(x, y);
+            break;
+
+          case 'up':
+            for (let i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].stopDrag();
+            break;
+
+          case 'move':
+            let dx = x - startX;
+            let dy = y - startY;
+            startX = x;
+            startY = y;
+
+            for (let i = 0; i < cclCmbs.length; i++) {
+              cclCmbs[i].moveIfDragging(dx, dy);
+            }
+            break;
+        }
+      }
+    );
+
+
+  </script>
+</body>
+
+</html>

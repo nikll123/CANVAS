@@ -55,17 +55,19 @@
 
       let objs = [];
 
-      let c1 = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], 'c1');
-      let l1 = new Vector(200, 50, 200, 330, 'l1');
-      [angle1, angle2] = Calc.crossCircleLine(c1, l1);
-      c1.setAngles([angle1, angle2]);
-      objs.push(c1);
-      objs.push(l1);
+      // let c1 = new CircleComposite(200, 400, 100, [new Angle(0, DVA_PI)], 'c1');
+      // let l1 = new Vector(200, 50, 200, 330, 'l1');
+      // [angle1, angle2] = Calc.crossCircleLine(c1, l1);
+      // c1.setAngles([angle1, angle2]);
+      // objs.push(c1);
+      // objs.push(l1);
 
-      let c2_1 = new Arc(120, 100, 50, new Angle(0, PI*0.5), CW, 'c2_1');
-      let c2_2 = new Arc(120, 200, 50, new Angle(0, -PI*0.5), CW, 'c2_2');
-      c2_1.render(ctx);
-      c2_2.render(ctx);
+      let c2_1 = new Arc(120, 100, 50, new Angle(0.5, PI*0.5), CW, 'c2_1');
+      let c2_2 = new Arc(120, 250, 50, new Angle(0.5, -PI*0.5), CCW, 'c2_2');
+      c2_1.draft(ctx);
+      c2_2.draft(ctx);
+      c2_1.showDetails(ctx);
+      c2_2.showDetails(ctx);
 
       // let c2 = new CircleComposite(440, 100, 50, [new Angle(0, DVA_PI)], 'c1');
       // let l2 = new Vector(400, 50, 400, 350, 'l1');

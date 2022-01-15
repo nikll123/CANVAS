@@ -41,8 +41,8 @@
 
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let startX = 0;
-    let startY = 0;
+    let beginX = 0;
+    let beginY = 0;
 
     // let rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
     // rectangle1.render(ctx);
@@ -61,8 +61,8 @@
         switch (evtType) {
 
           case 'down':
-            startX = x;
-            startY = y;
+            beginX = x;
+            beginY = y;
             rectangle1.isDragging = isHit(rectangle1, x, y);
             circle1.isDragging = isHit(circle1, x, y);
             break;
@@ -73,10 +73,10 @@
             break;
 
           case 'move':
-            let dx = x - startX;
-            let dy = y - startY;
-            startX = x;
-            startY = y;
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
 
             if (rectangle1.isDragging) {
               rectangle1.x += dx;

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\Vector.js"></script>
+  <script src="..\Outline.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
+
+  <script src="..\test\ut_Obj.js"></script>
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_Vector.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
+</head>
+
+<body>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+
+    const p = new Path2D();
+    p.arc(200, 200, 100, 0, 3.5);
+    let x = 100;
+    let x2 = 110;
+    let x3 = 99;
+    let y = 200;
+
+    console.debug(ctx.isPointInPath(p, x, y)); //true
+    console.debug(ctx.isPointInPath(p, x2, y)); //true
+    console.debug(ctx.isPointInPath(p, x3, y)); //fasle
+    ctx.lineWidth = 20;
+    console.debug(ctx.isPointInPath(p, x3, y)); //fasle
+    ctx.lineWidth = 1;
+    ctx.stroke(p);
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x2, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x3, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+
+
+    ctx.lineWidth = 1;
+    const l = new Path2D();
+    l.moveTo(300, 300);
+    l.lineTo(300, 300);
+    l.lineTo(450, 450);
+    x = 310;
+    y = 311;
+    console.debug(ctx.isPointInStroke(l, x, y)); // false
+    ctx.lineWidth = 2;
+    console.debug(ctx.isPointInStroke(l, x, y)); // true
+    ctx.stroke(l);
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+
+
+
+
+  </script>
+
+</body>
+
+</body>

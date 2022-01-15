@@ -48,8 +48,8 @@
   <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let startX = 0;
-    let startY = 0;
+    let beginX = 0;
+    let beginY = 0;
     let curX = 0;
     let curY = 0;
     let cclCmbs;
@@ -123,8 +123,8 @@
         curY = y;
         switch (evtType) {
           case 'down':
-            startX = x;
-            startY = y;
+            beginX = x;
+            beginY = y;
             for (let i = 0; i < cclCmbs.length; i++)
               cclCmbs[i].startDrugIfPointIsInside(x, y);
             break;
@@ -135,10 +135,10 @@
             break;
 
           case 'move':
-            let dx = x - startX;
-            let dy = y - startY;
-            startX = x;
-            startY = y;
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
 
             for (let i = 0; i < cclCmbs.length; i++) {
               cclCmbs[i].moveIfDragging(dx, dy);

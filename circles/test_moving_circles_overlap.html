@@ -54,8 +54,8 @@
   <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let startX = 0;
-    let startY = 0;
+    let beginX = 0;
+    let beginY = 0;
     let curX = 0;
     let curY = 0;
     let cclCmbs;
@@ -140,7 +140,7 @@
       }
 
       let endXY;
-      let startXY;
+      let beginXY;
       let outlines = [];
       arcsjson = JSON.stringify(arcs); // store arc data for DEBUG purposes
       while (0 < arcs.length) {
@@ -148,11 +148,11 @@
         arc1 = arcs[0];
         endXY = _PushArc(arcs, 0, ol1)
         if (!arc1.isCircle) {
-          startXY = arc1.startXY;
-          while (!(Calc.arraysEqual(startXY, endXY))) {
+          beginXY = arc1.beginXY;
+          while (!(Calc.arraysEqual(beginXY, endXY))) {
             let found = false;
             for (let i = 0; i < arcs.length; i++) {
-              if (Calc.arraysEqual(arcs[i].startXY, endXY)) {
+              if (Calc.arraysEqual(arcs[i].beginXY, endXY)) {
                 endXY = _PushArc(arcs, i, ol1);
                 found = true;
                 break;
@@ -280,8 +280,8 @@
         curY = y;
         switch (evtType) {
           case 'down':
-            startX = x;
-            startY = y;
+            beginX = x;
+            beginY = y;
             for (let i = 0; i < cclCmbs.length; i++)
               cclCmbs[i].startDrugIfPointIsInside(x, y);
             break;
@@ -292,10 +292,10 @@
             break;
 
           case 'move':
-            let dx = x - startX;
-            let dy = y - startY;
-            startX = x;
-            startY = y;
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
 
             for (let i = 0; i < cclCmbs.length; i++) {
               cclCmbs[i].moveIfDragging(dx, dy);

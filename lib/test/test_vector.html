@@ -48,17 +48,17 @@
   <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let startX = 0;
-    let startY = 0;
+    let beginX = 0;
+    let beginY = 0;
     let curX = 0;
     let curY = 0;
     let ols;
 
     function init() {
       ols = [];
-      ols.push(new Vector(10, 10, 200, 200, 'v1'));
-      ols.push(new VectorComposite(200, 10, 10, 200, [[10, 56], [80, 99]], 'v2'));
-      
+      ols.push(new Outline([new Arc(150, 210, 60, new Angle(0,5))], 'ol1'));
+      ols.push(new Outline([new CircleComposite(400, 300, 79)], 'ol2'));
+      ols.push(new Outline([new VectorComposite(100, 300, 400, 100, [[0, 100]], 'v2')], 'ol2'));
     }
 
     init();
@@ -67,8 +67,18 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      ctx.save();
+      for (let i = 0; i < ols.length; i++) {
+        for (let j = 0; j < ols.length; j++) {
+          if (i == j)
+            continue;
+          let ol1 = ols[i];
+          let ol2 = ols[j];
+          ol1 = Calc.crossOutLineOutLine(ol1, ol2);
+        }
+      }
 
+
+      //  render 
       for (let i = 0; i < ols.length; i++) {
         if (debugMode)
           ols[i].draft(ctx);
@@ -80,8 +90,6 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
       }
-
-      ctx.restore();
 
       if (showDetails) {
         for (let i = 0; i < ols.length; i++)
@@ -97,27 +105,30 @@
         curY = y;
         switch (evtType) {
           case 'down':
-            startX = x;
-            startY = y;
+            beginX = x;
+            beginY = y;
             for (let i = 0; i < ols.length; i++) {
-              // ols[i].startDrugIfPointIsInside(x, y);
+              if ('startDrugIfPointIsInside' in ols[i])
+                ols[i].startDrugIfPointIsInside(x, y);
             }
             break;
 
           case 'up':
             for (let i = 0; i < ols.length; i++) {
-              // ols[i].stopDrag();
+              if ('stopDrag' in ols[i])
+                ols[i].stopDrag();
             }
             break;
 
           case 'move':
-            let dx = x - startX;
-            let dy = y - startY;
-            startX = x;
-            startY = y;
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
 
             for (let i = 0; i < ols.length; i++) {
-              // ols[i].moveIfDragging(dx, dy);
+              if ('moveIfDragging' in ols[i])
+                ols[i].moveIfDragging(dx, dy);
             }
             break;
         }

@@ -25,8 +25,8 @@
 
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let startX = 0;
-    let startY = 0;
+    let beginX = 0;
+    let beginY = 0;
 
     let triangle1 = new Triangle([[100, 100], [150, 120], [180, 80]]);
     let quadrangle1 = new Quadrangle([[200, 100], [250, 120], [280, 80], [220, 75]]);
@@ -57,8 +57,8 @@
         switch (evtType) {
 
           case 'down':
-            startX = x;
-            startY = y;
+            beginX = x;
+            beginY = y;
             triangle1.startDrugIfPointIsInside(x, y);
             quadrangle1.startDrugIfPointIsInside(x, y);
             quadrangle2.startDrugIfPointIsInside(x, y);
@@ -75,10 +75,10 @@
             break;
 
           case 'move':
-            let dx = x - startX;
-            let dy = y - startY;
-            startX = x;
-            startY = y;
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
 
             triangle1.moveIfDragging(dx, dy);
             quadrangle1.moveIfDragging(dx, dy);

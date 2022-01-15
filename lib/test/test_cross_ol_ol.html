@@ -48,16 +48,16 @@
   <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let startX = 0;
-    let startY = 0;
+    let beginX = 0;
+    let beginY = 0;
     let curX = 0;
     let curY = 0;
-    let cclCmbs;
+    let cclComps;
 
     function init() {
-      cclCmbs = [];
-      let cclCmb1 = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], 'c5');
-      cclCmbs.push(cclCmb1);
+      cclComps = [];
+      let ccl1 = new CircleComposite(250, 110, 50, [new Angle(0, DVA_PI)], 'c5');
+      cclComps.push(ccl1);
     }
 
     init();
@@ -69,16 +69,18 @@
       let ol1 = new Outline([])
 
       let ol = createBgShape(ctx);
-      cclCmbs[0].setAngles(Calc.crossCircleOutLine(cclCmbs[0], ol));
-      cclCmbs[0].render(ctx, 1);
+      let res = Calc.crossCircleOutLine(cclComps[0], ol)
+      cclComps[0].setAngles(res);
+      cclComps[0].render(ctx, 1);
+
 
       if (debugMode) {
         ctx.save();
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
 
-        for (let i = 0; i < cclCmbs.length; i++)
-          cclCmbs[i].draft(ctx);
+        for (let i = 0; i < cclComps.length; i++)
+          cclComps[i].draft(ctx);
 
         // for (let i = 0; i < outlines.length; i++) {
         //   outlines[i].draft(ctx);
@@ -87,11 +89,9 @@
       }
 
       if (showDetails) {
-        // for (let i = 0; i < outlines.length; i++) {
-        //   for (let j = 0; j < outlines[i].lines.length; j++) {
-        //     outlines[i].lines[j].showDetails(ctx);
-        //   }
-        // }
+        for (let i = 0; i < cclComps.length; i++) {
+          cclComps[i].showDetails(ctx);
+        }
         ol.showDetails(ctx);
       }
 
@@ -100,14 +100,10 @@
 
     function createBgShape(ctx) {
       ol = new Outline([], 'olShape');
-      ol.push(new VectorComposite(200, 50, 500, 50));
-      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)));
-      ol.push(new VectorComposite(550, 100, 550, 400));
-      ol.push(new VectorComposite(550, 400, 400, 550));
-      ol.push(new VectorComposite(400, 550, 150, 550));
-      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)));
-      ol.push(new VectorComposite(50, 500, 50, 200));
-      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
+      ol.push(new Vector(100, 100, 400, 100));
+      ol.push(new Vector(400, 100, 400, 400));
+      // ol.push(new Vector(400, 400, 100, 400));
+      // ol.push(new Vector(100, 400, 100, 100));
       ctx.save();
       ctx.globalAlpha = 0.5;
       ctx.shadowColor = '#AAAAAA'
@@ -125,25 +121,25 @@
         curY = y;
         switch (evtType) {
           case 'down':
-            startX = x;
-            startY = y;
-            for (let i = 0; i < cclCmbs.length; i++)
-              cclCmbs[i].startDrugIfPointIsInside(x, y);
+            beginX = x;
+            beginY = y;
+            for (let i = 0; i < cclComps.length; i++)
+              cclComps[i].startDrugIfPointIsInside(x, y);
             break;
 
           case 'up':
-            for (let i = 0; i < cclCmbs.length; i++)
-              cclCmbs[i].stopDrag();
+            for (let i = 0; i < cclComps.length; i++)
+              cclComps[i].stopDrag();
             break;
 
           case 'move':
-            let dx = x - startX;
-            let dy = y - startY;
-            startX = x;
-            startY = y;
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
 
-            for (let i = 0; i < cclCmbs.length; i++) {
-              cclCmbs[i].moveIfDragging(dx, dy);
+            for (let i = 0; i < cclComps.length; i++) {
+              cclComps[i].moveIfDragging(dx, dy);
             }
             break;
         }

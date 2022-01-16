@@ -7,6 +7,8 @@
   <script src="..\lib\Const.js"></script>
   <script src="..\lib\Primitives.js"></script>
   <script src="..\lib\ArcShapes.js"></script>
+  <script src="..\lib\Vector.js"></script>
+  <script src="..\lib\Outline.js"></script>
   <script src="..\lib\PoligonShapes.js"></script>
   <script src="..\lib\MouseTouchTracker.js"></script>
 
@@ -14,8 +16,8 @@
   <script src="..\lib\test\ut_Angles.js"></script>
   <script src="..\lib\test\ut_Calc.js"></script>
   <script src="..\lib\test\ut_Shapes.js"></script>
+  <script src="..\lib\test\ut_Vector.js"></script>
   <script src="..\lib\test\ut_primitives.js"></script>
-
 </head>
 
 
@@ -44,8 +46,8 @@
     let beginX = 0;
     let beginY = 0;
 
-    // let rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
-    // rectangle1.render(ctx);
+    let rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
+    rectangle1.render(ctx);
 
     let circle1 = new Circle(200, 140, 50, '#F00000');
     circle1.render(ctx);

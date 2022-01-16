@@ -20,84 +20,62 @@
   <script src="..\lib\test\ut_primitives.js"></script>
 </head>
 
+<body onLoad="draw()">
+  <div>
+    <input type="checkbox" id="chkDebugMode">
+    <label for="debugMode">Debug</label>
+    <input type="checkbox" id="chkShowDetails">
+    <label for="chkShowDetails">Details</label>
+  </div>
 
-<body">
-  <canvas id="canvas" style="border: 1px solid" width="600" height="300"></canvas>
   <script>
+    let debugMode = false;
+    let chkDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    chkDebugMode.addEventListener('change', () => {
+      debugMode = chkDebugMode.checked;
+    })
+    let showDetails = false;
+    let chkDetails = document.querySelector('input[id="chkShowDetails"]');
+    chkDetails.addEventListener('change', () => {
+      showDetails = chkDetails.checked;
+    })
+  </script>
 
-    function isHit(shape, x, y) {
-      if (shape.constructor.name === 'circle') {
-        let dx = shape.x - x;
-        let dy = shape.y - y;
-        if (dx * dx + dy * dy < shape.radius * shape.radius) {
-          return true
-        }
-      } else {
-        if (x > shape.x && y > shape.y && x < shape.x + shape.width && y < shape.y + shape.height) {
-          return true;
-        }
-      }
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
-      return false;
-    }
-
+  <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let beginX = 0;
-    let beginY = 0;
 
-    let rectangle1 = new Rectangle(50, 50, 100, 100, '#00FF00');
-    rectangle1.render(ctx);
+    function draw() {
+      Canvas.clearAll(ctx);
+      Canvas.grid(ctx);
+      let objs = [];
 
-    let circle1 = new Circle(200, 140, 50, '#F00000');
-    circle1.render(ctx);
+      objs.push(new Circle(100, 100, 50, CW));
+      objs.push(new Circle(250, 100, 50, CCW));
 
-    cc = new CircleComposite(155, 155, 95);
-      cc.render(ctx, 1);
+      objs.push(new Arc(300, 300, 40, new Angle(1, 5), CW));
+      objs.push(new Arc(300, 300, 50, new Angle(1, 5), CCW));
+      objs.push(new Arc(300, 300, 60, new Angle(5, 1), CW));
+      objs.push(new Arc(300, 300, 70, new Angle(5, 1), CCW));
 
+      objs.push(new CircleComposite(100, 400, 50, [new Angle(6, 1), new Angle(3, 5)], CCW));
 
-    let mtt = new MouseTouchTracker(canvas,
-      function (evtType, x, y) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        switch (evtType) {
-
-          case 'down':
-            beginX = x;
-            beginY = y;
-            rectangle1.isDragging = isHit(rectangle1, x, y);
-            circle1.isDragging = isHit(circle1, x, y);
-            break;
-
-          case 'up':
-            rectangle1.isDragging = false;
-            circle1.isDragging = false;
-            break;
-
-          case 'move':
-            let dx = x - beginX;
-            let dy = y - beginY;
-            beginX = x;
-            beginY = y;
-
-            if (rectangle1.isDragging) {
-              rectangle1.x += dx;
-              rectangle1.y += dy;
-            }
-
-            if (circle1.isDragging) {
-              circle1.x += dx;
-              circle1.y += dy;
-            }
-            break;
+      for (let i = 0; i < objs.length; i++) {
+        let o = objs[i];
+        if (debugMode)
+          o.draft(ctx);
+        else
+          o.render(ctx);
+        if (showDetails) {
+          o.showDetails(ctx);
         }
-
-        circle1.render(ctx);
-        rectangle1.render(ctx);
       }
-    );
 
+      window.requestAnimationFrame(draw);
+    }
   </script>
-  </body>
+</body>
 
 </html>

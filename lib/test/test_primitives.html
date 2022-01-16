@@ -7,6 +7,8 @@
   <script src="..\Const.js"></script>
   <script src="..\Primitives.js"></script>
   <script src="..\ArcShapes.js"></script>
+  <script src="..\Vector.js"></script>
+  <script src="..\Outline.js"></script>
   <script src="..\PoligonShapes.js"></script>
   <script src="..\MouseTouchTracker.js"></script>
 
@@ -14,6 +16,7 @@
   <script src="..\test\ut_Angles.js"></script>
   <script src="..\test\ut_Calc.js"></script>
   <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_Vector.js"></script>
   <script src="..\test\ut_primitives.js"></script>
 </head>
 
@@ -65,9 +68,13 @@
       let x = 200;
       let y = 100;
       let r = 50;
-      let arc1 = new Arc(x, y, r, a1, CW);
-      objs.push(new Arc(x, y, r, a1, CW));
+      // let arc1 = new Arc(x, y, r, a1, CW);
       objs.push(new Vector(100, 200, 200, 300));
+      objs.push(new Arc(x, y, r, a1, CW));
+      objs.push(new Arc(300, 300, 40, new Angle(1, 5), CW));
+      objs.push(new Arc(300, 300, 50, new Angle(1, 5), CCW));
+      objs.push(new Arc(300, 300, 60, new Angle(5, 1), CW));
+      objs.push(new Arc(300, 300, 70, new Angle(5, 1), CCW));
 
       for (let i = 0; i < objs.length; i++) {
         let o = objs[i];

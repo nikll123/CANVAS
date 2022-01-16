@@ -20,7 +20,9 @@
   <script src="..\test\ut_primitives.js"></script>
 </head>
 
-<body onload="draw()">
+<!-- <body onload="draw()"> -->
+
+<body>
 
   <div>
     <input type="checkbox" id="chkDebugMode" name="Draft">
@@ -46,37 +48,62 @@
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-    let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
+    // let canvas = document.getElementById('canvas');
+    // let ctx = canvas.getContext('2d');
 
-    function draw() {
-      Canvas.clearAll(ctx);
-      Canvas.grid(ctx);
-      ctx.beginPath();
+    // function draw() {
+    //   Canvas.clearAll(ctx);
+    //   Canvas.grid(ctx);
+    //   ctx.beginPath();
 
-      let c = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
-      c.render(ctx, 1);
-      
-      ctx.beginPath();
-      let l2 = new Vector(150, 50, 150, 300, 'l2');
-      l2.moveToStart(ctx);
-      l2.draft(ctx, 3);
+    //   let c = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], 'crcl1');
+    //   c.render(ctx, 1);
 
-
-      ctx.beginPath();
-      [angle1, angle2] = Calc.crossCircleLine(c, l2);
-      c.moveToStart(ctx);
-      c.setAngles( [angle1, angle2]);
-      c.render(ctx, 6);
-
-      ctx.beginPath();
-      ctx.arc(400,400,100,0,DVA_PI);
-      ctx.lineWidth = 1;
-      ctx.stroke();
+    //   ctx.beginPath();
+    //   let l2 = new Vector(150, 50, 150, 300, 'l2');
+    //   l2.moveToStart(ctx);
+    //   l2.draft(ctx, 3);
 
 
-      window.requestAnimationFrame(draw);
-    }
+    //   ctx.beginPath();
+    //   [angle1, angle2] = Calc.crossCircleLine(c, l2);
+    //   c.moveToStart(ctx);
+    //   c.setAngles( [angle1, angle2]);
+    //   c.render(ctx, 6);
+
+    //   ctx.beginPath();
+    //   ctx.arc(400,400,100,0,DVA_PI);
+    //   ctx.lineWidth = 1;
+    //   ctx.stroke();
+
+
+    //   window.requestAnimationFrame(draw);
+    // }
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Create circle
+    const circle = new Path2D();
+    circle.arc(150, 75, 50, 0, Math.PI/3);
+    ctx.fillStyle = 'red';
+    ctx.fill(circle);
+
+    // Listen for mouse moves
+    canvas.addEventListener('mousemove', function (event) {
+      // Check whether point is inside circle
+      if (ctx.isPointInPath(circle, event.offsetX, event.offsetY)) {
+        ctx.fillStyle = 'green';
+        console.log('green');
+      }
+      else {
+        ctx.fillStyle = 'red';
+        console.log('red');
+      }
+
+      // Draw circle
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fill(circle);
+    });
   </script>
 </body>
 

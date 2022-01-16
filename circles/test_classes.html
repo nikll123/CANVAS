@@ -6,12 +6,15 @@
 
 <body onLoad="draw()">
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
   <script src="..\lib\BasicShape.js"></script>
   <script src="..\lib\Canvas.js"></script>
   <script src="..\lib\Calc.js"></script>
   <script src="..\lib\Const.js"></script>
   <script src="..\lib\Primitives.js"></script>
   <script src="..\lib\ArcShapes.js"></script>
+  <script src="..\lib\Vector.js"></script>
+  <script src="..\lib\Outline.js"></script>
   <script src="..\lib\PoligonShapes.js"></script>
   <script src="..\lib\MouseTouchTracker.js"></script>
 
@@ -19,7 +22,9 @@
   <script src="..\lib\test\ut_Angles.js"></script>
   <script src="..\lib\test\ut_Calc.js"></script>
   <script src="..\lib\test\ut_Shapes.js"></script>
+  <script src="..\lib\test\ut_Vector.js"></script>
   <script src="..\lib\test\ut_primitives.js"></script>
+
 
   <script>
 
@@ -33,12 +38,13 @@
     let quadrangle2 = new Quadrangle([[50, 320], [120, 320], [120, 365], [50, 365]]);
     let rectangle1 = new Rectangle(50, 20, 70, 45);
     let circle1 = new Circle(220, 190, 50);
+    let vector = new Vector(300, 200, 250,300);
 
-    console.debug(triangle1.toString());
-    console.debug(quadrangle1.toString());
-    console.debug(quadrangle2.toString());
-    console.debug(rectangle1.toString());
-    console.debug(circle1.toString());
+    // console.debug(triangle1.toString());
+    // console.debug(quadrangle1.toString());
+    // console.debug(quadrangle2.toString());
+    // console.debug(rectangle1.toString());
+    // console.debug(circle1.toString());
 
     function draw() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
@@ -46,7 +52,9 @@
       rectangle1.render(ctx, 1);
       quadrangle1.render(ctx, 1);
       quadrangle2.render(ctx, 1);
-      circle1.render(ctx, 1);
+      circle1.draft(ctx);
+      vector.draft(ctx);
+
       window.requestAnimationFrame(draw);
     }
 

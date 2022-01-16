@@ -55,33 +55,33 @@
 
       let objs = [];
 
-      let c1 = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], CW, 'c1');
+      let c1 = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], CCW, 'c1');
       let l1 = new Vector(100, 50, 170, 350, 'l1');
-      [angle1, angle2] = Calc.crossCircleLine(c1, l1);
-      c1.setAngles([angle1, angle2]);
+      [angle1] = Calc.crossCircleLine(ctx, c1, l1);
+      c1.setAngles([angle1]);
       objs.push(c1);
       objs.push(l1);
 
       let c2 = new CircleComposite(450, 200, 100, [new Angle(0, DVA_PI)], CW, 'c2');
       let l2 = new Vector(350, 250, 590, 220, 'l2');
-      [angle1, angle2] = Calc.crossCircleLine(c2, l2);
-      c2.setAngles([angle1, angle2]);
+      [angle1] = Calc.crossCircleLine(ctx, c2, l2);
+      c2.setAngles([angle1]);
       objs.push(c2);
       objs.push(l2);
 
-      let c3 = new CircleComposite(200, 500, 90, [new Angle(0, DVA_PI)], CW, 'c3');
+      let c3 = new CircleComposite(200, 500, 90, [new Angle(0, DVA_PI)], CCW, 'c3');
       let l3 = new Vector(100, 450, 320, 530, 'l3');
-      [angle1, angle2] = Calc.crossCircleLine(c3, l3);
-      c3.setAngles([angle1, angle2]);
+      [angle1] = Calc.crossCircleLine(ctx, c3, l3);
+      c3.setAngles([angle1]);
       objs.push(c3);
       objs.push(l3);
 
       let c4 = new CircleComposite(480, 500, 70, [new Angle(0, DVA_PI)], CW, 'c4');
       let l4 = new Vector(400, 420, 480, 470, 'l4');
-      [angle1, angle2] = Calc.crossCircleLine(c4, l4);
-      c4.setAngles([angle1, angle2]);
+      [angle1] = Calc.crossCircleLine(ctx, c4, l4);
+      c4.setAngles([angle1]);
       objs.push(c4);
-      // objs.push(l4);
+      objs.push(l4);
 
       for (let i = 0; i < objs.length; i++) {
         if (debugMode)
@@ -93,10 +93,10 @@
           objs[i].showDetails(ctx);
       }
 
-      if (debugMode)
-        l4.draft(ctx, 2, '#5555AA');
-      else
-        l4.render(ctx, 2, '#5555AA');
+      // if (debugMode)
+      //   l4.draft(ctx, 2, '#5555AA');
+      // else
+      //   l4.render(ctx, 2, '#5555AA');
 
       if (showDetails)
         l4.showDetails(ctx);

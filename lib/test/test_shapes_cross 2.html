@@ -66,22 +66,31 @@
       // c2_3.showDetails(ctx);
 
       let c1;
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 0.1)]);
+      c1 = new CircleComposite(420, 150, 40, [new Angle(0, 0.1)]);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 1)]);
+      c1 = new CircleComposite(420, 150, 40, [new Angle(0, 2)]);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 2)]);
+      c1 = new CircleComposite(420, 150, 40, [new Angle(0, 4)]);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 3)]);
+      c1 = new CircleComposite(420, 150, 40, [new Angle(0, 6)]);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 4)]);
+      c1 = new CircleComposite(420, 250, 40, [new Angle(0, DVA_PI), new Angle(DVA_PI, DVA_PI)]);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 5)]);
+      c1 = new Circle(420, 350, 40, CW);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40,[new Angle(0, 6)]);
+      c1 = new Circle(420, 450, 40, CCW);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 450, 40,[new Angle(0, DVA_PI), new Angle(DVA_PI, DVA_PI)]);
+
+      c1 = new Arc(100, 100, 40, new Angle(1, 5), CW);
       c1.draft(ctx);
+      c1 = new Arc(200, 100, 40, new Angle(5, 1), CW);
+      c1.draft(ctx);
+      c1 = new Arc(100, 200, 40, new Angle(1, 5), CCW);
+      c1.draft(ctx);
+      c1 = new Arc(200, 200, 40, new Angle(5, 1), CCW);
+      c1.draft(ctx);
+
+
 
       // let c2 = new CircleComposite(440, 100, 50, [new Angle(0, DVA_PI)], 'c1');
       // let l2 = new Vector(400, 50, 400, 350, 'l1');

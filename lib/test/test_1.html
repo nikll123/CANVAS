@@ -83,8 +83,11 @@
     const ctx = canvas.getContext('2d');
 
     // Create circle
-    const circle = new Path2D();
-    circle.arc(150, 75, 50, 0, Math.PI/3);
+    // const circle = new Path2D();
+    let ol = buildBgShape();
+    const circle = Calc.getPath(ol);
+
+    // circle.arc(150, 75, 50, 0, Math.PI/3);
     ctx.fillStyle = 'red';
     ctx.fill(circle);
 
@@ -104,6 +107,21 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fill(circle);
     });
+
+    function buildBgShape() {
+      let ol = new Outline([], 'olShape');
+      ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
+      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)), id = 'arc1');
+      ol.push(new Vector(550, 100, 550, 400, id = 'vec2'));
+      ol.push(new Vector(550, 400, 400, 550, id = 'vec3'));
+      ol.push(new Vector(400, 550, 100, 550), id = 'vec4');
+      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)), id = 'arc2');
+      ol.push(new Vector(50, 500, 50, 200), id = 'vec5');
+      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW), id = 'arc3');
+      // ol.build(ctx);
+      return ol;
+    }
+
   </script>
 </body>
 

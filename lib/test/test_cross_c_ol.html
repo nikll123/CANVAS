@@ -56,7 +56,7 @@
 
     function init() {
       cclCmbs = [];
-      let cclCmb1 = new CircleComposite(200, 200, 100, [new Angle(0, DVA_PI)], 'c5');
+      let cclCmb1 = new CircleComposite(500, 100, 90, [new Angle(0, DVA_PI)], CCW);
       cclCmbs.push(cclCmb1);
     }
 
@@ -66,30 +66,42 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      let ol = createBgShape(ctx);
-      cclCmbs[0].setAngles(Calc.crossCircleOutLine(cclCmbs[0], ol));
-      cclCmbs[0].render(ctx, 1);
+      let ol = buildBgShape(ctx);
+      let p = Calc.getPath(ol);
+      let centreInPath = ctx.isPointInPath(p, cclCmbs[0].x, cclCmbs[0].y)
+      let aa = Calc.crossCircleOutLine(cclCmbs[0], ol, centreInPath);
+      cclCmbs[0].setAngles(aa);
+
+      ctx.save();
+      ol.build(ctx);
+      for (let i = 0; i < cclCmbs.length; i++) {
+        cclCmbs[i].build(ctx);
+      }
+      ctx.globalAlpha = 0.2;
+      ctx.shadowColor = '#AAAAAA'
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = "#FF9999";
+      ctx.fill();
+      // ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
+      ctx.restore();
 
       if (debugMode) {
-        ctx.save();
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
-
-        for (let i = 0; i < cclCmbs.length; i++)
+        for (let i = 0; i < cclCmbs.length; i++) {
           cclCmbs[i].draft(ctx);
-
-        // for (let i = 0; i < outlines.length; i++) {
-        //   outlines[i].draft(ctx);
-        // }
-        ctx.restore();
+          // else
+          //   cclCmbs[i].render(ctx);
+        }
       }
 
+
       if (showDetails) {
-        // for (let i = 0; i < outlines.length; i++) {
-        //   for (let j = 0; j < outlines[i].lines.length; j++) {
-        //     outlines[i].lines[j].showDetails(ctx);
-        //   }
-        // }
+        for (let i = 0; i < cclCmbs.length; i++) {
+          cclCmbs[i].showDetails(ctx);
+        }
         ol.showDetails(ctx);
       }
 
@@ -97,17 +109,9 @@
     }
 
     function createBgShape(ctx) {
-      ol = new Outline([], 'olShape');
-      ol.push(new Vector(200, 50, 500, 50));
-      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)));
-      ol.push(new Vector(550, 100, 550, 400));
-      ol.push(new Vector(550, 400, 400, 550));
-      ol.push(new Vector(400, 550, 150, 550));
-      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)));
-      ol.push(new Vector(50, 500, 50, 200));
-      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW));
+      let ol = buildBgShape(ctx);
       ctx.save();
-      ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 0.2;
       ctx.shadowColor = '#AAAAAA'
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
@@ -116,6 +120,21 @@
       ctx.restore();
       return ol;
     }
+
+    function buildBgShape(ctx) {
+      let ol = new Outline([], 'olShape');
+      ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
+      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)), id = 'arc1');
+      ol.push(new Vector(550, 100, 550, 400, id = 'vec2'));
+      ol.push(new Vector(550, 400, 400, 550, id = 'vec3'));
+      ol.push(new Vector(400, 550, 100, 550), id = 'vec4');
+      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)), id = 'arc2');
+      ol.push(new Vector(50, 500, 50, 200), id = 'vec5');
+      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW), id = 'arc3');
+      return ol;
+    }
+
+
 
     let mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 

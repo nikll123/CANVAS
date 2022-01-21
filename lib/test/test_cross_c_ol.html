@@ -91,9 +91,23 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
         for (let i = 0; i < cclCmbs.length; i++) {
-          cclCmbs[i].draft(ctx);
-          // else
-          //   cclCmbs[i].render(ctx);
+          let cc = cclCmbs[i];
+          cc.draft(ctx);
+          let lw = 1;
+          for (let i = 0; i < cc.arcs.length; i++) {
+            let a = cc.arcs[i];
+            let p = new Path2D();
+            ctx.save();
+            p.arc(a.x, a.y, a.radius, a.radians1, a.radians2, a.ccw);
+            ctx.lineWidth = 5;
+            if (ctx.isPointInStroke(p, curX, curY)) {
+              ctx.strokeStyle = 'blue';
+              ctx.lineWidth = lw;
+              ctx.stroke(p);
+              lw++;
+            }
+            ctx.restore();
+          }
         }
       }
 

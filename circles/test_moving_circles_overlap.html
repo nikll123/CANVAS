@@ -96,15 +96,14 @@
           for (let j = 0; j < cclCmbs.length; j++) {
             if (i != j) {
               let ccOut = cclCmbs[j];
-              [ang_1, ang_2] = Calc.circleOverlap(ccCur, ccOut);
-              angles.push([ang_1, ang_2]);
-              if (ang_1.value != 0) {
-                angle_points.push(ang_1.begin);
-                angle_points.push(ang_1.end);
-              }
-              if (ang_2.value != 0) {
-                angle_points.push(ang_2.begin);
-                angle_points.push(ang_2.end);
+              let res = Calc.circleOverlap(ccCur, ccOut);
+              for (let i = 1; i < res.length; i++) {
+                ang_1 = res[i]
+                angles.push(ang_1);
+                if (ang_1.value != 0) {
+                  angle_points.push(ang_1.begin);
+                  angle_points.push(ang_1.end);
+                }
               }
             }
           }

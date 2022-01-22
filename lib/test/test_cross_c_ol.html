@@ -43,7 +43,7 @@
     })
   </script>
 
-  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+  <canvas id="canvas" style="border: 1px solid" width="800" height="800"></canvas>
 
   <script>
     let canvas = document.getElementById('canvas');
@@ -67,7 +67,7 @@
       Canvas.grid(ctx);
 
       let ol = buildBgShape(ctx);
-      let p = Calc.getPath(ol);
+      let p = ol.getPath();
       let centreInPath = ctx.isPointInPath(p, cclCmbs[0].x, cclCmbs[0].y)
       let aa = Calc.crossCircleOutLine(cclCmbs[0], ol, centreInPath);
       cclCmbs[0].setAngles(aa);
@@ -93,13 +93,17 @@
         for (let i = 0; i < cclCmbs.length; i++) {
           let cc = cclCmbs[i];
           cc.draft(ctx);
-          let p = new Path2D();
-          p.arc(cc.x, cc.y, cc.radius, 0, DVA_PI, cc.ccw);
-          if (ctx.isPointInPath(p, curX, curY)) {
+          if (ctx.isPointInPath(cc.getPath(), curX, curY)) {
             cc.visualize(ctx);
           }
-
         }
+        // let p = ol.getPath();
+        // ctx.save();
+        // ctx.globalAlpha = 0.2;
+        // ctx.fillStyle = "#99FF99";
+        // ctx.lineWidth = cclCmbs[0].radius * 2;
+        // ctx.stroke(p);
+        // ctx.restore();
       }
 
 

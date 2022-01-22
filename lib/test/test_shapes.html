@@ -61,13 +61,24 @@
         arc1.draft(ctx);
         cmbCcl.draft(ctx);
         cmbCcl2.draft(ctx);
-        crc1.draft(ctx)
+        crc1.draft(ctx);
+
+        arc1.visualize(ctx);
+        cmbCcl.visualize(ctx);
+        cmbCcl2.visualize(ctx);
+        crc1.visualize(ctx);
+
       }
       else {
         arc1.render(ctx, 1);
         cmbCcl.render(ctx, 1, DRAFT_COLOR, '#FFAABB');
         cmbCcl2.render(ctx, 3, DRAFT_COLOR, '#BBAAFF');
         crc1.render(ctx, 1);
+        let p = arc1.getPath();
+        ctx.save();
+        ctx.lineWidth = 30;
+        ctx.stroke(p)
+        ctx.restore();
       }
 
       if (showDetails) {
@@ -82,8 +93,8 @@
       let l2 = new Vector(150, 50, 150, 300, 'l2');
       l2.draft(ctx, 3);
 
-      [angle1, angle2] = Calc.crossCircleLine(ctx, c, l2);
-      c.setAngles( [angle1, angle2]);
+      let angles = Calc.crossCircleLine(ctx, c, l2);
+      c.setAngles(angles);
       c.render(ctx, 0, '', '#AAFFCC');
 
       window.requestAnimationFrame(draw);

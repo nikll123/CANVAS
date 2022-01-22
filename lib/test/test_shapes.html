@@ -93,7 +93,7 @@
       let l2 = new Vector(150, 50, 150, 300, 'l2');
       l2.draft(ctx, 3);
 
-      let angles = Calc.crossCircleLine(ctx, c, l2);
+      let angles = Calc.crossCircleVector(ctx, c, l2);
       c.setAngles(angles);
       c.render(ctx, 0, '', '#AAFFCC');
 

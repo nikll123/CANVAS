@@ -56,8 +56,8 @@
 
     function init() {
       cclCmbs = [];
-      let cclCmb1 = new CircleComposite(475, 126, 90, [new Angle(0, DVA_PI)], CCW);
-      cclCmbs.push(cclCmb1);
+      // let cclCmb1 = new CircleComposite(475, 126, 90, [new Angle(0, DVA_PI)], CCW);
+      // cclCmbs.push(cclCmb1);
     }
 
     init();
@@ -67,12 +67,12 @@
       Canvas.grid(ctx);
 
       let ol = buildBgShape(ctx);
-      let aa;
-      [aa, ol] = Calc.crossCircleOutLine(cclCmbs[0], ol);
-      cclCmbs[0].setAngles(aa);
-      if (aa.length > 1) {
-        cclCmbs[0].mergeArcs();
-      }
+      // let aa;
+      // [aa, ol] = Calc.crossCircleOutLine(cclCmbs[0], ol);
+      // cclCmbs[0].setAngles(aa);
+      // if (aa.length > 1) {
+      //   cclCmbs[0].mergeArcs();
+      // }
 
       ctx.save();
       ol.build(ctx);
@@ -137,6 +137,7 @@
       ol.push(new Vector(550, 50, 550, 550, id = 'vec2'));
       ol.push(new Vector(550, 550, 50, 550), id = 'vec4');
       ol.push(new Vector(50, 550, 50, 50), id = 'vec5');
+      ol.push(new CircleComposite(475, 126, 90, [new Angle(0, DVA_PI)], CCW));
 
       // ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
       // ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)), id = 'arc1');

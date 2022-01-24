@@ -56,7 +56,7 @@
 
     function init() {
       cclCmbs = [];
-      let cclCmb1 = new CircleComposite(475, 126, 90, [new Angle(0, DVA_PI)], CCW);
+      let cclCmb1 = new CircleComposite(570, 54, 90, [new Angle(0, DVA_PI)], CCW);
       cclCmbs.push(cclCmb1);
     }
 
@@ -66,18 +66,19 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      let ol = buildBgShape(ctx);
+      let ol = buildBgShape();
       let aa;
       [aa, ol] = Calc.crossCircleOutLine(cclCmbs[0], ol);
       cclCmbs[0].setAngles(aa);
       if (aa.length > 1) {
         cclCmbs[0].mergeArcs();
       }
+      [cclCmbs[0], ol] = composeResOl(cclCmbs[0], ol);
 
       ctx.save();
       ol.build(ctx);
       for (let i = 0; i < cclCmbs.length; i++) {
-        cclCmbs[i].build(ctx);
+        // cclCmbs[i].build(ctx);
       }
       ctx.globalAlpha = 0.2;
       ctx.shadowColor = '#AAAAAA'
@@ -86,6 +87,9 @@
       ctx.shadowBlur = 8;
       ctx.fillStyle = "#FF9999";
       ctx.fill();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = '#0000FF';
+      ctx.stroke();
       // ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
       ctx.restore();
 
@@ -96,7 +100,7 @@
           let cc = cclCmbs[i];
           cc.draft(ctx);
           // if (ctx.isPointInPath(cc.getPath(), curX, curY)) {
-            cc.visualize(ctx);
+          cc.visualize(ctx);
           // }
         }
         ctx.save();
@@ -118,20 +122,56 @@
       window.requestAnimationFrame(draw);
     }
 
-    function createBgShape(ctx) {
-      let ol = buildBgShape(ctx);
-      ctx.save();
-      ctx.globalAlpha = 0.2;
-      ctx.shadowColor = '#AAAAAA'
-      ctx.shadowOffsetX = 10;
-      ctx.shadowOffsetY = 10;
-      ctx.shadowBlur = 8;
-      ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
-      ctx.restore();
-      return ol;
+    function composeResOl(ccl, ol) {
+      let resOl = new Outline([], 'resultOl');
+      if (ol.lines.length > 0) {
+        resOl.push(ol.lines[0]);
+        ol.lines[0] = undefined;
+        for (let i = 1; i < ol.lines.length; i++) {
+          if (ol.lines[i] != undefined) {
+            let line1 = resOl.lines[resOl.lines.length - 1];
+            let line2 = ol.lines[i];
+            if (line1.endX == line2.beginX && line1.endY == line2.beginY) {
+              resOl.push(line2);
+              ol.lines[i] = undefined;
+            }
+            else {
+              for (let j = 0; j < ccl.arcs.length; j++) {
+                if (ccl.arcs[j] != undefined) {
+                  let arc1 = ccl.arcs[j];
+                  if (arc1.beginX == line1.endX && arc1.beginY == line1.endY) {
+                    resOl.push(arc1);
+                    ccl.arcs[j] = undefined;
+                    i--; // decrease to avoid line skip 
+                    break;
+                  }
+                }
+              }
+              for (let i = ccl.arcs.length - 1; i >= 0; i--) {
+                if (ccl.arcs[i] == undefined)
+                  ccl.arcs.splice(i, 1);
+              }
+            }
+          }
+        }
+      }
+      return [ccl, resOl];
     }
 
-    function buildBgShape(ctx) {
+    // function createBgShape(ctx) {
+    //   let ol = buildBgShape(ctx);
+    //   ctx.save();
+    //   ctx.globalAlpha = 0.2;
+    //   ctx.shadowColor = '#AAAAAA'
+    //   ctx.shadowOffsetX = 10;
+    //   ctx.shadowOffsetY = 10;
+    //   ctx.shadowBlur = 8;
+    //   ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
+    //   ctx.restore();
+    //   return ol;
+    // }
+
+    function buildBgShape() {
       let ol = new Outline([], 'olShape');
       ol.push(new Vector(50, 50, 550, 50, id = 'vec1'));
       ol.push(new Vector(550, 50, 550, 550, id = 'vec2'));

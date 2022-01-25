@@ -1,0 +1,83 @@
+<html>
+
+<head>
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\Vector.js"></script>
+  <script src="..\Outline.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
+
+  <script src="..\test\ut_Obj.js"></script>
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_Vector.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
+</head>
+
+<body onload="draw()">
+
+  <div>
+    <input type="checkbox" id="chkDebugMode" name="Draft">
+    <label for="Draft">Draft</label>
+    <input type="checkbox" id="chkShowDetails" name="Details">
+    <label for="Details">Details</label>
+  </div>
+
+  <script>
+    debugMode = false;
+    let objDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    objDebugMode.addEventListener('change', () => {
+      debugMode = objDebugMode.checked;
+    })
+
+    showDetails = false;
+    let objShowDetails = document.querySelector('input[id="chkShowDetails"]');
+    objShowDetails.addEventListener('change', () => {
+      showDetails = objShowDetails.checked;
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="800" height="800"></canvas>
+
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+
+    function draw() {
+
+      let objs = [];
+
+      let ol = new Outline([new Vector(100, 200, 500, 200), new Vector(500, 200, 500, 600)]);
+      let c2_1 = new CircleComposite(400, 292, 90, [new Angle(0, DVA_PI)], CCW);
+
+      // let c2_2 = new Arc(120, 250, 50, new Angle(0.5, -PI*0.5), CCW, 'c2_2');
+      // let c2_3 = new CircleComposite(420, 100, 50,[new Angle(0, DVA_PI - 0.5)]);
+      // c2_1.draft(ctx);
+      // ol.draft(ctx);
+
+      Canvas.clearAll(ctx);
+      Canvas.grid(ctx);
+
+      [c, ol] = Calc.crossCircleOutLine(c2_1, ol);
+
+      ol.render(ctx);
+      c.render(ctx);
+      // c2_2.draft(ctx);
+      // c2_3.draft(ctx);
+      // c2_1.showDetails(ctx);
+      // c2_2.showDetails(ctx);
+      // c2_3.showDetails(ctx);
+
+
+      window.requestAnimationFrame(draw);
+    }
+  </script>
+</body>
+
+</html>

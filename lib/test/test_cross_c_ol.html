@@ -54,9 +54,27 @@
     let curY = 0;
     let cclCmbs;
 
+    function buildBgShape() {
+      let ol = new Outline([], 'olShape');
+      ol.push(new Vector(100, 200, 500, 200, id = 'vec1'));
+      ol.push(new Vector(500, 200, 500, 500, id = 'vec2'));
+      ol.push(new Vector(500, 500, 100, 500), id = 'vec4');
+      ol.push(new Vector(100, 500, 100, 200), id = 'vec5');
+
+      // ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
+      // ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)), id = 'arc1');
+      // ol.push(new Vector(550, 100, 550, 400, id = 'vec2'));
+      // ol.push(new Vector(550, 400, 400, 550, id = 'vec3'));
+      // ol.push(new Vector(400, 550, 100, 550), id = 'vec4');
+      // ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)), id = 'arc2');
+      // ol.push(new Vector(50, 500, 50, 200), id = 'vec5');
+      // ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW), id = 'arc3');
+      return ol;
+    }
+
     function init() {
       cclCmbs = [];
-      let cclCmb1 = new CircleComposite(411, 382, 90, [new Angle(0, DVA_PI)], CCW);
+      let cclCmb1 = new CircleComposite(190, 291, 90, [new Angle(0, DVA_PI)], CCW);
       // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
       cclCmbs.push(cclCmb1);
     }
@@ -120,25 +138,6 @@
       }
 
       window.requestAnimationFrame(draw);
-    }
-
-
-    function buildBgShape() {
-      let ol = new Outline([], 'olShape');
-      ol.push(new Vector(100, 200, 500, 200, id = 'vec1'));
-      ol.push(new Vector(500, 200, 500, 500, id = 'vec2'));
-      ol.push(new Vector(500, 500, 100, 500), id = 'vec4');
-      ol.push(new Vector(100, 500, 100, 200), id = 'vec5');
-
-      // ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
-      // ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)), id = 'arc1');
-      // ol.push(new Vector(550, 100, 550, 400, id = 'vec2'));
-      // ol.push(new Vector(550, 400, 400, 550, id = 'vec3'));
-      // ol.push(new Vector(400, 550, 100, 550), id = 'vec4');
-      // ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI)), id = 'arc2');
-      // ol.push(new Vector(50, 500, 50, 200), id = 'vec5');
-      // ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW), id = 'arc3');
-      return ol;
     }
 
     let mtt = new MouseTouchTracker(canvas,

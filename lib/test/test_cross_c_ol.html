@@ -58,8 +58,8 @@
       let ol = new Outline([], 'olShape');
       ol.push(new Vector(100, 200, 500, 200, id = 'vec1'));
       ol.push(new Vector(500, 200, 500, 500, id = 'vec2'));
-      ol.push(new Vector(500, 500, 100, 500), id = 'vec4');
-      ol.push(new Vector(100, 500, 100, 200), id = 'vec5');
+      ol.push(new Vector(500, 500, 100, 500, id = 'vec4'));
+      ol.push(new Vector(100, 500, 100, 200, id = 'vec5'));
 
       // ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
       // ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI)), id = 'arc1');
@@ -74,9 +74,9 @@
 
     function init() {
       cclCmbs = [];
-      let cclCmb1 = new CircleComposite(190, 291, 90, [new Angle(0, DVA_PI)], CCW);
+       let cclCmb1 = new CircleComposite(420, 280, 90, [new Angle(0, DVA_PI)], CCW);
       // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
-      cclCmbs.push(cclCmb1);
+       cclCmbs.push(cclCmb1);
     }
 
     init();
@@ -87,16 +87,19 @@
 
       let ol = buildBgShape();
       let cclCmbsToRender = [];
-      let c = cclCmbs[0].clone();
-      [c, ol] = Calc.crossCircleOutLine(c, ol);
-      if (c.arcs.length == 0)
-        c.arcs.length;
-      cclCmbsToRender.push(c);
+      let ols = [];
+      if (cclCmbs.length > 0) {
+        let c = cclCmbs[0].clone();
+        ols = Calc.crossCircleOutLine(c, ol);
+        if (ols.length == 0)
+          ols = [ol, c];
+      }
+      else
+        ols = [ol];
 
       ctx.save();
-      ol.build(ctx);
-      for (let i = 0; i < cclCmbsToRender.length; i++) {
-        cclCmbsToRender[i].build(ctx);
+      for (let i = 0; i < ols.length; i++) {
+        ols[i].build(ctx);
       }
       ctx.globalAlpha = 0.2;
       ctx.shadowColor = '#AAAAAA'

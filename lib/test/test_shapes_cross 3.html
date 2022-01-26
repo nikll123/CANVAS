@@ -64,15 +64,22 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      [c, ol] = Calc.crossCircleOutLine(c2_1, ol);
+      let ols = Calc.crossCircleOutLine(c2_1, ol);
+      if (ols.length == 0)
+        ols = [c, ol]
 
-      ol.render(ctx);
-      c.render(ctx);
+      for (let i = 0; i < ols.length; i++) {
+        ols[i].build(ctx);
+      }
+      // ol.render(ctx);
+      // c.render(ctx);
       // c2_2.draft(ctx);
       // c2_3.draft(ctx);
       // c2_1.showDetails(ctx);
       // c2_2.showDetails(ctx);
       // c2_3.showDetails(ctx);
+
+      ctx.stroke();
 
 
       window.requestAnimationFrame(draw);

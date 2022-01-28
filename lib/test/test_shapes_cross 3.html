@@ -53,10 +53,13 @@
 
       let objs = [];
 
-      let ol = new Outline([new Vector(100, 200, 500, 200), new Vector(500, 200, 500, 600)]);
-      let c2_1 = new CircleComposite(400, 292, 90, [new Angle(0, DVA_PI)], CCW);
+      // let ol = new Outline([new Vector(100, 200, 500, 200), new Vector(500, 200, 500, 600)]);
+      // let c2_1 = new CircleComposite(400, 292, 90, [new Angle(0, DVA_PI)], CCW);
 
-      // let c2_2 = new Arc(120, 250, 50, new Angle(0.5, -PI*0.5), CCW, 'c2_2');
+      let ccl1 = new CircleComposite(325, 350, 50, [new Angle(0, DVA_PI)], CW, 'ccl1');
+      let arc2 = new Arc(300, 300, 90, new Angle(0.5, -PI * 0.5), CW, 'arc2');
+
+      objs.push(ccl1, arc2);
       // let c2_3 = new CircleComposite(420, 100, 50,[new Angle(0, DVA_PI - 0.5)]);
       // c2_1.draft(ctx);
       // ol.draft(ctx);
@@ -64,12 +67,16 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      let ols = Calc.crossCircleOutLine(c2_1, ol);
-      if (ols.length == 0)
-        ols = [c, ol]
+      let aa = Calc.circleOverlap(ccl1, arc2);     // res !!!
+      if (aa.length > 0)
+        ccl1.setAngles(aa);
+      // for (let i = 0; i < aa.length; i++) {
+      //   let angle = aa[i];
+      //   // (new Arc(cl1.x, cl1.y, cl1.radius, angle)).draft(ctx);
+      // }
 
-      for (let i = 0; i < ols.length; i++) {
-        ols[i].build(ctx);
+      for (let i = 0; i < objs.length; i++) {
+        objs[i].draft(ctx);
       }
       // ol.render(ctx);
       // c.render(ctx);
@@ -79,7 +86,7 @@
       // c2_2.showDetails(ctx);
       // c2_3.showDetails(ctx);
 
-      ctx.stroke();
+      // ctx.stroke();
 
 
       window.requestAnimationFrame(draw);

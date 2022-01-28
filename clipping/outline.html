@@ -29,8 +29,8 @@
         let c1 = new Arc(200, 200, 100, new Angle(0, DVA_PI));
         let c2 = new Arc(250, 280, 120, new Angle(0, PI));
 
-        [angle11, angle12] = Calc.circleOverlap(c1, c2);
-        [angle21, angle22] = Calc.circleOverlap(c2, c1);
+        [angle11, angle12] = Calc.circleOverlap(c1, c2);    // res !!!
+        [angle21, angle22] = Calc.circleOverlap(c2, c1);    // res !!!
 
         a1 = new Arc(c1.x, c1.y, c1.radius, angle11);
         a2 = new Arc(c2.x, c2.y, c2.radius, angle22);

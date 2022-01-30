@@ -43,9 +43,13 @@
     })
   </script>
 
-  <canvas id="canvas" style="border: 1px solid" width="800" height="800"></canvas>
+  <canvas id="canvas" style="border: 1px solid" width="3000" height="3000"></canvas>
 
   <script>
+    let scaleX = 1;
+    // debugMode = true;
+    if (debugMode)
+      scaleX = 3;
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
     let beginX = 0;
@@ -69,7 +73,8 @@
 
     function init() {
       cclCmbs = [];
-      let cclCmb1 = new CircleComposite(605, 10, 90, [new Angle(0, DVA_PI)], CCW);
+      // let cclCmb1 = new CircleComposite(140, 470, 90, [new Angle(0, DVA_PI)], CCW);
+      let cclCmb1 = new CircleComposite(471, 131, 90, [new Angle(0, DVA_PI)], CCW);
       // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
       cclCmbs.push(cclCmb1);
     }
@@ -78,7 +83,7 @@
 
     function draw() {
       Canvas.clearAll(ctx);
-      Canvas.grid(ctx);
+      Canvas.grid(ctx, 10 * scaleX);
 
       let ol = buildBgShape();
       let cclCmbsToRender = [];
@@ -94,6 +99,7 @@
         ols = [ol];
 
       ctx.save();
+      ctx.scale(scaleX, scaleX);
       for (let i = 0; i < ols.length; i++) {
         ols[i].build(ctx);
       }
@@ -111,16 +117,18 @@
       ctx.restore();
 
       if (debugMode) {
+        ctx.save();
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
+        ctx.scale(scaleX, scaleX);
+        ctx.strokeStyle = "#0000FF";
         for (let i = 0; i < cclCmbsToRender.length; i++) {
           let cc = cclCmbsToRender[i];
-          cc.draft(ctx);
+          cc.draft(ctx, 1.5, "#0000FF");
           // // if (ctx.isPointInPath(cc.getPath(), curX, curY)) {
           // cc.visualize(ctx);
           // // }
         }
-        ctx.save();
         ctx.strokeStyle = "#9999FF";
         for (let i = 0; i < ols.length; i++) {
           ols[i].draft(ctx);

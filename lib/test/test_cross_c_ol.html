@@ -27,6 +27,8 @@
     <label for="Draft">Draft</label>
     <input type="checkbox" id="chkShowDetails" name="Details">
     <label for="Details">Details</label>
+    <input type="checkbox" id="chkSetBigScale" name="Big scale">
+    <label for="chkSetBigScale">Big scale</label>
   </div>
 
   <script>
@@ -41,15 +43,17 @@
     objShowDetails.addEventListener('change', () => {
       showDetails = objShowDetails.checked;
     })
-  </script>
 
-  <canvas id="canvas" style="border: 1px solid" width="3000" height="3000"></canvas>
+    bigScale = false;
+    let objSetBigScale = document.querySelector('input[id="chkSetBigScale"]');
+    objSetBigScale.addEventListener('change', () => {
+      bigScale = objSetBigScale.checked;
+    })
+</script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-    // debugMode = true;
-    let scaleX = 1;
-    if (debugMode)
-      scaleX = 3;
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
     let beginX = 0;
@@ -74,7 +78,7 @@
     function init() {
       cclCmbs = [];
       // let cclCmb1 = new CircleComposite(140, 470, 90, [new Angle(0, DVA_PI)], CCW);
-      let cclCmb1 = new CircleComposite(468, 130, 90, [new Angle(0, DVA_PI)], CCW);
+      let cclCmb1 = new CircleComposite(467, 124, 90, [new Angle(0, DVA_PI)], CCW);
       // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
       cclCmbs.push(cclCmb1);
     }
@@ -83,6 +87,11 @@
 
     function draw() {
       Canvas.clearAll(ctx);
+      let scaleX = 1;
+      if (bigScale)
+        scaleX = 3;
+      ctx.canvas.width = scaleX * 600;
+      ctx.canvas.height = scaleX * 600;
       Canvas.grid(ctx, 10 * scaleX);
 
       let ol = buildBgShape();
@@ -131,7 +140,7 @@
         }
         ctx.strokeStyle = "#9999FF";
         for (let i = 0; i < ols.length; i++) {
-           ols[i].draft(ctx);
+          ols[i].draft(ctx);
         }
         ctx.restore();
       }

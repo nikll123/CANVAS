@@ -67,9 +67,9 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      let aa = Calc.circleOverlap(ccl1, arc2);     // res !!!
-      if (aa.length > 0)
-        ccl1.setAngles(aa);
+      let crosstype, a1, a2;
+      [crosstype, a1, a2]= Calc.circleOverlap(ctx, ccl1, arc2);     // res !!!
+      ccl1.setAngles([a1]);
       // for (let i = 0; i < aa.length; i++) {
       //   let angle = aa[i];
       //   // (new Arc(cl1.x, cl1.y, cl1.radius, angle)).draft(ctx);

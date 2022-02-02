@@ -69,9 +69,12 @@
       let ol1 = new Outline([])
 
       let ol = createBgShape(ctx);
-      let res = Calc.crossCircleOutLine(cclComps[0], ol)
-      cclComps[0].setAngles(res);
-      cclComps[0].render(ctx, 1);
+      let ols = Calc.crossCircleOutLine(ctx, cclComps[0], ol)
+      for (let i = 0; i < ols.length; i++) {
+        ols[i].draft(ctx);
+      }
+      // cclComps[0].setAngles(res);
+      // cclComps[0].render(ctx, 1);
 
 
       if (debugMode) {
@@ -124,7 +127,7 @@
             beginX = x;
             beginY = y;
             for (let i = 0; i < cclComps.length; i++)
-              cclComps[i].startDrugIfPointIsInside(x, y);
+              cclComps[i].startDrugIfPointIsInside(ctx, x, y);
             break;
 
           case 'up':

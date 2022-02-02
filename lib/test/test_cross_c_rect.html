@@ -1,0 +1,202 @@
+<html>
+
+<head>
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\Vector.js"></script>
+  <script src="..\Outline.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
+
+  <script src="..\test\ut_Obj.js"></script>
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_Vector.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
+</head>
+
+<body onload="draw()">
+
+  <div>
+    <input type="checkbox" id="chkDebugMode" name="Draft">
+    <label for="Draft">Draft</label>
+    <input type="checkbox" id="chkShowDetails" name="Details">
+    <label for="Details">Details</label>
+    <input type="checkbox" id="chkSetBigScale" name="Big scale">
+    <label for="chkSetBigScale">Big scale</label>
+    <input type="checkbox" id="chkShowCcl" name="Show Circles">
+    <label for="chkShowCcl">Show Circles</label>
+  </div>
+
+  <script>
+    debugMode = false;
+    let objDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    objDebugMode.addEventListener('change', () => {
+      debugMode = objDebugMode.checked;
+    })
+
+    showDetails = false;
+    let objShowDetails = document.querySelector('input[id="chkShowDetails"]');
+    objShowDetails.addEventListener('change', () => {
+      showDetails = objShowDetails.checked;
+    })
+
+    bigScale = false;
+    let objSetBigScale = document.querySelector('input[id="chkSetBigScale"]');
+    objSetBigScale.addEventListener('change', () => {
+      bigScale = objSetBigScale.checked;
+    })
+
+    showCcl = false;
+    let objShowCcl = document.querySelector('input[id="chkShowCcl"]');
+    objShowCcl.addEventListener('change', () => {
+      showCcl = objShowCcl.checked;
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let beginX = 0;
+    let beginY = 0;
+    let curX = 0;
+    let curY = 0;
+    let cclCmbs;
+
+    function buildBgShape() {
+      let ol = new Outline([], 'olShape');
+      ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
+      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI), CW, id = 'arc1'));
+      ol.push(new Vector(550, 100, 550, 400, id = 'vec2'));
+      ol.push(new Vector(550, 400, 400, 550, id = 'vec3'));
+      ol.push(new Vector(400, 550, 100, 550, id = 'vec4'));
+      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI), CW, id = 'arc2'));
+      ol.push(new Vector(50, 500, 50, 200, id = 'vec5'));
+      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW, id = 'arc3'));
+      return ol;
+    }
+
+    function init() {
+      cclCmbs = [];
+      // let cclCmb1 = new CircleComposite(140, 470, 90, [new Angle(0, DVA_PI)], CCW);
+      let cclCmb1 = new CircleComposite(470, 134, 90, [new Angle(0, DVA_PI)], CCW);
+      // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
+      cclCmbs.push(cclCmb1);
+    }
+
+    init();
+
+    function draw() {
+      Canvas.clearAll(ctx);
+      let scaleX = 1;
+      if (bigScale)
+        scaleX = 3;
+      ctx.canvas.width = scaleX * 600;
+      ctx.canvas.height = scaleX * 600;
+      Canvas.grid(ctx, 10 * scaleX);
+
+      let ol = buildBgShape();
+      let cclCmbsToRender = [];
+      let ols = [];
+      if (cclCmbs.length > 0) {
+        let c = cclCmbs[0].clone();
+        ols = Calc.crossCircleOutLine(ctx, c, ol);
+        cclCmbsToRender.push(c);
+        if (ols.length == 0)
+          ols = [ol, c];
+      }
+      else
+        ols = [ol];
+
+      ctx.save();
+      ctx.scale(scaleX, scaleX);
+      for (let i = 0; i < ols.length; i++) {
+        ols[i].build(ctx);
+      }
+      ctx.globalAlpha = 0.2;
+      ctx.shadowColor = '#AAAAAA'
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = "#FF9999";
+      ctx.fill();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = '#0000FF';
+      ctx.stroke();
+      // ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
+      ctx.restore();
+
+      if (debugMode) {
+        ctx.save();
+        pMouse = new Point(curX, curY);
+        pMouse.draft(ctx, 2);
+        ctx.scale(scaleX, scaleX);
+        if (showCcl) {
+          ctx.strokeStyle = "#FF0000";
+          for (let i = 0; i < cclCmbsToRender.length; i++) {
+            let cc = cclCmbsToRender[i];
+            cc.visualize(ctx);
+          }
+        }
+        ctx.strokeStyle = "#9999FF";
+        for (let i = 0; i < ols.length; i++) {
+          ols[i].draft(ctx);
+        }
+        ctx.restore();
+      }
+
+      if (showDetails) {
+        // for (let i = 0; i < cclCmbs.length; i++) {
+        //   cclCmbs[i].showDetails(ctx);
+        // }
+        for (let i = 0; i < ols.length; i++) {
+          ols[i].showDetails(ctx);
+        }
+      }
+
+      window.requestAnimationFrame(draw);
+    }
+
+    let mtt = new MouseTouchTracker(canvas,
+      function (evtType, x, y) {                         // callback 
+        curX = x;
+        curY = y;
+        switch (evtType) {
+          case 'down':
+            beginX = x;
+            beginY = y;
+            for (let i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].startDrugIfPointIsInside(ctx, x, y);
+            break;
+
+          case 'up':
+            for (let i = 0; i < cclCmbs.length; i++)
+              cclCmbs[i].stopDrag();
+            break;
+
+          case 'move':
+            let dx = x - beginX;
+            let dy = y - beginY;
+            beginX = x;
+            beginY = y;
+
+            for (let i = 0; i < cclCmbs.length; i++) {
+              cclCmbs[i].moveIfDragging(dx, dy);
+            }
+            break;
+        }
+      }
+    );
+
+
+  </script>
+</body>
+
+</html>

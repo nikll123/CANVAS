@@ -13,6 +13,8 @@
   <script src="..\lib\Const.js"></script>
   <script src="..\lib\Primitives.js"></script>
   <script src="..\lib\ArcShapes.js"></script>
+  <script src="..\lib\Vector.js"></script>
+  <script src="..\lib\Outline.js"></script>
   <script src="..\lib\PoligonShapes.js"></script>
   <script src="..\lib\MouseTouchTracker.js"></script>
 
@@ -20,8 +22,8 @@
   <script src="..\lib\test\ut_Angles.js"></script>
   <script src="..\lib\test\ut_Calc.js"></script>
   <script src="..\lib\test\ut_Shapes.js"></script>
+  <script src="..\lib\test\ut_Vector.js"></script>
   <script src="..\lib\test\ut_primitives.js"></script>
-
   <script>
     // context
     let canvas = document.getElementById('canvas');
@@ -32,10 +34,10 @@
     let c2 = new Circle(150, 220, 75);
     c2.render(ctx, 1);
 
-    [angle1_start, angle1_stop, angle2_start, angle2_stop] = Calc.circleOverlap(c1, c2);
+    [crosstype, angle1, angle2] = Calc.circleOverlap(ctx, c1, c2);
 
-    let arc1 = new Arc(c1.points[0].x, c1.points[0].y, c1.radius, angle1_stop,angle1_start);
-    let arc2 = new Arc(c2.points[0].x, c2.points[0].y, c2.radius, angle2_stop, angle2_start);
+    let arc1 = new Arc(c1.points[0].x, c1.points[0].y, c1.radius, angle1);
+    let arc2 = new Arc(c2.points[0].x, c2.points[0].y, c2.radius, angle2);
     arc1.render(ctx, 5, '#FF0000');
     arc2.render(ctx, 5, '#FF0000');
 

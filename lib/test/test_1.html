@@ -85,16 +85,16 @@
     // Create circle
     // const circle = new Path2D();
     let ol = buildBgShape();
-    const circle = Calc.getPath(ol);
+    const olPath = ol.getPath();
 
     // circle.arc(150, 75, 50, 0, Math.PI/3);
     ctx.fillStyle = 'red';
-    ctx.fill(circle);
+    ctx.fill(olPath);
 
     // Listen for mouse moves
     canvas.addEventListener('mousemove', function (event) {
       // Check whether point is inside circle
-      if (ctx.isPointInPath(circle, event.offsetX, event.offsetY)) {
+      if (ctx.isPointInPath(olPath, event.offsetX, event.offsetY)) {
         ctx.fillStyle = 'green';
         console.log('green');
       }
@@ -105,7 +105,7 @@
 
       // Draw circle
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fill(circle);
+      ctx.fill(olPath);
     });
 
     function buildBgShape() {

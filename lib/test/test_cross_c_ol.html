@@ -29,6 +29,8 @@
     <label for="Details">Details</label>
     <input type="checkbox" id="chkSetBigScale" name="Big scale">
     <label for="chkSetBigScale">Big scale</label>
+    <input type="checkbox" id="chkShowCcl" name="Show Circles">
+    <label for="chkShowCcl">Show Circles</label>
   </div>
 
   <script>
@@ -49,7 +51,13 @@
     objSetBigScale.addEventListener('change', () => {
       bigScale = objSetBigScale.checked;
     })
-</script>
+
+    showCcl = false;
+    let objShowCcl = document.querySelector('input[id="chkShowCcl"]');
+    objShowCcl.addEventListener('change', () => {
+      showCcl = objShowCcl.checked;
+    })
+  </script>
 
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
@@ -78,7 +86,7 @@
     function init() {
       cclCmbs = [];
       // let cclCmb1 = new CircleComposite(140, 470, 90, [new Angle(0, DVA_PI)], CCW);
-      let cclCmb1 = new CircleComposite(467, 124, 90, [new Angle(0, DVA_PI)], CCW);
+      let cclCmb1 = new CircleComposite(470, 134, 90, [new Angle(0, DVA_PI)], CCW);
       // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
       cclCmbs.push(cclCmb1);
     }
@@ -121,7 +129,7 @@
       ctx.fill();
       ctx.globalAlpha = 0.5;
       ctx.strokeStyle = '#0000FF';
-      // ctx.stroke();
+      ctx.stroke();
       // ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
       ctx.restore();
 
@@ -130,13 +138,12 @@
         pMouse = new Point(curX, curY);
         pMouse.draft(ctx, 2);
         ctx.scale(scaleX, scaleX);
-        // ctx.strokeStyle = "#0000FF";
-        for (let i = 0; i < cclCmbsToRender.length; i++) {
-          let cc = cclCmbsToRender[i];
-          // cc.draft(ctx, 1.5, "#0000FF");
-          // // if (ctx.isPointInPath(cc.getPath(), curX, curY)) {
-          cc.visualize(ctx);
-          // // }
+        if (showCcl) {
+          ctx.strokeStyle = "#FF0000";
+          for (let i = 0; i < cclCmbsToRender.length; i++) {
+            let cc = cclCmbsToRender[i];
+            cc.visualize(ctx);
+          }
         }
         ctx.strokeStyle = "#9999FF";
         for (let i = 0; i < ols.length; i++) {

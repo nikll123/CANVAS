@@ -64,31 +64,23 @@
   <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let beginX = 0;
-    let beginY = 0;
-    let curX = 0;
-    let curY = 0;
-    let cclCmbs;
+    let beginMoveX = 0;
+    let beginMoveY = 0;
+    let mouseCurX = 0;
+    let mouseCurY = 0;
+    let cclCmb1;
 
     function buildBgShape() {
       let ol = new Outline([], 'olShape');
-      ol.push(new Vector(200, 50, 500, 50, id = 'vec1'));
-      ol.push(new Arc(500, 100, 50, new Angle(3 * PI / 2, DVA_PI), CW, id = 'arc1'));
-      ol.push(new Vector(550, 100, 550, 400, id = 'vec2'));
-      ol.push(new Vector(550, 400, 400, 550, id = 'vec3'));
-      ol.push(new Vector(400, 550, 100, 550, id = 'vec4'));
-      ol.push(new Arc(100, 500, 50, new Angle(PI / 2, PI), CW, id = 'arc2'));
-      ol.push(new Vector(50, 500, 50, 200, id = 'vec5'));
-      ol.push(new Arc(50, 50, 150, new Angle(PI / 2, 0), CCW, id = 'arc3'));
+      ol.push(new Vector(100, 100, 400, 100, id = 'vec1'));
+      ol.push(new Vector(400, 100, 400, 400, id = 'vec2'));
+      ol.push(new Vector(400, 400, 100, 400, id = 'vec3'));
+      ol.push(new Vector(100, 400, 100, 100, id = 'vec4'));
       return ol;
     }
 
     function init() {
-      cclCmbs = [];
-      // let cclCmb1 = new CircleComposite(140, 470, 90, [new Angle(0, DVA_PI)], CCW);
-      let cclCmb1 = new CircleComposite(470, 134, 90, [new Angle(0, DVA_PI)], CCW);
-      // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
-      cclCmbs.push(cclCmb1);
+      cclCmb1 = new CircleComposite(470, 134, 90, [new Angle(0, DVA_PI)], CCW);
     }
 
     init();
@@ -103,17 +95,13 @@
       Canvas.grid(ctx, 10 * scaleX);
 
       let ol = buildBgShape();
-      let cclCmbsToRender = [];
+      let cclCmbToRender;
       let ols = [];
-      if (cclCmbs.length > 0) {
-        let c = cclCmbs[0].clone();
-        ols = Calc.crossCircleOutLine(ctx, c, ol);
-        cclCmbsToRender.push(c);
-        if (ols.length == 0)
-          ols = [ol, c];
-      }
-      else
-        ols = [ol];
+      let c = cclCmb1.clone();
+      ols = Calc.crossCircleOutLine(ctx, c, ol);
+      cclCmbToRender = c;
+      if (ols.length == 0)
+        ols = [ol, c];
 
       ctx.save();
       ctx.scale(scaleX, scaleX);
@@ -135,15 +123,12 @@
 
       if (debugMode) {
         ctx.save();
-        pMouse = new Point(curX, curY);
+        pMouse = new Point(mouseCurX, mouseCurY);
         pMouse.draft(ctx, 2);
         ctx.scale(scaleX, scaleX);
         if (showCcl) {
           ctx.strokeStyle = "#FF0000";
-          for (let i = 0; i < cclCmbsToRender.length; i++) {
-            let cc = cclCmbsToRender[i];
-            cc.visualize(ctx);
-          }
+          cclCmbToRender.visualize(ctx);
         }
         ctx.strokeStyle = "#9999FF";
         for (let i = 0; i < ols.length; i++) {
@@ -153,9 +138,6 @@
       }
 
       if (showDetails) {
-        // for (let i = 0; i < cclCmbs.length; i++) {
-        //   cclCmbs[i].showDetails(ctx);
-        // }
         for (let i = 0; i < ols.length; i++) {
           ols[i].showDetails(ctx);
         }
@@ -166,30 +148,26 @@
 
     let mtt = new MouseTouchTracker(canvas,
       function (evtType, x, y) {                         // callback 
-        curX = x;
-        curY = y;
+        mouseCurX = x;
+        mouseCurY = y;
         switch (evtType) {
           case 'down':
-            beginX = x;
-            beginY = y;
-            for (let i = 0; i < cclCmbs.length; i++)
-              cclCmbs[i].startDrugIfPointIsInside(ctx, x, y);
+            beginMoveX = x;
+            beginMoveY = y;
+            cclCmb1.startDrugIfPointIsInside(ctx, x, y);
             break;
 
           case 'up':
-            for (let i = 0; i < cclCmbs.length; i++)
-              cclCmbs[i].stopDrag();
+            cclCmb1.stopDrag();
             break;
 
           case 'move':
-            let dx = x - beginX;
-            let dy = y - beginY;
-            beginX = x;
-            beginY = y;
+            let dx = x - beginMoveX;
+            let dy = y - beginMoveY;
+            beginMoveX = x;
+            beginMoveY = y;
 
-            for (let i = 0; i < cclCmbs.length; i++) {
-              cclCmbs[i].moveIfDragging(dx, dy);
-            }
+            cclCmb1.moveIfDragging(dx, dy);
             break;
         }
       }

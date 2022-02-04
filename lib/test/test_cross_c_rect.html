@@ -69,6 +69,7 @@
     let mouseCurX = 0;
     let mouseCurY = 0;
     let cclCmb1;
+    getMouseTouchTracker();
 
     function buildBgShape() {
       let ol = new Outline([], 'olShape');
@@ -84,7 +85,9 @@
     }
 
     init();
+  </script>
 
+  <script>
     function draw() {
       Canvas.clearAll(ctx);
       let scaleX = 1;
@@ -146,34 +149,7 @@
       window.requestAnimationFrame(draw);
     }
 
-    let mtt = new MouseTouchTracker(canvas,
-      function (evtType, x, y) {                         // callback 
-        mouseCurX = x;
-        mouseCurY = y;
-        switch (evtType) {
-          case 'down':
-            beginMoveX = x;
-            beginMoveY = y;
-            cclCmb1.startDrugIfPointIsInside(ctx, x, y);
-            break;
-
-          case 'up':
-            cclCmb1.stopDrag();
-            break;
-
-          case 'move':
-            let dx = x - beginMoveX;
-            let dy = y - beginMoveY;
-            beginMoveX = x;
-            beginMoveY = y;
-
-            cclCmb1.moveIfDragging(dx, dy);
-            break;
-        }
-      }
-    );
-
-
+    
   </script>
 </body>
 

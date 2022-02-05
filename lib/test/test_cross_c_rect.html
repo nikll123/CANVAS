@@ -4,6 +4,7 @@
   <script src="..\BasicShape.js"></script>
   <script src="..\Canvas.js"></script>
   <script src="..\Calc.js"></script>
+  <script src="..\CalcCross.js"></script>
   <script src="..\Const.js"></script>
   <script src="..\Primitives.js"></script>
   <script src="..\ArcShapes.js"></script>
@@ -64,10 +65,10 @@
   <script>
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
-    let beginMoveX = 0;
-    let beginMoveY = 0;
-    let mouseCurX = 0;
-    let mouseCurY = 0;
+    // let beginMoveX = 0;
+    // let beginMoveY = 0;
+    // let mouseCurX = 0;
+    // let mouseCurY = 0;
     let cclCmb1;
     getMouseTouchTracker();
 
@@ -81,7 +82,7 @@
     }
 
     function init() {
-      cclCmb1 = new CircleComposite(470, 134, 90, [new Angle(0, DVA_PI)], CCW);
+      cclCmb1 = new CircleComposite(330, 200, 90, [new Angle(0, DVA_PI)], CCW);
     }
 
     init();
@@ -101,7 +102,7 @@
       let cclCmbToRender;
       let ols = [];
       let c = cclCmb1.clone();
-      ols = Calc.crossCircleOutLine(ctx, c, ol);
+      ols = CalcCross.crossCircleOutLine(ctx, c, ol);
       cclCmbToRender = c;
       if (ols.length == 0)
         ols = [ol, c];

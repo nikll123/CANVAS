@@ -4,6 +4,7 @@
   <script src="..\BasicShape.js"></script>
   <script src="..\Canvas.js"></script>
   <script src="..\Calc.js"></script>
+  <script src="..\CalcCross.js"></script>
   <script src="..\Const.js"></script>
   <script src="..\Primitives.js"></script>
   <script src="..\ArcShapes.js"></script>
@@ -56,9 +57,23 @@
 
     function init() {
       ols = [];
-      ols.push(new Outline([new Arc(150, 210, 60, new Angle(0,5))], 'ol1'));
-      ols.push(new Outline([new CircleComposite(400, 300, 79)], 'ol2'));
-      ols.push(new Outline([new VectorComposite(100, 300, 400, 100, [[0, 100]], 'v2')], 'ol2'));
+      // ols.push(new Outline([new Arc(150, 210, 60, new Angle(0,5))], 'ol1'));
+      // ols.push(new Outline([new CircleComposite(400, 300, 79)], 'ol2'));
+      // let vec1 = new VectorComposite(100, 300, 400, 100, [[0, 100]], 'v2');
+      // let x, y;
+      // [x, y] = vec1.getXyLen(23)
+      // console.debug(vec1.getXyLen(23));
+      // console.debug(vec1.length);
+      // console.debug(vec1.getLenXy(ctx, x, y));
+
+      let vec1 = new Vector(100, 300, 400, 100, 'v3');
+      console.debug("original " + new Vector(100, 300, 400, 100, 'v3'));
+      console.debug("vec1.cut(ctx, 1, 2) " + vec1.cut(ctx, 1, 2));
+      console.debug("vec1.cut(ctx, 250, 200) " + vec1.cut(ctx, 250, 200));
+      console.debug("vec1.cutBegin(ctx, 250, 200) " + vec1.cutBegin(ctx, 250, 200));
+      console.debug("vec1.cutEnd(ctx, 250, 200) " + vec1.cutEnd(ctx, 250, 200));
+      console.debug("vec1.cutEnd(ctx, 250, 201) " + vec1.cutEnd(ctx, 250, 201));
+      console.debug("vec1.cutMiddle(ctx, 250, 200, 325, 150) " + vec1.cutMiddle(ctx, 250, 200, 325, 150));
     }
 
     init();
@@ -67,24 +82,24 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      for (let i = 0; i < ols.length; i++) {
-        for (let j = 0; j < ols.length; j++) {
-          if (i == j)
-            continue;
-          let ol1 = ols[i];
-          let ol2 = ols[j];
-          ol1 = Calc.crossOutLineOutLine(ol1, ol2);
-        }
-      }
+      // for (let i = 0; i < ols.length; i++) {
+      //   for (let j = 0; j < ols.length; j++) {
+      //     if (i == j)
+      //       continue;
+      //     let ol1 = ols[i];
+      //     let ol2 = ols[j];
+      //     // ol1 = CalcCross.crossOutLineOutLine(ol1, ol2);
+      //   }
+      // }
 
 
       //  render 
-      for (let i = 0; i < ols.length; i++) {
-        if (debugMode)
-          ols[i].draft(ctx);
-        else
-          ols[i].render(ctx);
-      }
+      // for (let i = 0; i < ols.length; i++) {
+      //   if (debugMode)
+      //     ols[i].draft(ctx);
+      //   else
+      //     ols[i].render(ctx);
+      // }
 
       if (debugMode) {
         pMouse = new Point(curX, curY);
@@ -99,41 +114,6 @@
       window.requestAnimationFrame(draw);
     }
 
-    let mtt = new MouseTouchTracker(canvas,
-      function (evtType, x, y) {                         // callback 
-        curX = x;
-        curY = y;
-        switch (evtType) {
-          case 'down':
-            beginX = x;
-            beginY = y;
-            for (let i = 0; i < ols.length; i++) {
-              if ('startDrugIfPointIsInside' in ols[i])
-                ols[i].startDrugIfPointIsInside(x, y);
-            }
-            break;
-
-          case 'up':
-            for (let i = 0; i < ols.length; i++) {
-              if ('stopDrag' in ols[i])
-                ols[i].stopDrag();
-            }
-            break;
-
-          case 'move':
-            let dx = x - beginX;
-            let dy = y - beginY;
-            beginX = x;
-            beginY = y;
-
-            for (let i = 0; i < ols.length; i++) {
-              if ('moveIfDragging' in ols[i])
-                ols[i].moveIfDragging(dx, dy);
-            }
-            break;
-        }
-      }
-    );
 
 
   </script>

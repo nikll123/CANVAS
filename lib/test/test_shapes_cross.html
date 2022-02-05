@@ -56,32 +56,33 @@
       let objs = [];
 
       let c1 = new CircleComposite(200, 200, 100, [ANGLE_DVA_PI], CCW, 'c1');
-      let l1 = new Vector(100, 50, 170, 350, 'v1');
-      [relType, angleRes, x1, y1, x2, y2] = CalcCross.crossCircleVector(ctx, c1, l1);
-      c1.setAngles([angleRes]);
-      objs.push(c1);
-      objs.push(l1);
-
+      let v1 = new Vector(100, 50, 170, 350, 'v1');
+      let relType, cclRes, resVec
+      [relType, cclRes, resVec] = CalcCross.crossCircleVector(ctx, c1, v1);
+      objs.push(cclRes);
+      for (let i = 0; i < resVec.length; i++) 
+        objs.push(resVec[i]);
+      
       let c2 = new CircleComposite(450, 200, 100, [ANGLE_DVA_PI], CW, 'c2');
       let l2 = new Vector(350, 250, 590, 220, 'l2');
-      [relType, angleRes, x1, y1, x2, y2] = CalcCross.crossCircleVector(ctx, c2, l2);
-      c2.setAngles([angleRes]);
-      objs.push(c2);
-      objs.push(l2);
+      [relType, cclRes, resVec]= CalcCross.crossCircleVector(ctx, c2, l2);
+      objs.push(cclRes);
+      for (let i = 0; i < resVec.length; i++) 
+        objs.push(resVec[i]);
 
       let c3 = new CircleComposite(200, 500, 90, [ANGLE_DVA_PI], CCW, 'c3');
       let l3 = new Vector(100, 450, 320, 530, 'l3');
-      [relType, angleRes, x1, y1, x2, y2] = CalcCross.crossCircleVector(ctx, c3, l3);
-      c3.setAngles([angleRes]);
-      objs.push(c3);
-      objs.push(l3);
+      [relType, cclRes, resVec]= CalcCross.crossCircleVector(ctx, c3, l3);
+      objs.push(cclRes);
+      for (let i = 0; i < resVec.length; i++) 
+        objs.push(resVec[i]);
 
       let c4 = new CircleComposite(480, 500, 70, [ANGLE_DVA_PI], CW, 'c4');
       let l4 = new Vector(400, 420, 480, 470, 'l4');
-      [relType, angleRes, x1, y1, x2, y2] = CalcCross.crossCircleVector(ctx, c4, l4);
-      c4.setAngles([angleRes]);
-      objs.push(c4);
-      objs.push(l4);
+      [relType, cclRes, resVec]= CalcCross.crossCircleVector(ctx, c4, l4);
+      objs.push(cclRes);
+      for (let i = 0; i < resVec.length; i++) 
+        objs.push(resVec[i]);
 
       for (let i = 0; i < objs.length; i++) {
         if (debugMode)
@@ -93,8 +94,8 @@
           objs[i].showDetails(ctx);
       }
 
-      if (showDetails)
-        l4.showDetails(ctx);
+      // if (showDetails)
+      //   l4.showDetails(ctx);
 
       window.requestAnimationFrame(draw);
     }

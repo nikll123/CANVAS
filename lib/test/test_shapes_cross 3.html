@@ -31,6 +31,7 @@
   </div>
 
   <script>
+    Calc.angleNormalize(-8)
     debugMode = false;
     let objDebugMode = document.querySelector('input[id="chkDebugMode"]');
     objDebugMode.addEventListener('change', () => {
@@ -56,10 +57,10 @@
 
       let objs = [];
 
-      let arc1 = new Arc(365, 350, 50, Angle.DVA_PI, CW, 'ccl1');
-      let arc2 = new Arc(300, 300, 90, new Angle(0.3, -PI * 0.5), CW, 'arc2');
-      // arc1.draft(ctx, 3, '#AAAAAA');
-      // arc2.draft(ctx, 3, '#AAAAAA');
+      let arc1 = new Arc(275, 350, 50, Angle.DVA_PI, CCW, 'ccl1');
+      let arc2 = new Arc(200, 350, 90, new Angle(0.3, -PI * 0.5), CCW, 'arc2');
+      arc1.draft(ctx, 3, '#BBBBBB');
+      arc2.draft(ctx, 3, '#888888');
 
       // objs.push(arc1, arc2);
 
@@ -69,7 +70,7 @@
 
       for (let i = 0; i < arcs1.length; i++) {
         let a1 = arcs1[i];
-        a1.draft(ctx, 5 , '#FF0000');
+        a1.draft(ctx, 2 , '#FF0000');
       }
       for (let i = 0; i < arcs2.length; i++) {
         let a1 = arcs2[i];

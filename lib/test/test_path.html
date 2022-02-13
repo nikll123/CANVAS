@@ -53,24 +53,23 @@
       Canvas.clearAll(ctx);
       Canvas.grid(ctx);
 
-      ctx.beginPath();
-      ctx.moveTo(100, 100);
-      ctx.lineTo(200, 100);
-      ctx.moveTo(100, 200);
-      ctx.lineTo(200, 200);
-      // ctx.beginPath();
-      ctx.moveTo(300, 300);
-      ctx.arc(300, 300, 100, 0, 5);
-      ctx.stroke();
+      let p = new Path2D;
+       p.moveTo(200, 100);
+      // p.lineTo(200, 100);
+      // p.moveTo(100, 200);
+      // p.lineTo(200, 200);
+      // // p.moveTo(200, 300);
+      p.arcTo(220, 180, 300, 200, 100);
+      ctx.stroke(p);
 
-      CD(IPIS(150, 100));
-      CD(IPIS(140, 200));
-      CD(IPIS(310, 300));
+      // CD(PIS(200, 200));
+      // CD(PIS(300, 100));
+      // CD(PIS(310, 300, p));
 
-      PD(150, 100);
-      PD(140, 200);
-      PD(310, 300);
+      PD(200, 200);
+      PD(300, 200);
 
+      
     }
   </script>
 </body>

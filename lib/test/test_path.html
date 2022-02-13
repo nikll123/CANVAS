@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <script src="..\BasicShape.js"></script>
+  <script src="..\Canvas.js"></script>
+  <script src="..\Calc.js"></script>
+  <script src="..\CalcCross.js"></script>
+  <script src="..\Const.js"></script>
+  <script src="..\Primitives.js"></script>
+  <script src="..\ArcShapes.js"></script>
+  <script src="..\Vector.js"></script>
+  <script src="..\Outline.js"></script>
+  <script src="..\PoligonShapes.js"></script>
+  <script src="..\MouseTouchTracker.js"></script>
+  <script src="..\UTL.js"></script>
+
+  <script src="..\test\ut_Obj.js"></script>
+  <script src="..\test\ut_Angles.js"></script>
+  <script src="..\test\ut_Calc.js"></script>
+  <script src="..\test\ut_Shapes.js"></script>
+  <script src="..\test\ut_Vector.js"></script>
+  <script src="..\test\ut_primitives.js"></script>
+</head>
+
+<body onload="draw()">
+  <div>
+    <input type="checkbox" id="chkDebugMode" name="Draft">
+    <label for="Draft">Draft</label>
+    <input type="checkbox" id="chkShowDetails" name="Details">
+    <label for="Details">Details</label>
+  </div>
+
+  <script>
+    debugMode = false;
+    let objDebugMode = document.querySelector('input[id="chkDebugMode"]');
+    objDebugMode.addEventListener('change', () => {
+      debugMode = objDebugMode.checked;
+    })
+
+    showDetails = false;
+    let objShowDetails = document.querySelector('input[id="chkShowDetails"]');
+    objShowDetails.addEventListener('change', () => {
+      showDetails = objShowDetails.checked;
+    })
+  </script>
+
+  <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
+
+  <script>
+      ({ canvas, ctx } = Canvas.getCanvasCtx());
+
+    function draw() {
+      Canvas.clearAll(ctx);
+      Canvas.grid(ctx);
+
+      ctx.beginPath();
+      ctx.moveTo(100, 100);
+      ctx.lineTo(200, 100);
+      ctx.moveTo(100, 200);
+      ctx.lineTo(200, 200);
+      // ctx.beginPath();
+      ctx.moveTo(300, 300);
+      ctx.arc(300, 300, 100, 0, 5);
+      ctx.stroke();
+
+      CD(IPIS(150, 100));
+      CD(IPIS(140, 200));
+      CD(IPIS(310, 300));
+
+      PD(150, 100);
+      PD(140, 200);
+      PD(310, 300);
+
+    }
+  </script>
+</body>
+
+</html>

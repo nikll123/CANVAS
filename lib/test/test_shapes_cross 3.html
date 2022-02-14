@@ -12,6 +12,7 @@
   <script src="..\Outline.js"></script>
   <script src="..\PoligonShapes.js"></script>
   <script src="..\MouseTouchTracker.js"></script>
+  <script src="..\UTL.js"></script>
 
   <script src="..\test\ut_Obj.js"></script>
   <script src="..\test\ut_Angles.js"></script>
@@ -48,25 +49,20 @@
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-    let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
+    ({canvas, ctx} = Canvas.getCanvasCtx());
 
     function draw() {
-      Canvas.clearAll(ctx);
-      Canvas.grid(ctx, 10, true);
+      Canvas.clearGrid(ctx);
 
       let objs = [];
 
       let arc1 = new Arc(275, 350, 50, Angle.DVA_PI, CCW, 'ccl1');
       let arc2 = new Arc(200, 350, 90, new Angle(0.3, -PI * 0.5), CCW, 'arc2');
-      arc1.draft(ctx, 3, '#BBBBBB');
-      arc2.draft(ctx, 3, '#888888');
-
-      // objs.push(arc1, arc2);
-
+      arc1.draft(ctx, 5, '#BBBBBB');
+      arc2.draft(ctx, 5, '#888888');
 
       let crosstype, arcs1, arcs2;
-      [crosstype, arcs1, arcs2] = CalcCross.arcCross(ctx, arc1, arc2);     // res !!!
+      [crosstype, arcs1, arcs2] = CalcCross.arcCross(ctx, arc1, arc2); 
 
       for (let i = 0; i < arcs1.length; i++) {
         let a1 = arcs1[i];

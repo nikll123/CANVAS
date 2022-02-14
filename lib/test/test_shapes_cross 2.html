@@ -55,16 +55,6 @@
 
       let objs = [];
 
-      // let c2_1 = new Arc(120, 100, 50, new Angle(0.5, PI*0.5), CW, 'c2_1');
-      // let c2_2 = new Arc(120, 250, 50, new Angle(0.5, -PI*0.5), CCW, 'c2_2');
-      // let c2_3 = new CircleComposite(420, 100, 50,[new Angle(0, DVA_PI - 0.5)]);
-      // c2_1.draft(ctx);
-      // c2_2.draft(ctx);
-      // c2_3.draft(ctx);
-      // c2_1.showDetails(ctx);
-      // c2_2.showDetails(ctx);
-      // c2_3.showDetails(ctx);
-
       let c1;
       c1 = new CircleComposite(420, 150, 40, [new Angle(0, 0.1)]);
       c1.draft(ctx);
@@ -74,7 +64,7 @@
       c1.draft(ctx);
       c1 = new CircleComposite(420, 150, 40, [new Angle(0, 6)]);
       c1.draft(ctx);
-      c1 = new CircleComposite(420, 250, 40, [new Angle(0, DVA_PI), new Angle(DVA_PI, DVA_PI)]);
+      c1 = new CircleComposite(420, 250, 40, [Angle.DVA_PI, new Angle(DVA_PI, DVA_PI)]);
       c1.draft(ctx);
       c1 = new Circle(420, 350, 40, CW);
       c1.draft(ctx);
@@ -89,45 +79,6 @@
       c1.draft(ctx);
       c1 = new Arc(200, 200, 40, new Angle(5, 1), CCW);
       c1.draft(ctx);
-
-
-
-      // let c2 = new CircleComposite(440, 100, 50, [new Angle(0, DVA_PI)], 'c1');
-      // let l2 = new Vector(400, 50, 400, 350, 'l1');
-      // res = Calc.crossCircleVector(c2, l2);
-      // if (res.length == 2) {
-      //   [angle1, angle2] = res;
-      //   c2.setAngles([angle1, angle2]);
-      // }
-      // objs.push(c2);
-      // objs.push(l2);
-      // let c22 = new CircleComposite(380, 250, 50, [new Angle(0, DVA_PI)], 'c22');
-      // res = Calc.crossCircleVector(c22, l2);
-      // if (res.length == 2) {
-      //   [angle1, angle2] = res;
-      //   c22.setAngles([angle1, angle2]);
-      // }
-      // objs.push(c22);
-
-      // let c3 = new CircleComposite(200, 450, 100, [new Angle(0, DVA_PI)], 'c1');
-      // let l3 = new Vector(250, 350, 250, 550, 'l1');
-      // [angle1, angle2] = Calc.crossCircleVector(c3, l3);
-      // c3.setAngles([angle1, angle2]);
-      // objs.push(c3);
-      // objs.push(l3);
-
-      // for (let i = 0; i < objs.length; i++) {
-      //   if (debugMode)
-      //     objs[i].draft(ctx);
-      //   else
-      //     objs[i].render(ctx, 1);
-
-      //   if (showDetails)
-      //     objs[i].showDetails(ctx);
-      // }
-
-      // if (showDetails)
-      //   l4.showDetails(ctx);
 
       window.requestAnimationFrame(draw);
     }

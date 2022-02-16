@@ -4,6 +4,7 @@
   <script src="..\BasicShape.js"></script>
   <script src="..\Canvas.js"></script>
   <script src="..\Calc.js"></script>
+  <script src="..\CalcCross.js"></script>
   <script src="..\Const.js"></script>
   <script src="..\Primitives.js"></script>
   <script src="..\ArcShapes.js"></script>
@@ -62,13 +63,12 @@
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-    let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
+     ({canvas,ctx} = Canvas.getCanvasCtx());
     let beginX = 0;
     let beginY = 0;
     let curX = 0;
     let curY = 0;
-    let cclCmbs;
+    let arcs;
 
     function buildBgShape() {
       let ol = new Outline([], 'olShape');
@@ -84,36 +84,35 @@
     }
 
     function init() {
-      cclCmbs = [];
+      arcs = [];
       // let cclCmb1 = new CircleComposite(140, 470, 90, [new Angle(0, DVA_PI)], CCW);
-      let cclCmb1 = new CircleComposite(470, 134, 90, [new Angle(0, DVA_PI)], CCW);
-      // let arc = new Arc(410, 383, 90, new Angle(0, DVA_PI), CCW);
-      cclCmbs.push(cclCmb1);
+      // let cclCmb1 = new CircleComposite(470, 134, 90, [Angle.DVA_PI_NEG], CCW);
+      let arc = new Arc(470, 134, 90, Angle.DVA_PI_NEG, CCW);
+      arcs.push(arc);
     }
 
     init();
 
     function draw() {
-      Canvas.clearAll(ctx);
       let scaleX = 1;
       if (bigScale)
         scaleX = 3;
       ctx.canvas.width = scaleX * 600;
       ctx.canvas.height = scaleX * 600;
-      Canvas.grid(ctx, 10 * scaleX);
+      Canvas.clearGrid(ctx, scaleX * 10);
 
       let ol = buildBgShape();
       let cclCmbsToRender = [];
       let ols = [];
-      if (cclCmbs.length > 0) {
-        let c = cclCmbs[0].clone();
-        ols = Calc.crossCircleOutLine(ctx, c, ol);
+      if (arcs.length > 0) {
+        let c = arcs[0].clone();
+        // ols = CalcCross.crossCircleOutLine(ctx, c, ol);
         cclCmbsToRender.push(c);
         if (ols.length == 0)
           ols = [ol, c];
       }
       else
-        ols = [ol];
+         ols = [ol];
 
       ctx.save();
       ctx.scale(scaleX, scaleX);
@@ -129,9 +128,10 @@
       ctx.fill();
       ctx.globalAlpha = 0.5;
       ctx.strokeStyle = '#0000FF';
-      ctx.stroke();
+      // ctx.stroke();
       // ol.render(ctx, 1, DEFAULT_COLOR, "#FF9999");
       ctx.restore();
+
 
       if (debugMode) {
         ctx.save();
@@ -172,13 +172,13 @@
           case 'down':
             beginX = x;
             beginY = y;
-            for (let i = 0; i < cclCmbs.length; i++)
-              cclCmbs[i].startDrugIfPointIsInside(ctx, x, y);
+            for (let i = 0; i < arcs.length; i++)
+              arcs[i].startDrugIfPointIsInside(ctx, x, y);
             break;
 
           case 'up':
-            for (let i = 0; i < cclCmbs.length; i++)
-              cclCmbs[i].stopDrag();
+            for (let i = 0; i < arcs.length; i++)
+              arcs[i].stopDrag();
             break;
 
           case 'move':
@@ -187,8 +187,8 @@
             beginX = x;
             beginY = y;
 
-            for (let i = 0; i < cclCmbs.length; i++) {
-              cclCmbs[i].moveIfDragging(dx, dy);
+            for (let i = 0; i < arcs.length; i++) {
+              arcs[i].moveIfDragging(dx, dy);
             }
             break;
         }

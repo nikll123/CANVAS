@@ -55,13 +55,14 @@
 
       const arc1 = new Arc(275, 350, 50, Angle.DVA_PI, CW, 'ccl1');
       const arc2 = new Arc(200, 350, 90, new Angle(0.3, -PI * 0.5), CCW, 'arc2');
-      arc1.draft(ctx, 1, '#BBBBBB');
-      arc2.draft(ctx, 1, '#888888');
+      // arc1.draft(ctx, 1, '#BBBBBB');
+      // arc2.draft(ctx, 1, '#888888');
 
       let resOl = CalcCross.crossArcArc(ctx, arc1, arc2); 
 
       for (let i = 0; i < resOl.length; i++) {
         let a1 = resOl[i];
+        a1.draft(ctx, 1, '#BBBBBB');
         a1.render(ctx, 2 , '#FF0000');
       }
 

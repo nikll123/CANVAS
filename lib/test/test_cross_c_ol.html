@@ -63,7 +63,7 @@
   <canvas id="canvas" style="border: 1px solid" width="600" height="600"></canvas>
 
   <script>
-     ({canvas,ctx} = Canvas.getCanvasCtx());
+      ({ canvas, ctx } = Canvas.getCanvasCtx());
     let beginX = 0;
     let beginY = 0;
     let curX = 0;
@@ -102,17 +102,20 @@
       Canvas.clearGrid(ctx, scaleX * 10);
 
       let ol = buildBgShape();
-      let cclCmbsToRender = [];
+      // let cclCmbsToRender = [];
       let ols = [];
       if (arcs.length > 0) {
-        let c = arcs[0].clone();
+        let arc = arcs[0].clone();
         // ols = CalcCross.crossCircleOutLine(ctx, c, ol);
-        cclCmbsToRender.push(c);
-        if (ols.length == 0)
-          ols = [ol, c];
+        // ol = CalcCross.crossCircleOutLine(ctx, c, ol);
+        ol = CalcCross.crossOlArc(ctx, ol, arc);
+        // cclCmbsToRender.push(arc);
+        // if (ols.length == 0)
+        //   ols = [ol, arc];
       }
       else
-         ols = [ol];
+        //  ols = [ol];
+        ;
 
       ctx.save();
       ctx.scale(scaleX, scaleX);

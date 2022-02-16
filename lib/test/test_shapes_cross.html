@@ -55,24 +55,24 @@
       let objs = [];
       let arc1, vec1, relType, resOl;
 
-      arc1 = new Arc(100, 200, 123, Angle.DVA_PI, CCW, 'c1');
-      vec1 = new Vector(170, 350,200, 50,  'v1');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, arc1, vec1);
+      arc1 = new Arc(100, 200, 123, Angle.DVA_PI_NEG, CCW, 'c1');
+      vec1 = new Vector(170, 350, 200, 50, 'v1');
+      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
       resOl.draft(ctx);
 
       arc1 = new Arc(450, 200, 100, Angle.DVA_PI, CW, 'c2');
       vec1 = new Vector(350, 250, 590, 220, 'l2');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, arc1, vec1);
+      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
       resOl.draft(ctx);
 
       arc1 = new Arc(100, 500, 100, Angle.DVA_PI, CW, 'c2');
       vec1 = new Vector(200, 400, 200, 600, 'l2');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, arc1, vec1);
+      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
       resOl.draft(ctx);
 
-      arc1 = new Arc(400, 500, 50, Angle.DVA_PI, CCW, 'c2');
-      vec1 = new Vector(400, 580,400, 400,  'l2');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, arc1, vec1);
+      arc1 = new Arc(400, 500, 50, Angle.DVA_PI_NEG, CCW, 'c2');
+      vec1 = new Vector(400, 580, 400, 400, 'l2');
+      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
       resOl.draft(ctx);
 
 

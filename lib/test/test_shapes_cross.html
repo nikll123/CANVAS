@@ -5,6 +5,7 @@
   <script src="..\Canvas.js"></script>
   <script src="..\Calc.js"></script>
   <script src="..\CalcCross.js"></script>
+  <script src="..\CalcCombine.js"></script>
   <script src="..\Const.js"></script>
   <script src="..\Primitives.js"></script>
   <script src="..\ArcShapes.js"></script>
@@ -53,27 +54,44 @@
       Canvas.clearGrid(ctx);
 
       let objs = [];
-      let arc1, vec1, relType, resOl;
+      let crcl, vec1, relType, ol, points;
 
-      arc1 = new Arc(100, 200, 123, Angle.DVA_PI_NEG, CCW, 'c1');
-      vec1 = new Vector(170, 350, 200, 50, 'v1');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
-      resOl.draft(ctx);
-
-      arc1 = new Arc(450, 200, 100, Angle.DVA_PI, CW, 'c2');
-      vec1 = new Vector(350, 250, 590, 220, 'l2');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
-      resOl.draft(ctx);
-
-      arc1 = new Arc(100, 500, 100, Angle.DVA_PI, CW, 'c2');
+      crcl = new Circle(100, 500, 100, CW, 'c2');
       vec1 = new Vector(200, 400, 200, 600, 'l2');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
-      resOl.draft(ctx);
+      points = CalcCross.crossVectorArc(ctx, vec1, crcl);
+      if (points.length) {
+        ol = CalcCombine.combineVecCircle(ctx, vec1, crcl, points);
+        ol.draft(ctx);
+      }
+      else {
+        crcl.draft(ctx);
+        vec1.draft(ctx);
+      }
 
-      arc1 = new Arc(400, 500, 50, Angle.DVA_PI_NEG, CCW, 'c2');
+
+
+      crcl = new Circle(100, 200, 123, CCW, 'c1');
+      vec1 = new Vector(170, 350, 200, 50, 'v1');
+      points = CalcCross.crossVectorArc(ctx, vec1, crcl);
+      if (len(points)) {
+        ol = new OutLibe([vec1]);
+        ol = CalcCross.combineVecCircle(ctx, vec1, crcl, points);
+        ol.draft(ctx);
+      }
+      else {
+        crcl.arc1(ctx);
+        vec1.arc1(ctx);
+      }
+
+      crcl = new Circle(450, 200, 100, CW, 'c2');
+      vec1 = new Vector(350, 250, 590, 220, 'l2');
+      points = CalcCross.crossVectorArc(ctx, vec1, crcl);
+      ol.draft(ctx);
+
+      crcl = new Circle(400, 500, 50, CCW, 'c2');
       vec1 = new Vector(400, 580, 400, 400, 'l2');
-      [relType, resOl] = CalcCross.crossVectorArc(ctx, vec1, arc1);
-      resOl.draft(ctx);
+      points = CalcCross.crossVectorArc(ctx, vec1, crcl);
+      ol.draft(ctx);
 
 
       window.requestAnimationFrame(draw);

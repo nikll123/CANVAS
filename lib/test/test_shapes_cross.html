@@ -57,7 +57,7 @@
       let crcl, vec1, relType, ol, points;
 
       crcl = new Circle(100, 500, 100, CW, 'c2');
-      vec1 = new Vector(200, 400, 200, 600, 'l2');
+      vec1 = new Vector(199, 400, 200, 600, 'l2');
       points = CalcCross.crossVectorArc(ctx, vec1, crcl);
       if (points.length) {
         ol = CalcCombine.combineVecCircle(ctx, vec1, crcl, points);
